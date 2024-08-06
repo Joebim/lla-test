@@ -5,9 +5,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const Account = ({ children }: { children: React.ReactNode }) => {
+const Account = ({ children }: { children?: React.ReactNode }) => {
   const pathname = usePathname();
-
   const router = useRouter();
 
   useEffect(() => {
