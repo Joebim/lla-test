@@ -3,14 +3,17 @@
 import { Check, Orbit, PlusIcon } from "lucide-react";
 import { FC, useState } from "react";
 
+import AdminNav from "~/components/AdminNav/AdminNav";
 import CheckboxList from "~/components/checkbox/checkbox";
 import CustomButton from "~/components/common/common-button/common-button";
+import AdminNavDropdown from "~/components/common/dropdowns/AdminNavDropdown";
 import LanguageSelector from "~/components/common/dropdowns/LanguageSelector";
+import UserNavDropdown from "~/components/common/dropdowns/UserNavDropdown";
 import SearchBar from "~/components/common/searchbar/Searchbar";
 import SearchIcon from "~/components/common/searchbar/SearchIcon";
 import Correct from "~/components/correct";
 import ButtonGrid from "~/components/gameNavigationButtons/ButtonGrid";
-import LightNav from "~/components/light-navbar/LightNav";
+import LevelDisplay from "~/components/level-display/LevelDisplay";
 import MicrophoneComponent from "~/components/microphone/MicrophoneComponent";
 import VolumeBar from "~/components/miscellaneous/Volume";
 import { Cookies } from "~/components/modals/cookies";
@@ -25,7 +28,7 @@ import { DefaultPreButton } from "~/components/preview-buttons/Default";
 import { DisabledPreButton } from "~/components/preview-buttons/Disabled";
 import { FocussedPreButton } from "~/components/preview-buttons/Focussed";
 import { LoadedPreButton } from "~/components/preview-buttons/Loaded";
-import ProgressContainer from "~/components/Progress-box/ProgressContainer/ProgressContainer";
+import QuestLevelTimer from "~/components/quest-level-timer/QuestLevelTimer";
 import LoadingCircles from "~/components/quest-loading/LoadingCircles";
 import QuestLoadingPage from "~/components/quest-loading/QuestLoadingPage";
 import QuestPreviewCard from "~/components/quest/questPreviewCard";
@@ -38,14 +41,21 @@ import DifficultLevel from "~/components/range/difficulty-level/DifficultLevel";
 import LevelProgress from "~/components/range/Levels/LevelProgress";
 import Speakers from "~/components/speakers";
 import IconPanel from "~/components/speakingStates/audio";
+import PlayerThought from "~/components/thoughts/PlayerThought";
 import Toasts from "~/components/toasts/Toasts";
 import ToggleSwitch from "~/components/toggle/ToggleSwitch";
 import TryAgain from "~/components/TryAgain";
 import Accordion from "~/components/ui/CustomAccordion";
+import SignUpModal from "~/components/userSignUp/SignUpModal";
 
 const StyleGuide: FC = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [showQuestLoading, setShowQuestLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setIsModalVisible((previous) => !previous);
+  };
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -83,7 +93,6 @@ const StyleGuide: FC = () => {
 
   return (
     <main className="flex min-h-screen flex-col items-start gap-7 overflow-hidden p-6 sm:p-12 md:p-24">
-      <LightNav />
       <div className="w-4/5 space-y-2 py-5">
         <h2 className="text-2xl font-semibold">Navigation Tab</h2>
         <NavTabs />
@@ -968,7 +977,6 @@ const StyleGuide: FC = () => {
       ,
       <div className="flex flex-col gap-3">
         <h2 className="mt-2 text-2xl font-semibold">Progress Container</h2>
-        <ProgressContainer />
       </div>
       <div className="flex flex-col gap-4 py-5">
         <h2 className="mt-2 text-2xl font-semibold">Game Navigation Tab</h2>
@@ -1006,6 +1014,49 @@ const StyleGuide: FC = () => {
           </div>
         </div>
       )}
+      <div className="flex flex-col gap-3 py-5">
+        <h2 className="text-2xl font-semibold">Quest Level Timer</h2>
+        <QuestLevelTimer initialTime={300} />
+      </div>
+      <h2 className="text-2xl font-semibold">Level Display</h2>
+      <LevelDisplay completedLevels={2} />
+      <section className="mb-8">
+        <h2 className="mb-4 text-2xl font-semibold">
+          Player Thought Component
+        </h2>
+        <PlayerThought />
+      </section>
+      {/* Navbar Components */}
+      <h2 className="text-2xl font-semibold">Navbar Components</h2>
+      <div className="flex w-full flex-col gap-3 py-5">
+        <div className="">
+          <h2 className="text-xl font-semibold">AdminNav</h2>
+          <AdminNav />
+        </div>
+      </div>
+      <div>
+        {/* Button to toggle modal visibility */}
+        <CustomButton variant="primary" onClick={toggleModal}>
+          Sign Up
+        </CustomButton>
+
+        {/* Conditionally render the SignUpModal */}
+        {isModalVisible && (
+          <div
+            className={`fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50`}
+          >
+            <SignUpModal closeModal={toggleModal} />
+          </div>
+        )}
+
+        <div className="mt-4">
+          <UserNavDropdown />
+        </div>
+
+        <div className="mt-4">
+          <AdminNavDropdown />
+        </div>
+      </div>
     </main>
   );
 };

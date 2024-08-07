@@ -3,3 +3,4 @@ coverage
 html
 dist
 !.prettierrc.cjs
+src/app/(quest-routes)/

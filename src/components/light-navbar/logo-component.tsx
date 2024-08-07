@@ -1,26 +1,33 @@
 import Image from "next/image";
-import Link from "next/link";
+
+import { TransitionLink } from "../miscellaneous/transition-link";
 
 const Logo = () => {
   return (
     <>
-      <Link href="/" className="hidden no-underline outline-none md:block">
+      <TransitionLink
+        href="/"
+        className="hidden no-underline outline-none md:block"
+      >
         <Image
-          src="/images/_Logo.svg"
+          src="/navbar/delve-black__desktop.svg"
           width={100}
           height={32}
           alt="desktop-logo"
         />
-      </Link>
+      </TransitionLink>
 
-      <Link href="/" className="block no-underline outline-none md:hidden">
+      <TransitionLink
+        href="/"
+        className="block no-underline outline-none md:hidden"
+      >
         <Image
-          src="/images/_Logo.svg"
+          src="/navbar/Delve-black_mobile.svg"
           width={100}
           height={32}
           alt="mobile-logo"
         />
-      </Link>
+      </TransitionLink>
     </>
   );
 };

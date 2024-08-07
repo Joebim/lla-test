@@ -1,20 +1,21 @@
-import Link from "next/link";
-
-import CustomButton from "~/components/common/common-button/common-button";
+import Footer from "~/components/footer/Footer";
 import HeroSection from "~/components/HeroSection";
+import HomeKeyFeaturesSection from "~/components/LandingPageComponents/HomeKeyFeaturesSection";
+import HomeSection2 from "~/components/LandingPageComponents/HomeSection2";
+import HomeSection3 from "~/components/LandingPageComponents/HomeSection3";
+import HomeSection4 from "~/components/LandingPageComponents/HomeSection4";
+import ReadytoStartSection from "~/components/LandingPageComponents/ReadytoStartSection";
 
 function page() {
   return (
     <div className="relative flex h-full w-full flex-col overflow-x-hidden">
       <HeroSection />
-      <div className="mt-10 flex flex-col gap-4 px-10 py-5" id="temporary">
-        <Link href={"/waitlist"}>
-          <CustomButton variant="primary-two">Waitlist Page</CustomButton>
-        </Link>
-        <Link href={"/guides"}>
-          <CustomButton variant="primary-two">Components</CustomButton>
-        </Link>
-      </div>
+      <HomeSection2 />
+      <HomeSection3 />
+      <HomeSection4 />
+      <HomeKeyFeaturesSection />
+      <ReadytoStartSection />
+      <Footer />
     </div>
   );
 }

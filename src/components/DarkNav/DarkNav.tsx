@@ -4,92 +4,198 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { useHeroInView } from "~/hooks/util-hooks/use-hero-inview";
+import { cn } from "~/lib/utils";
+import { TransitionLink } from "../miscellaneous/transition-link";
+import Sidebar from "../sidebar/sideBar";
+import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import styles from "./DarkNav.module.css";
+import Logo from "./logo-component";
+
 const DarkNav = () => {
-  const [isSignedIn, setIsSignedIn] = useState(true);
+  const { isHeroInView } = useHeroInView();
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     // Check if the user is signed in
-    const userSignedIn = true;
+    const userSignedIn = false;
     setIsSignedIn(userSignedIn);
   }, []);
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen((previousState) => !previousState);
+  };
+
   return (
-    <nav className="z-50 h-16 px-3 text-black md:h-20 md:p-0">
-      <div className="shadow mx-auto mt-14 flex max-w-[1136px] items-center justify-between rounded-[60px] border border-[#DEE5ED] border-transparent-white-15 bg-transparent-black-55 px-5 py-4 md:mt-9">
-        {/* Desktop Navigation */}
-        <div className="hidden w-full items-center justify-between md:flex">
-          <div className="flex items-center">
-            <Image
-              src="/logo/darknavlogo.svg"
-              alt="desktop-logo"
-              width={138}
-              height={32}
-              className="hidden md:block"
-            />
-          </div>
-          <div className="flex space-x-[56px] text-base font-normal text-transparent-white-70">
-            <Link href="/">Home</Link>
-            <Link href="/">Games</Link>
-            <Link href="/">About</Link>
-          </div>
-          <div className="flex space-x-6">
-            {isSignedIn ? (
-              <div className="flex h-full w-full items-center gap-1 rounded-[40px] border-2 border-transparent-white-15 bg-transparent-black-25 px-[10px] py-1">
-                <Image
-                  src="/logo/profile.svg"
-                  alt="profile-icon"
-                  width={40}
-                  height={40}
-                />
-                <Image
-                  src="/logo/about-down.svg"
-                  alt="profile-arrow"
-                  width={16}
-                  height={16}
-                />
+    <>
+      <nav className="fixed left-0 right-0 top-0 z-50 mx-auto w-screen max-w-[1728px] px-0">
+        {isSignedIn ? (
+          <div
+            className={`shadow-md md:shadow mx-auto hidden w-full flex-row items-center bg-white px-20 py-6 md:flex md:justify-between ${styles.navLinkGradient}`}
+          >
+            <Logo />
+            <>
+              <div className="flex gap-9">
+                <div className="flex h-full w-full items-center gap-[6px] px-[10px] py-2">
+                  <Image
+                    src="/navbar/Quest.svg"
+                    alt="quest-icon"
+                    width={22}
+                    height={22}
+                    className="opacity-40"
+                  />
+                  <p>Quests</p>
+                </div>
+                <div className="flex h-full w-full items-center gap-[6px] px-[10px] py-2">
+                  <Image
+                    src="/navbar/Progress.svg"
+                    alt="progress-icon"
+                    width={22}
+                    height={22}
+                    className="opacity-40"
+                  />
+                  <p>Progress</p>
+                </div>
               </div>
-            ) : (
-              <>
-                <button className="h-12 w-[132px] rounded-[59px] border border-primary-120 bg-primary-100 text-white">
-                  Sign Up
-                </button>
-                <button className="h-12 w-[132px] rounded-[59px] border border-neutral-40 bg-white text-secondary-110">
-                  Sign In
-                </button>
-              </>
-            )}
+            </>
+
+            <>
+              <div className="flex gap-4">
+                <div className="flex h-full w-full items-center gap-1 py-1">
+                  <Image
+                    src="/logo/bell.svg"
+                    alt="notification-icon"
+                    width={36}
+                    height={36}
+                  />
+                </div>
+                <div className="flex h-full w-full items-center gap-1 py-1">
+                  <Image
+                    src="/navbar/flag-standin.svg"
+                    alt="flag-icon"
+                    width={36}
+                    height={36}
+                  />
+                  <Image
+                    src="/logo/about-down.svg"
+                    alt="flag-arrow"
+                    width={24}
+                    height={24}
+                  />
+                </div>
+                <div className="flex h-full w-full items-center gap-1 py-1">
+                  <Image
+                    src="/navbar/profile-standin.svg"
+                    alt="profile-icon"
+                    width={36}
+                    height={36}
+                    className="rounded-full"
+                  />
+                  <Image
+                    src="/logo/about-down.svg"
+                    alt="profile-arrow"
+                    width={24}
+                    height={24}
+                  />
+                </div>
+              </div>
+            </>
           </div>
-        </div>
+        ) : (
+          <div
+            className={cn(
+              "shadow-md md:shadow mx-auto mt-4 hidden max-w-[97%] flex-row items-center rounded-full px-20 py-4 transition-all md:flex md:justify-between md:ring-primary-20",
+              isHeroInView
+                ? "translate-y-0 bg-neutral-950/0 backdrop-blur-none duration-500"
+                : "-translate-y-3 bg-neutral-950/80 backdrop-blur-2xl duration-1000",
+            )}
+          >
+            <Logo />
+            <div className="hidden items-center gap-5 md:flex lg:gap-7">
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  className={`flex flex-row items-center font-inter text-sm text-neutral-80 no-underline outline-none duration-300 ease-in`}
+                >
+                  <Link href="/how-it-works" className="flex gap-4 text-white">
+                    <Image
+                      src="/navbar/howitworks-dot.svg"
+                      alt="mobile-logo"
+                      width={8}
+                      height={8}
+                    />
+                    How it works
+                    <Image
+                      src="/navbar/howitworks-dot.svg"
+                      alt="mobile-logo"
+                      width={8}
+                      height={8}
+                    />
+                  </Link>
+                </DropdownMenuTrigger>
+              </DropdownMenu>
+            </div>
+
+            <div className="flex space-x-6">
+              <>
+                <TransitionLink href="/signup" variant="secondary-two">
+                  Delve In
+                </TransitionLink>
+              </>
+            </div>
+          </div>
+        )}
 
         {/* Mobile Navigation */}
-        <div className="flex w-full items-center justify-between md:hidden">
+        <div
+          className={`shadow-sm mx-auto my-4 flex h-12 w-full items-center justify-between px-5 py-2 md:hidden ${
+            isSignedIn ? styles.navLinkGradient : ""
+          }`}
+        >
           <div className="flex items-center">
-            <Image
-              src="/logo/mobile-nav.svg"
-              alt="mobile-logo"
-              width={32}
-              height={32}
-              className="block md:hidden"
-            />
+            <Link href={"/"}>
+              <Image
+                src="/navbar/delve-darkNav_mobileLogo.svg"
+                alt="mobile-logo"
+                width={48}
+                height={48}
+                className="block md:hidden"
+              />
+            </Link>
           </div>
           <div className="flex items-center space-x-4">
             {isSignedIn ? (
-              <div className="h-full w-full rounded-full border-2 border-transparent-black-10 p-[2px]">
+              <div className="flex h-full w-full gap-4 bg-white p-1">
                 <Image
-                  src="/logo/profile.svg"
+                  src="/navbar/profile-standin.svg"
                   alt="profile-icon"
-                  width={38}
-                  height={38}
+                  width={48}
+                  height={48}
+                  className="rounded-full"
                 />
+                <button
+                  onClick={toggleSidebar}
+                  className="flex h-12 w-12 items-center justify-center rounded-full border border-neutral-40 bg-white p-[10px]"
+                >
+                  <Image
+                    src="/navbar/Mobile-3lines.svg"
+                    alt="menu-icon"
+                    width={48}
+                    height={48}
+                  />
+                </button>
               </div>
             ) : (
               <>
-                <button className="h-10 w-[109px] rounded-[59px] border border-primary-120 bg-primary-100 text-white">
-                  Sign Up
-                </button>
-                <button className="flex h-10 w-10 items-center justify-center rounded-[49px] border border-[#C7D3E1] bg-white p-[10px]">
+                <TransitionLink href="/signup" variant="secondary-two">
+                  Delve In
+                </TransitionLink>
+                <button
+                  onClick={toggleSidebar}
+                  className="h-10 w-10 rounded-[59px] border border-neutral-40 bg-white p-[10px]"
+                >
                   <Image
-                    src="/logo/mobile-3lines.svg"
+                    src="/navbar/mobile_3lines.svg"
                     alt="menu-icon"
                     width={20}
                     height={20}
@@ -99,8 +205,15 @@ const DarkNav = () => {
             )}
           </div>
         </div>
+      </nav>
+      <div
+        className={`fixed bottom-0 left-0 top-20 z-50 flex h-screen w-full transform flex-col justify-start border-r bg-[#FDFDFD] md:w-[220px] lg:w-[252px] ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } transition-transform duration-300 ease-in-out`}
+      >
+        {isSidebarOpen && <Sidebar />}
       </div>
-    </nav>
+    </>
   );
 };
 

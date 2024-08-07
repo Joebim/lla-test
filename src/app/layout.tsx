@@ -5,6 +5,7 @@ import { ToastProvider } from "~/components/ui/toast";
 
 import "./globals.css";
 
+import GotoTop from "~/components/miscellaneous/goto-top";
 import Progress_bar from "~/components/progress-bar";
 import { Toaster } from "~/components/ui/toaster";
 
@@ -39,6 +40,7 @@ export default function RootLayout({
             <Toaster />
           </ToastProvider>
         </div>
+        <GotoTop />
       </body>
     </html>
   );

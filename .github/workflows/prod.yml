@@ -7,7 +7,7 @@ on:
 
 jobs:
   test-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +21,9 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9
+          dest: setup-pnpm
+          package_json_file: package.json
+          standalone: false
 
       - name: Install dependencies
         run: pnpm install
@@ -43,6 +46,7 @@ jobs:
             eval $(ssh-agent)
             ssh-add ~/.ssh/id_ecdsa
             git reset --hard origin/production
+            git pull
             pnpm install
             rm -rf .next
             pnpm run build

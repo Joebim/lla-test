@@ -1,43 +1,20 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import CustomButton from "../common/common-button/common-button";
 import Sidebar from "../sidebar/sideBar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import styles from "./LightNav.module.css";
 import Logo from "./logo-component";
 
-interface NavbarLinksProperties {
-  title: string;
-  linkPath: string;
-  isActive: boolean;
-}
+type LightNavProperties = {
+  className?: string;
+};
 
-const navbarLinks: NavbarLinksProperties[] = [
-  {
-    title: "Home",
-    isActive: false,
-    linkPath: "/",
-  },
-
-  {
-    title: "Games",
-    isActive: false,
-    linkPath: "/games",
-  },
-];
-
-const LightNav = () => {
+const LightNav: React.FC<LightNavProperties> = ({ className }) => {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -53,106 +30,156 @@ const LightNav = () => {
 
   return (
     <>
-      <nav className="fixed left-0 right-0 top-0 z-50 w-screen">
-        <div className="md:max-w-4/5 lg:max-w-4/5 shadow-md md:shadow mx-auto my-4 hidden w-3/5 flex-row items-center rounded-full bg-white p-2.5 pl-5 ring-1 ring-gray-200 md:flex md:justify-between md:ring-primary-20">
-          <Logo />
-          <div className="hidden items-center gap-5 md:flex lg:gap-7">
-            {navbarLinks.map((links, index) => {
-              const { isActive, linkPath, title } = links;
-
-              return (
-                <Link
-                  key={index}
-                  href={linkPath}
-                  className={`cursor-pointer font-inter text-sm no-underline outline-none duration-300 ease-in hover:text-neutral-120 ${isActive ? "text-neutral-120" : "text-neutral-80"}`}
-                >
-                  {title}
-                </Link>
-              );
-            })}
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                className={`flex flex-row items-center gap-1 font-inter text-sm text-neutral-80 no-underline outline-none duration-300 ease-in`}
-              >
-                <div>About</div>
-
-                <ChevronDown size={16} />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="shadow-sm w-[200px] rounded-xl border border-blue-200 bg-white">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
-                <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem>Subscription</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          <div className="flex space-x-6">
-            {isSignedIn ? (
-              <div className="flex h-full w-full items-center gap-1 rounded-[40px] border-2 border-[#E9EEF3] px-[10px] py-1">
-                <Image
-                  src="/logo/profile.svg"
-                  alt="profile-icon"
-                  width={45}
-                  height={22}
-                />
-                <Image
-                  src="/logo/about-down.svg"
-                  alt="profile-arrow"
-                  width={16}
-                  height={16}
-                />
+      <nav
+        className={`${className || "fixed left-0 right-0 top-0 z-50 mx-auto w-screen px-0"}`}
+      >
+        {isSignedIn ? (
+          <div
+            className={`shadow-md md:shadow mx-auto hidden w-full flex-row items-center bg-white px-20 py-6 md:flex md:justify-between ${styles.navLinkGradient}`}
+          >
+            <Logo />
+            <>
+              <div className="flex gap-9">
+                <div className="flex h-full w-full items-center gap-[6px] px-[10px] py-2">
+                  <Image
+                    src="/navbar/Quest.svg"
+                    alt="quest-icon"
+                    width={22}
+                    height={22}
+                    className="opacity-40"
+                  />
+                  <p>Quests</p>
+                </div>
+                <div className="flex h-full w-full items-center gap-[6px] px-[10px] py-2">
+                  <Image
+                    src="/navbar/Progress.svg"
+                    alt="progress-icon"
+                    width={22}
+                    height={22}
+                    className="opacity-40"
+                  />
+                  <p>Progress</p>
+                </div>
               </div>
-            ) : (
+            </>
+
+            <>
+              <div className="flex gap-4">
+                <div className="flex h-full w-full items-center gap-1 py-1">
+                  <Image
+                    src="/logo/bell.svg"
+                    alt="notification-icon"
+                    width={36}
+                    height={36}
+                  />
+                </div>
+                <div className="flex h-full w-full items-center gap-1 py-1">
+                  <Image
+                    src="/navbar/flag-standin.svg"
+                    alt="flag-icon"
+                    width={36}
+                    height={36}
+                  />
+                  <Image
+                    src="/logo/about-down.svg"
+                    alt="flag-arrow"
+                    width={24}
+                    height={24}
+                  />
+                </div>
+                <div className="flex h-full w-full items-center gap-1 py-1">
+                  <Image
+                    src="/navbar/profile-standin.svg"
+                    alt="profile-icon"
+                    width={36}
+                    height={36}
+                    className="rounded-full"
+                  />
+                  <Image
+                    src="/logo/about-down.svg"
+                    alt="profile-arrow"
+                    width={24}
+                    height={24}
+                  />
+                </div>
+              </div>
+            </>
+          </div>
+        ) : (
+          <div className="w-5/5 shadow-md md:shadow mx-auto hidden flex-row items-center px-20 py-6 md:flex md:justify-between md:ring-primary-20">
+            <Logo />
+            <div className="hidden items-center gap-5 md:flex lg:gap-7">
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  className={`flex flex-row items-center font-inter text-sm text-neutral-80 no-underline outline-none duration-300 ease-in`}
+                >
+                  <Link
+                    href="/how-it-works"
+                    className="flex items-center gap-4 text-secondary-120"
+                  >
+                    <div className="h-2 w-2 rounded-full bg-primary-100"></div>
+                    How it works
+                    <div className="h-2 w-2 rounded-full bg-primary-100"></div>
+                  </Link>
+                </DropdownMenuTrigger>
+              </DropdownMenu>
+            </div>
+
+            <div className="flex space-x-6">
               <>
                 <CustomButton href="/signup" variant="secondary">
-                  Sign Up
-                </CustomButton>
-                <CustomButton
-                  className="border border-black"
-                  href="/signin"
-                  variant="default"
-                >
-                  Sign In
+                  Delve In
                 </CustomButton>
               </>
-            )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Mobile Navigation */}
-        <div className="shadow-sm mx-auto my-4 flex h-[64px] w-full max-w-[351px] items-center justify-between rounded-[60px] border border-neutral-30 bg-white p-3 md:hidden">
+        <div
+          className={`shadow-sm mx-auto my-4 flex h-12 w-full items-center justify-between px-5 py-2 md:hidden ${
+            isSignedIn ? styles.navLinkGradient : ""
+          }`}
+        >
           <div className="flex items-center">
             <Link href={"/"}>
               <Image
-                src="/logo/mobile-nav.svg"
+                src="/navbar/Delve-black_mobile.svg"
                 alt="mobile-logo"
-                width={32}
-                height={32}
+                width={48}
+                height={48}
                 className="block md:hidden"
               />
             </Link>
           </div>
           <div className="flex items-center space-x-4">
             {isSignedIn ? (
-              <div className="h-full w-full rounded-full border-2 border-[#E9EEF3] p-1">
+              <div className="flex h-full w-full gap-4 bg-white p-1">
                 <Image
-                  src="/logo/profile.svg"
+                  src="/navbar/profile-standin.svg"
                   alt="profile-icon"
-                  width={36}
-                  height={36}
+                  width={48}
+                  height={48}
+                  className="rounded-full"
                 />
+                <button
+                  onClick={toggleSidebar}
+                  className="flex h-12 w-12 items-center justify-center rounded-full border border-neutral-40 bg-white p-[10px]"
+                >
+                  <Image
+                    src="/navbar/Mobile-3lines.svg"
+                    alt="menu-icon"
+                    width={48}
+                    height={48}
+                  />
+                </button>
               </div>
             ) : (
               <>
                 <button className="h-10 w-[109px] rounded-[59px] border border-[#E9EEF3] bg-[#2A2A2A] text-white">
-                  Sign Up
+                  Delve In
                 </button>
-                <button
-                  onClick={toggleSidebar}
-                  className="flex h-10 w-10 items-center justify-center rounded-[49px] border border-[#C7D3E1] bg-white p-[10px]"
-                >
+                <button onClick={toggleSidebar}>
                   <Image
                     src="/logo/mobile-3lines.svg"
                     alt="menu-icon"
