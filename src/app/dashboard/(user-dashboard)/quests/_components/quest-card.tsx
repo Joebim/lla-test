@@ -1,5 +1,8 @@
 import { motion } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
+import { useRouter } from "next/navigation";
+
+import { Button } from "~/components/common/common-button";
 
 type Quest = {
   name: string;
@@ -13,6 +16,8 @@ type QuestCardProperties = {
 };
 
 export default function QuestCard({ quest }: QuestCardProperties) {
+  const router = useRouter();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -33,6 +38,17 @@ export default function QuestCard({ quest }: QuestCardProperties) {
           <div>
             <h1 className="text-[14px] font-bold text-black">{quest.name}</h1>
             <p className="text-[14px] text-secondary-100">{`${quest.words} Words`}</p>
+          </div>
+          <div className="">
+            {
+              <Button
+                onClick={() => router.push("/dashboard/quests/1")}
+                variant="primary"
+                className="hidden w-[90px] group-hover:block"
+              >
+                View
+              </Button>
+            }
           </div>
         </div>
       </div>

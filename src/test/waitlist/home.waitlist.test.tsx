@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
-import Home from "~/app/(landing-routes)/waitlist/page";
+import Home from "~/app/(other-routes)/waitlist/page";
 
 describe("home Component", () => {
   it("renders correctly with the necessary text", () => {

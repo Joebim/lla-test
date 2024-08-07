@@ -48,13 +48,13 @@ const DifficultySelect = () => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger
-          className="flex h-full w-40 items-center gap-2 rounded-xl bg-white px-2 py-3 text-sm text-secondary-120 outline-none ring-1 ring-neutral-40"
+          className="flex h-full w-fit items-center gap-2 rounded-xl bg-white px-2 py-3 text-xs text-secondary-120 outline-none ring-1 ring-neutral-40 md:w-40 md:text-sm"
           style={{ fontFamily: "Axiforma" }}
         >
           <div className="mr-auto">{difficulty}</div>
           <ChevronDown size={16} />
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="mt-2 w-[150px] overflow-hidden rounded-xl bg-white shadow-dropdown duration-300">
+        <DropdownMenuContent className="mt-2 w-[100px] overflow-hidden rounded-xl bg-white shadow-dropdown duration-300 md:w-[150px]">
           {dropdownMenu.map((data, index) => {
             const { onChange, text, id } = data;
 
@@ -62,7 +62,7 @@ const DifficultySelect = () => {
               <DropdownMenuItem
                 onClick={() => onChange(id)}
                 key={index}
-                className="w-full cursor-pointer bg-transparent p-2 text-sm font-normal text-neutral-140 outline-none duration-300 ease-in hover:bg-neutral-30"
+                className="w-full cursor-pointer bg-transparent p-2 text-xs font-normal text-neutral-140 outline-none duration-300 ease-in hover:bg-neutral-30 md:text-sm"
               >
                 {text}
               </DropdownMenuItem>

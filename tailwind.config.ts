@@ -211,6 +211,8 @@ const config = {
         heroImageThree: "url('/images/_Hero_Image_3.png')",
         heroImageFour: "url('/images/_Hero_Image_4.png')",
         card: "url('/images/Cards.png')",
+        "nav-gradient":
+          "linear-gradient(90deg, rgba(254, 89, 0, 0.8) 0%, rgba(255, 165, 0, 0.6) 26.29%, rgba(254, 89, 0, 0.6) 62.41%, rgba(255, 165, 0, 0.8) 100%)",
       },
       keyframes: {
         "accordion-down": {
@@ -229,6 +231,11 @@ const config = {
           "0%, 100%": { transform: "scale(1)" },
           "50%": { transform: "scale(1.2)" },
         },
+        "gradient-border": {
+          "0%": { "background-position": "0% 50%" },
+          "50%": { "background-position": "100% 50%" },
+          "100%": { "background-position": "0% 50%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -237,6 +244,7 @@ const config = {
         "pulse-2": "pulse 1.5s ease-in-out 0.5s infinite",
         "pulse-3": "pulse 1.5s ease-in-out 1s infinite",
         "beat": "beat 1s ease-in-out infinite",
+        "gradient-border": "gradient-border 2s ease-in-out infinite",
       },
     },
     boxShadow: {

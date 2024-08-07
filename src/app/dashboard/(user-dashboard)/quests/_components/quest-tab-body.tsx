@@ -1,5 +1,8 @@
+"use client";
+
 import { AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useState } from "react";
 
 import gamepad from "../../../../../../public/dashboard/gamepad.svg";
 import questImg1 from "../../../../../../public/dashboard/quest-img-1.png";
@@ -39,6 +42,8 @@ const quests = [
 ];
 
 export const QuestTabBody: React.FC<tabProperties> = ({ tab }) => {
+  const [show, setShow] = useState(false);
+
   // eslint-disable-next-line unicorn/consistent-function-scoping
   const filterQuests = (tab: number) => {
     if (tab === 1) return quests;
@@ -53,14 +58,7 @@ export const QuestTabBody: React.FC<tabProperties> = ({ tab }) => {
 
   return (
     <div className="flex min-h-[400px] w-full flex-row items-center justify-center rounded-[20px] bg-white p-[0px] sm:p-[30px]">
-      {filteredQuests.length === 0 ? (
-        <div className="flex flex-col items-center gap-[10px]">
-          <Image src={gamepad} height={40} width={80} alt="Gamepad" />
-          <p className="text-[20px] text-transparent-black-35">
-            You currently have no quest in progress.
-          </p>
-        </div>
-      ) : (
+      {show ? (
         <div className="grid w-full grid-cols-4 flex-wrap gap-[20px] max-[1127px]:grid-cols-3 max-[972px]:grid-cols-2 max-[640px]:grid-cols-2">
           <AnimatePresence>
             {filteredQuests.map((quest) => (
@@ -68,6 +66,16 @@ export const QuestTabBody: React.FC<tabProperties> = ({ tab }) => {
               <QuestCard quest={quest} />
             ))}
           </AnimatePresence>
+        </div>
+      ) : (
+        <div
+          className="flex cursor-pointer flex-col items-center gap-[10px]"
+          onClick={() => setShow(true)}
+        >
+          <Image src={gamepad} height={40} width={80} alt="Gamepad" />
+          <p className="text-[20px] text-transparent-black-35">
+            You currently have no quest in progress.
+          </p>
         </div>
       )}
     </div>

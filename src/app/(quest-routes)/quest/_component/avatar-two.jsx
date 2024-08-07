@@ -1,18 +1,9 @@
-
-
-import { useAnimations, useFBX, useGLTF } from "@react-three/drei";
-import { useEffect, useRef } from "react";
+import { useGLTF } from "@react-three/drei";
+import { useRef } from "react";
 
 export function AvatarTwo(properties) {
 	const { nodes, materials } = useGLTF("/models/66b22ea0183d0249c98fbd8b.glb");
 	const groupReference = useRef();
-
-
-
-
-
-
-
 
 	return (
 		<group {...properties} ref={groupReference} dispose={null} scale={[2.2,2.2,2.2]}>

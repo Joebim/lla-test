@@ -53,4 +53,4 @@ jobs:
             pnpm install
             rm -rf .next
             pnpm run build
-            sudo systemctl restart delve-dev
+            pm2 restart staging.delve.fun

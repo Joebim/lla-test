@@ -37,12 +37,12 @@ const WelcomeBanner = () => {
   }, []);
 
   return (
-    <div className="w-full rounded-3xl bg-white p-4 ring-1 ring-neutral-40">
-      <div className="flex flex-row items-center">
+    <div className="mt-6 hidden w-full rounded-3xl bg-white p-4 ring-1 ring-neutral-40 md:mt-0 md:block">
+      <div className="flex flex-row md:items-center">
         <div className="mr-auto">
           <h1
             style={{ fontFamily: "Axiforma-Bold" }}
-            className="text-2xl capitalize leading-9 text-black"
+            className="text-xl capitalize leading-9 text-black md:text-2xl"
           >
             Welcome back, <span className="text-primary-100">{username}</span>
           </h1>

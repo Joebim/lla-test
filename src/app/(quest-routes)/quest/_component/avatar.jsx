@@ -1,5 +1,3 @@
-
-
 import { useAnimations, useFBX, useGLTF } from "@react-three/drei";
 import { useEffect, useRef } from "react";
 
@@ -8,14 +6,14 @@ export function Avatar(properties) {
 	const groupReference = useRef();
 
 	const { animations: walkingAnimations } = useFBX("/animations/walking.fbx");
+	const { animations: idleAnimations } = useFBX("/animations/idle.fbx");
 	walkingAnimations[0].name = "Walking";
-	const { actions } = useAnimations(walkingAnimations, groupReference);
-
-
+  idleAnimations[0].name = "Idle";
+	const { actions } = useAnimations(idleAnimations, groupReference);
 
 
 	useEffect(() => {
-		actions.Walking.reset().play();
+		actions.Idle.reset().play();
 	}, []);
 
 	return (
@@ -84,4 +82,4 @@ export function Avatar(properties) {
   );
 }
 
-useGLTF.preload("/model/66b22ea0183d0249c98fbd8b.glb");
+useGLTF.preload("/models/66b22ea0183d0249c98fbd8b.glb");

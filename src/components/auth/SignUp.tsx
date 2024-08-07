@@ -41,7 +41,7 @@ const SignUpPage: React.FC = () => {
 
   const onSubmit = () => {
     setSubmitSuccess(true);
-    window.location.href = "/setup-profile";
+    window.location.href = "/signup/profile";
   };
 
   return (
