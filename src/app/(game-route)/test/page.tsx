@@ -1,9 +1,9 @@
-import { Sample } from "./_components/sample";
+import My3DModel from "./_components/main";
 
 const page = () => {
   return (
     <div>
-      <Sample />
+      <My3DModel />
     </div>
   );
 };
