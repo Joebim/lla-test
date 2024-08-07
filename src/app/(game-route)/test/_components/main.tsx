@@ -1,45 +1,64 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils";
 
+interface ISize {
+  width: number;
+  height: number;
+}
+
 function My3DModel() {
   const canvasReference = useRef<HTMLDivElement>(null);
-  const [windowDimensions, setWindowDimensions] = useState({
+  const [size, setSize] = useState<ISize>({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
-  useEffect(() => {
-    console.log("Window inner width:", window.innerWidth);
-    // if (typeof window !== "undefined") {
-    // const handleResize = () => {
-    //   setWindowDimensions({
-    //     width: window.innerWidth,
-    //     height: window.innerHeight,
-    //   });
-    // };
-    // window.addEventListener("resize", handleResize);
-    // return () => window.removeEventListener("resize", handleResize);
-    // }
-  }, []);
+  const camera = useMemo(
+    () => new THREE.PerspectiveCamera(45, size.width / size.height, 1, 1000),
+    [size.height, size.width],
+  );
+
+  const renderer = useMemo(
+    () =>
+      new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+      }),
+    [],
+  );
+  renderer.setSize(size.width, size.height);
 
   useEffect(() => {
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [camera, renderer]);
+
+  useEffect(() => {
+    setSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
     const canvas = canvasReference.current;
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xa0_a0_a0);
     scene.fog = new THREE.Fog(0xa0_a0_a0, 10, 50);
-    const camera = new THREE.PerspectiveCamera(
-      45,
-      windowDimensions.width / windowDimensions.height,
-      1,
-      1000,
-    );
-    camera.position.set(2, 3, -6);
-    camera.lookAt(0, 0, 0);
+
+    camera.position.set(2, 5, 15);
+    camera.lookAt(0, 2, 0);
 
     const hemiLight = new THREE.HemisphereLight(0xff_ff_ff, 0x8d_8d_8d, 3);
     hemiLight.position.set(0, 20, 0);
@@ -64,12 +83,6 @@ function My3DModel() {
     mesh.receiveShadow = true;
     scene.add(mesh);
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-    });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(windowDimensions.width, windowDimensions.height);
     renderer.shadowMap.enabled = true;
     canvas?.append(renderer.domElement);
 
@@ -103,7 +116,7 @@ function My3DModel() {
     return () => {
       renderer.dispose();
     };
-  }, []);
+  }, [camera, renderer]);
 
   return <div ref={canvasReference} className="min-h-screen w-full"></div>;
 }
