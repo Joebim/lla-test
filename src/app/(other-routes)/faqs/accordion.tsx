@@ -3,7 +3,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../../../../components/ui/accordion";
+} from "@radix-ui/react-accordion";
+
 import { faqData } from "./constants";
 
 export function FaqAccordions() {
