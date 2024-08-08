@@ -27,7 +27,7 @@ function My3DModel() {
     () =>
       new THREE.WebGLRenderer({
         antialias: true,
-        alpha: true,
+        alpha: true, // Enables transparency
       }),
     [],
   );
@@ -54,10 +54,9 @@ function My3DModel() {
     });
     const canvas = canvasReference.current;
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xa0_a0_a0);
-    scene.fog = new THREE.Fog(0xa0_a0_a0, 10, 50);
 
-    camera.position.set(2, 5, 15);
+    // Adjust camera position to be slightly closer
+    camera.position.set(2, 5, 12);
     camera.lookAt(0, 2, 0);
 
     const hemiLight = new THREE.HemisphereLight(0xff_ff_ff, 0x8d_8d_8d, 3);
@@ -69,19 +68,11 @@ function My3DModel() {
     directionLight.castShadow = true;
     directionLight.shadow.camera.top = 2;
     directionLight.shadow.camera.bottom = -2;
-    directionLight.shadow.camera.left = -2;
+    directionLight.shadow.camera.left = -8;
     directionLight.shadow.camera.right = 2;
     directionLight.shadow.camera.near = 0.1;
     directionLight.shadow.camera.far = 40;
     scene.add(directionLight);
-
-    const mesh = new THREE.Mesh(
-      new THREE.PlaneGeometry(100, 100),
-      new THREE.MeshPhongMaterial({ color: 0xcb_cb_cb, depthWrite: false }),
-    );
-    mesh.rotation.x = -Math.PI / 2;
-    mesh.receiveShadow = true;
-    scene.add(mesh);
 
     renderer.shadowMap.enabled = true;
     canvas?.append(renderer.domElement);
@@ -93,8 +84,13 @@ function My3DModel() {
       const model1 = SkeletonUtils.clone(model);
       const model2 = SkeletonUtils.clone(model);
 
-      model1.position.x = -2;
-      model2.position.x = 0;
+      // Increase scale of the avatars
+      model1.scale.set(1.5, 2, 1.5);
+      model2.scale.set(1.5, 2, 1.5);
+
+      // Adjust the positions of the avatars
+      model1.position.x = -3; // Move more to the left
+      model2.position.x = 3; // Move more to the right
 
       scene.add(model1, model2);
     });
@@ -103,7 +99,9 @@ function My3DModel() {
     controls.enablePan = false;
     controls.enableZoom = false;
     controls.enableRotate = false;
-    controls.target.set(0, 1.4, 0);
+
+    // Adjust the target to bring avatars lower
+    controls.target.set(0, 1.5, 0);
     controls.update();
 
     function animate() {
