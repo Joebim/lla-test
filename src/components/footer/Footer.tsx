@@ -3,7 +3,7 @@ import LogoFooter from "../light-navbar/logo-component-footer";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-secondary-100 py-12 text-white">
+    <footer className="mx-auto max-w-[1734px] bg-secondary-100 py-12 text-white">
       <div className="w-full">
         <div className="flex w-full flex-wrap justify-between px-[5%] pb-16">
           <div className="mb-6 w-full md:mb-0 md:w-[30%]">

@@ -1,13 +1,20 @@
-import email from "../../../../public/images/aboutAsset/email.svg";
-import note from "../../../../public/images/aboutAsset/note.svg";
-import phone from "../../../../public/images/aboutAsset/pone.svg";
-import Contact from "./Contact";
+"use client";
+
+import { ChangeEvent, useState } from "react";
+
 import ContactInput from "./ContactInput";
 import Map from "./Map";
 
 const ThirdHero = () => {
+  const [isUserTyping, setIsUserTyping] = useState<boolean>(false);
+
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setIsUserTyping(value.length > 0);
+  };
+
   return (
-    <article className="w-full bg-secondary-120 px-[11px] py-[17px] lg:px-[40px] lg:py-[80px]">
+    <article className="mx-auto w-full max-w-[1734px] bg-secondary-120 px-[11px] py-[17px] lg:px-[40px] lg:py-[80px]">
       <div className="border-[8px] border-solid border-transparent-white-15 bg-white">
         <div className="mx-auto flex w-full max-w-[1392px] flex-col gap-[23px] border-[16px] border-solid border-[#FFFFFFCC] p-[24px] lg:gap-[34px] lg:p-[48px]">
           <div className="text-center font-axiformaSemiBold font-semibold text-secondary-120">
@@ -21,9 +28,9 @@ const ThirdHero = () => {
           </div>
 
           {/* Input */}
-          <div className="w-full lg:flex lg:gap-[81px]">
+          <div className="flex w-full max-w-[1310px] gap-[80px]">
             {/* form */}
-            <div className="flex w-full flex-col gap-[56px] lg:w-[557px]">
+            <div className="w-full shrink-0 lg:w-[calc(50%-40px)]">
               <form className="flex flex-col gap-[45px]">
                 <div className="flex flex-col gap-[24px]">
                   <ContactInput
@@ -46,39 +53,33 @@ const ThirdHero = () => {
                     >
                       Your Message
                     </label>
-                    <textarea
-                      name="message"
-                      id="message"
-                      cols={30}
-                      rows={5}
-                      required
-                      className="w-full resize-none rounded-[10px] border border-solid border-neutral-40 bg-neutral-20 px-[12px] py-[10px] font-axiforma text-[18px] capitalize leading-[28px] text-neutral-80 outline-none"
-                    ></textarea>
+                    <div className="flex h-[78px] flex-col rounded-[10px] border border-solid border-neutral-40 bg-neutral-20 px-[12px] py-[10px] font-axiforma text-[18px] capitalize leading-[28px] text-secondary-70">
+                      <textarea
+                        name="message"
+                        id="message"
+                        onChange={handleChange}
+                        required
+                        placeholder="Let us know how we can help you"
+                        className={`w-full resize-none bg-transparent text-[14px] leading-[20px] outline-none ${isUserTyping ? "h-full" : ""}`}
+                      ></textarea>
+                      {!isUserTyping && (
+                        <p className="text-end text-[16px] leading-[24px]">
+                          0/15 words
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <button
                   type="submit"
-                  className="w-full rounded-[59px] border-b border-solid border-primary-120 bg-primary-100 px-[24px] py-[10px] font-axiformaBold text-[16px] font-bold leading-[24px] text-white md:text-[20px] md:leading-[30px] lg:px-[32px]"
+                  className="flex min-h-[48px] w-full items-center justify-center rounded-[59px] border-b border-solid border-primary-120 bg-primary-100 px-[24px] py-[10px] font-axiformaBold text-[16px] font-bold leading-[24px] text-white md:text-[20px] md:leading-[30px] lg:px-[32px]"
                 >
                   SEND
                 </button>
               </form>
               {/* contact type */}
-              <div className="flex flex-wrap gap-[44px] lg:flex-nowrap">
-                <Contact
-                  image={phone}
-                  type="phone"
-                  contactInfo="+244 906 7059 501"
-                />
-                <Contact image={note} type="fax" contactInfo="01 2345678" />
-                <Contact
-                  image={email}
-                  type="email"
-                  contactInfo=" info@delve.com"
-                />
-              </div>
             </div>
-            {/* MAP */}
+            {/* Map */}
             <Map />
           </div>
         </div>
@@ -86,4 +87,5 @@ const ThirdHero = () => {
     </article>
   );
 };
+
 export default ThirdHero;
