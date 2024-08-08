@@ -8,7 +8,7 @@ describe("heroSection", () => {
     render(<HeroSection />);
 
     // Check if the heading is rendered
-    const heading = screen.getByText(/How It Works/i);
+    const heading = screen.getByText(/how it works/i);
     expect(heading).toBeInTheDocument();
 
     // Check if the images are rendered

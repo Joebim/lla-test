@@ -7,7 +7,7 @@ const LogoFooter = () => {
     <>
       <TransitionLink
         href="/"
-        className="hidden no-underline outline-none md:block p-0"
+        className="hidden p-0 no-underline outline-none md:block"
       >
         <Image
           src="/navbar/delve-darknav_logo.svg"
@@ -19,7 +19,7 @@ const LogoFooter = () => {
 
       <TransitionLink
         href="/"
-        className="block no-underline outline-none md:hidden px-0 "
+        className="block px-0 no-underline outline-none md:hidden"
       >
         <Image
           src="/navbar/delve-darknav_logo.svg"

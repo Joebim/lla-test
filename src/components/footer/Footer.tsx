@@ -1,7 +1,5 @@
-import Link from "next/link";
 import CustomButton from "../common/common-button/common-button";
 import LogoFooter from "../light-navbar/logo-component-footer";
-import Image from "next/image";
 
 const Footer: React.FC = () => {
   return (
