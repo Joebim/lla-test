@@ -1,13 +1,13 @@
 import LightNav from "~/components/light-navbar/LightNav";
 
-const FirstHero = () => {
+const SecondHero = () => {
   return (
     <header className="flex w-full gap-[10px] bg-secondary-120 p-[12px] lg:p-[40px]">
       <div className="flex w-full flex-col gap-[48px] border-transparent-white-15 bg-white py-[12px] md:pb-[48px] lg:gap-[64px] lg:border-[8px] lg:border-solid">
         <LightNav className="relative mx-auto w-full max-w-[1654px] bg-white" />
         <div className="">
           <h1 className="text-[32px] font-bold leading-[48px] tracking-[0.06em] flex justify-center">
-          Useful Spanish Phrases To Learn
+          Benefits of AI In Language Learning
           </h1>
         </div>
         <div className="flex justify-around">
@@ -16,7 +16,7 @@ const FirstHero = () => {
           <h6>6 min read</h6>
         </div>
         <div className="flex justify-center">
-          <img src="/blog/blog-img-1.png"
+          <img src="/blog/blog-img-2.png"
           width={800}
           height={800}
            alt="" />
@@ -78,4 +78,4 @@ const FirstHero = () => {
     </header>
   );
 };
-export default FirstHero;
+export default SecondHero;

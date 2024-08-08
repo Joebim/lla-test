@@ -1,6 +1,6 @@
 import LightNav from "~/components/light-navbar/LightNav";
 
-const FirstHero = () => {
+const ThirdHero = () => {
   return (
     <header className="flex w-full gap-[10px] bg-secondary-120 p-[12px] lg:p-[40px]">
       <div className="flex w-full flex-col gap-[48px] border-transparent-white-15 bg-white py-[12px] md:pb-[48px] lg:gap-[64px] lg:border-[8px] lg:border-solid">
@@ -16,7 +16,7 @@ const FirstHero = () => {
           <h6>6 min read</h6>
         </div>
         <div className="flex justify-center">
-          <img src="/blog/blog-img-1.png"
+          <img src="/blog/blog-img-3.png"
           width={800}
           height={800}
            alt="" />
@@ -78,4 +78,4 @@ const FirstHero = () => {
     </header>
   );
 };
-export default FirstHero;
+export default ThirdHero;
