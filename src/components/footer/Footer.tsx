@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="text-white">
+                    <a href="/how-it-works" className="text-white">
                       How It Works
                     </a>
                   </li>

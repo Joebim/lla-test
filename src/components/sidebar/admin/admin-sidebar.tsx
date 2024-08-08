@@ -39,8 +39,8 @@ const AdminSidebar = () => {
   return (
     <aside
       className={clsx(
-        `relative flex flex-col border-r py-8 transition-all`,
-        isCollapsed ? "w-20 px-2" : "w-72 px-6",
+        `relative hidden flex-col border-r py-8 transition-all sm:flex`,
+        isCollapsed ? "w-20 px-2" : "w-60 px-6",
       )}
     >
       <CustomButton

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
-import AdminNav from "~/components/AdminNav/AdminNav";
 import LoggedInFooter from "~/components/footer/LoggedInFooter";
+import UserNav from "~/components/UserNav/UserNav";
 
 export default function DashboardLayout({
   children,
@@ -9,9 +9,9 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid min-h-screen w-full grid-rows-[auto_1fr]">
-      <AdminNav />
-      <div className="relative w-full bg-white max-lg:overflow-hidden">
+    <div className="flex min-h-screen flex-col">
+      <UserNav />
+      <div className="w-full flex-grow overflow-scroll bg-white">
         <Suspense>{children}</Suspense>
       </div>
       <LoggedInFooter />

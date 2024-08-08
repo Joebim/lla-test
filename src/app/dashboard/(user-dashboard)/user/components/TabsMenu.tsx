@@ -39,7 +39,7 @@ const TabsMenu = ({ tabMenuData }: { tabMenuData: TabMenuProperties[] }) => {
               key={index}
               onClick={() => setCurrentTabOnClick(id)}
               style={{ fontFamily: "Axiforma" }}
-              className={`rounded-full px-3 py-2 text-xs outline-none duration-300 ease-in focus:bg-neutral-30 focus:text-secondary-120 focus:shadow-inner-button active:bg-neutral-30 active:text-secondary-120 md:px-7 md:py-2.5 md:text-sm ${currentTab === value ? "bg-neutral-30 text-secondary-120 shadow-inner-button" : "bg-transparent text-secondary-60"}`}
+              className={`whitespace-nowrap rounded-full px-2.5 py-2 text-xs outline-none duration-300 ease-in focus:bg-neutral-30 focus:text-secondary-120 focus:shadow-inner-button active:bg-neutral-30 active:text-secondary-120 md:px-7 md:py-2.5 md:text-sm ${currentTab === value ? "bg-neutral-30 text-secondary-120 shadow-inner-button" : "bg-transparent text-secondary-60"}`}
               value={value}
             >
               {title}

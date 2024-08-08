@@ -9,7 +9,7 @@ export default function QuestTab() {
   const [tab, setTab] = useState(1);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       <QuestTabHeader tab={tab} setTab={setTab} />
       <QuestTabBody tab={tab} />
     </div>

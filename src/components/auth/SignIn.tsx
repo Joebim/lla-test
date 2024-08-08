@@ -161,6 +161,12 @@ const SignInPage: React.FC = () => {
             </ul>
           )}
         </div>
+        <Link
+          href={"/forgot-password"}
+          className="my-3 flex justify-end font-axiforma font-[500] text-primary-100"
+        >
+          Forgot Password?
+        </Link>
         <button
           type="submit"
           className="h-[56px] w-full rounded-[59px] bg-primary-100 px-4 py-2 text-[#FFFF] hover:bg-primary-80 focus:outline-none focus:ring-2 focus:ring-primary-100 focus:ring-opacity-50"

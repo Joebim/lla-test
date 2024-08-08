@@ -22,11 +22,11 @@ const NativeLanguage = () => {
   };
 
   return (
-    <div className="m-6">
+    <div className="">
       <div className="rounded-t-[20px] bg-primary-10 px-5 py-8 font-axiforma text-[18px] font-[500] text-black sm:text-2xl">
         I speak...
       </div>
-      <div className="h-auto justify-start gap-2 rounded-b-[20px] p-6 font-axiforma">
+      <div className="h-auto justify-start gap-2 rounded-b-[20px] bg-white p-6 font-axiforma">
         <div className="flex items-start gap-2">
           {nativeLanguageFlag === "" ? (
             <div className="ml-0"></div>
@@ -85,14 +85,6 @@ const NativeLanguage = () => {
               )}
             </div>
           </div>
-        </div>
-        <div className="mt-6 flex items-center gap-4 sm:gap-6 md:gap-8">
-          <button className="rounded-[59px] border border-secondary-30 bg-neutral-10 px-3 py-2 text-xs text-secondary-30 sm:px-8 sm:py-4 sm:text-sm">
-            Discard Changes
-          </button>
-          <button className="rounded-[59px] border border-primary-60 bg-primary-40 px-3 py-2 text-xs text-transparent-white-50 sm:px-8 sm:py-4 sm:text-sm">
-            Save Changes
-          </button>
         </div>
       </div>
     </div>

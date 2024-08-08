@@ -36,7 +36,7 @@ const UserNav = () => {
           {/* Middle Content */}
           <div className="flex items-center space-x-8">
             <a
-              href="#"
+              href="/dashboard/quests"
               onClick={() => handleLinkClick("quests")}
               className={`flex gap-2 text-sm font-medium ${
                 activeLink === "quests"
@@ -48,7 +48,7 @@ const UserNav = () => {
               Quests
             </a>
             <a
-              href="#"
+              href="/dashboard/progress"
               onClick={() => handleLinkClick("progress")}
               className={`flex gap-2 text-sm font-medium ${
                 activeLink === "progress"

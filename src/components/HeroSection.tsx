@@ -1,7 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
+import { useHeroInView } from "~/hooks/util-hooks/use-hero-inview";
+import useInView from "~/hooks/util-hooks/useInView";
 
 const backgrounds = [
   {
@@ -25,8 +29,21 @@ const backgrounds = [
 const HeroSection: React.FC = () => {
   const [activeBgIndex, setActiveBgIndex] = useState<number>(0);
   const videoReference = useRef<HTMLVideoElement>(null);
-
   const activeBg = backgrounds[activeBgIndex];
+  const heroReference = useRef<HTMLHeadingElement>(null);
+  const { updateHeroInView } = useHeroInView();
+  const isHeroInView = useInView({
+    ref: heroReference,
+    once: false,
+  });
+
+  useEffect(() => {
+    if (isHeroInView) {
+      updateHeroInView(true);
+    } else {
+      updateHeroInView(false);
+    }
+  }, [isHeroInView]);
 
   return (
     <section className="mx-auto flex h-screen w-full flex-col items-center justify-center p-4">
@@ -43,6 +60,7 @@ const HeroSection: React.FC = () => {
         <div className="absolute left-0 right-0 top-0 h-[60px] bg-gradient-to-b from-secondary-100 via-transparent-black-10 to-transparent opacity-85"></div>
 
         <h1
+          ref={heroReference}
           className={`relative z-10 w-[370px] max-w-[400px] text-center font-axiformaMedium text-4xl font-semibold leading-tight tracking-wide text-white sm:w-full sm:max-w-[630px] sm:text-4xl sm:leading-snug md:text-5xl md:leading-normal lg:text-[62px] lg:leading-[90px]`}
         >
           Learn Languages The Fun Way

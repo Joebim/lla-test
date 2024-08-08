@@ -38,9 +38,9 @@ export default function RootLayout({
             <Progress_bar />
             {children}
             <Toaster />
-            <GotoTop />
           </ToastProvider>
         </div>
+        <GotoTop />
       </body>
     </html>
   );

@@ -60,11 +60,11 @@ const LearningLanguage = () => {
   );
 
   return (
-    <div className="m-6">
+    <div className="mb-10">
       <div className="rounded-t-[20px] bg-primary-10 px-5 py-8 font-axiforma text-[18px] font-[500] text-black sm:text-2xl">
         I want to learn...
       </div>
-      <div className="h-auto justify-start gap-2 rounded-b-[20px] p-6 font-axiforma">
+      <div className="h-auto justify-start gap-2 rounded-b-[20px] bg-white p-6 font-axiforma">
         {selectedLanguages.length === 0 ? (
           <div className="new-lang flex items-start gap-2">
             <div className="mr-2">
@@ -204,14 +204,14 @@ const LearningLanguage = () => {
         </button>
         <div className="mt-6 flex items-center gap-4 sm:gap-6 md:gap-8">
           <button
-            className={`rounded-[59px] border border-secondary-30 bg-neutral-10 px-3 py-2 font-axiforma text-sm font-semibold ${selectedLanguages.length === 0 ? "text-secondary-30" : "text-secondary-120"} sm:px-6 sm:py-4 sm:text-lg`}
+            className={`rounded-[59px] border border-secondary-30 bg-neutral-10 px-4 py-2 font-axiforma text-sm font-semibold ${selectedLanguages.length === 0 ? "text-secondary-30" : "text-secondary-120"} sm:text-lg`}
             disabled={selectedLanguages.length === 0}
             onClick={() => setSelectedLanguages([])}
           >
             Discard Changes
           </button>
           <button
-            className={`rounded-[59px] border border-primary-60 bg-primary-100 px-3 py-2 font-axiforma text-sm font-semibold ${selectedLanguages.length === 0 ? "text-transparent-white-50" : "text-white"} sm:px-6 sm:py-4 sm:text-lg`}
+            className={`rounded-[59px] border border-secondary-30 bg-neutral-10 px-4 py-2 font-axiforma text-sm font-semibold ${selectedLanguages.length === 0 ? "text-secondary-30" : "text-secondary-120"} sm:text-lg`}
             disabled={selectedLanguages.length === 0}
           >
             Save Changes

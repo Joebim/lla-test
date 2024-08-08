@@ -1,5 +1,4 @@
 import DarkNav from "~/components/DarkNav/DarkNav";
-import GotoTop from "~/components/miscellaneous/goto-top";
 
 export default function LandingLayout({
   children,
@@ -9,8 +8,7 @@ export default function LandingLayout({
   return (
     <div className="flex min-h-screen w-full flex-col justify-between">
       <DarkNav />
-      <div className="flex-1">{children}</div>
-      <GotoTop />
+      <div className="flex-1 bg-neutral-10">{children}</div>
     </div>
   );
 }
