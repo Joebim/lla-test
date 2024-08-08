@@ -42,6 +42,11 @@ const blogData: BlogCard[] = [
 export default function Blog() {
   return (
     <div>
+      <header className="pb-[32px] pt-[64px] lg:pb-[64px]">
+        <h1 className="text-center text-[32px] font-bold lg:text-[64px]">
+          Blog
+        </h1>
+      </header>
       <div className="grid gap-[40px] px-[15px] py-[40px] sm:grid-cols-2 lg:grid-cols-3 lg:px-[80px] lg:py-[80px]">
         {blogData.map((data, index) => (
           <Link href={`/articles/${data.slug}`} key={index} className="block">
