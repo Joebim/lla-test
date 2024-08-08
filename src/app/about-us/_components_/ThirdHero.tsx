@@ -8,8 +8,8 @@ import Map from "./Map";
 const ThirdHero = () => {
   const [isUserTyping, setIsUserTyping] = useState<boolean>(false);
 
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
+  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = event.target.value;
     setIsUserTyping(value.length > 0);
   };
 
