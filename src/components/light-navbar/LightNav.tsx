@@ -31,7 +31,7 @@ const LightNav: React.FC<LightNavProperties> = ({ className }) => {
   return (
     <>
       <nav
-        className={`${className || "fixed left-0 right-0 top-0 z-50 mx-auto w-screen px-0"}`}
+        className={`${className || " left-0 right-0 top-0 z-50 mx-auto w-screen px-0"}`}
       >
         {isSignedIn ? (
           <div
@@ -118,7 +118,7 @@ const LightNav: React.FC<LightNavProperties> = ({ className }) => {
                     className="flex items-center gap-4 text-secondary-120"
                   >
                     <div className="h-2 w-2 rounded-full bg-primary-100"></div>
-                    How it works
+                    How It Works
                     <div className="h-2 w-2 rounded-full bg-primary-100"></div>
                   </Link>
                 </DropdownMenuTrigger>

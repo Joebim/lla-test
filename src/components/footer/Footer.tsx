@@ -1,5 +1,7 @@
+import Link from "next/link";
 import CustomButton from "../common/common-button/common-button";
 import LogoFooter from "../light-navbar/logo-component-footer";
+import Image from "next/image";
 
 const Footer: React.FC = () => {
   return (
@@ -8,7 +10,7 @@ const Footer: React.FC = () => {
         <div className="flex w-full flex-wrap justify-between px-[5%] pb-16">
           <div className="mb-6 w-full md:mb-0 md:w-[30%]">
             <LogoFooter />
-            <p className="ml-4 mt-3">Your go-to language learning app.</p>
+            <p className="ml-0 mt-3">Your go-to language learning app.</p>
           </div>
           <div className="flex justify-between gap-5 md:w-[60%]">
             <div className="mb-6 flex w-full justify-end md:mb-0 md:w-1/3">

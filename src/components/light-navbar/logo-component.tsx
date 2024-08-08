@@ -1,11 +1,12 @@
 import Image from "next/image";
 
 import { TransitionLink } from "../miscellaneous/transition-link";
+import Link from "next/link";
 
 const Logo = () => {
   return (
     <>
-      <TransitionLink
+      <Link
         href="/"
         className="hidden no-underline outline-none md:block"
       >
@@ -15,7 +16,7 @@ const Logo = () => {
           height={32}
           alt="desktop-logo"
         />
-      </TransitionLink>
+      </Link>
 
       <TransitionLink
         href="/"

@@ -29,7 +29,7 @@ export default function Blog() {
   return (
     <div>
       <header className="pb-[32px] pt-[64px] lg:pb-[64px]">
-        <h1 className="pt-10 text-center text-[32px] font-bold lg:text-[64px]">
+        <h1 className="text-center text-[32px] font-bold lg:text-[64px] ">
           Blog
         </h1>
       </header>
