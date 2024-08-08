@@ -226,7 +226,9 @@ const UserDetails = () => {
         </div>
       </div>
       <section className="block items-center gap-[20px] lg:flex">
-        <UserDetailsCard className="w-[100%] lg:flex-1" />
+       <div>
+       <UserDetailsCard className="lg:flex-1" />
+       </div>
         <div className="mt-[20px] grid grid-cols-1 gap-[10px] sm:grid-cols-2 lg:mt-0 lg:flex-1">
           {metricsSchema.map((item, index) => (
             <UserMetricsCard

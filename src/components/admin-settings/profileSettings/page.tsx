@@ -20,6 +20,11 @@ const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
 };
 
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[\w.-]+@[\d.A-Za-z-]+\.[A-Za-z]{2,}$/;
+  return emailRegex.test(email);
+};
+
 const AdminProfile = () => {
   //states
   const { image, name, email, gender, updateProfile } = useProfileStore();
@@ -31,6 +36,7 @@ const AdminProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setIsClient(true);
@@ -75,12 +81,17 @@ const AdminProfile = () => {
 
   //handles save button click event
   const handleSave = () => {
+    if (!validateEmail(temporaryEmail)) {
+      setError("Please enter a valid email address");
+      return;
+    }
     updateProfile({
       image: temporaryImage,
       name: temporaryName,
       email: temporaryEmail,
       gender: temporaryGender,
     });
+    setError("");
     setIsEditing(false);
     setIsSuccessModalOpen(true);
   };
@@ -95,6 +106,9 @@ const AdminProfile = () => {
   //handles update profile button click
   const handleUpdateProfileClick = () => {
     setIsEditing(!isEditing);
+    if (error) {
+      setError("");
+    }
   };
 
   if (!isClient) {
@@ -236,22 +250,27 @@ const AdminProfile = () => {
                             setTemporaryEmail(event.target.value)
                           }
                         />
+                        {error && (
+                          <small className="text-critical-80">{error}</small>
+                        )}
                       </div>
                     </div>
                     <div className="block items-center justify-between sm:flex">
                       <label htmlFor="gender" className="font-semibold">
                         Gender
                       </label>
-                      <div>
-                        <CustomInput
-                          name="gender"
-                          inputType="text"
+                      <div className="mr-auto flex w-full flex-col items-end">
+                        <select
+                          className="w-full rounded-[5px] border border-secondary-30 py-[8px] outline-none"
                           value={temporaryGender}
-                          className="w-[100%]"
                           onChange={(event) =>
-                            setTemporaryGender(event.target.value)
+                            updateProfile({ gender: event.target.value })
                           }
-                        />
+                        >
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Other">Other</option>
+                        </select>
                       </div>
                     </div>
                   </section>
