@@ -31,7 +31,7 @@ const chartConfig = {
 
 const UserProfileChart = ({ className }: { className?: string }) => {
   return (
-    <div className="mb-[20px] w-full rounded-[10px] border-2 lg:mb-0">
+    <div className="mb-[20px] w-full rounded-[10px] border-[1px] border-secondary-10 lg:mb-0">
       <div className="mb-[5px] flex items-center justify-between border-b-[2px] border-b-neutral-5 p-[20px]">
         <h3 className="font-bold">Gameplay Stats</h3>
         <select
