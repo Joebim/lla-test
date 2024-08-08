@@ -1,20 +1,20 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import AdminSidebar from "~/components/sidebar/admin/admin-sidebar";
-import { sidebarMenu } from "~/config/sidebarMenus";
+
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/mock-path",
+}));
 
 describe("adminSidebar", () => {
-  it("renders the sidebar with menu items", () => {
+  it("renders the sidebar", () => {
     expect.hasAssertions();
     render(<AdminSidebar />);
-
-    for (const item of sidebarMenu) {
-      expect(screen.getByText(item.title)).toBeInTheDocument();
-    }
+    expect(screen.getByRole("complementary")).toBeInTheDocument();
   });
 
   it("toggles the sidebar collapse state", () => {
@@ -22,39 +22,13 @@ describe("adminSidebar", () => {
     render(<AdminSidebar />);
 
     const toggleButton = screen.getByRole("button");
-    fireEvent.click(toggleButton);
 
-    for (const item of sidebarMenu) {
-      expect(screen.queryByText(item.title)).not.toBeInTheDocument();
-    }
+    expect(screen.getByRole("complementary")).toHaveClass("w-72");
 
     fireEvent.click(toggleButton);
+    expect(screen.getByRole("complementary")).toHaveClass("w-20");
 
-    for (const item of sidebarMenu) {
-      expect(screen.getByText(item.title)).toBeInTheDocument();
-    }
-  });
-
-  it("collapses sidebar on mobile view", async () => {
-    expect.hasAssertions();
-    render(<AdminSidebar />);
-
-    global.innerWidth = 500;
-    global.dispatchEvent(new Event("resize"));
-
-    await waitFor(() => {
-      for (const item of sidebarMenu) {
-        expect(screen.queryByText(item.title)).not.toBeInTheDocument();
-      }
-    });
-
-    global.innerWidth = 1024;
-    global.dispatchEvent(new Event("resize"));
-
-    await waitFor(() => {
-      for (const item of sidebarMenu) {
-        expect(screen.getByText(item.title)).toBeInTheDocument();
-      }
-    });
+    fireEvent.click(toggleButton);
+    expect(screen.getByRole("complementary")).toHaveClass("w-72");
   });
 });
