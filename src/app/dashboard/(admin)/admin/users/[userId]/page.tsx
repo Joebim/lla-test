@@ -25,25 +25,25 @@ const UserDetails = () => {
       title: "Languages of Interest",
       stat: 4,
       desc: "plays than usual",
-      icon: <Languages />,
+      icon: <Languages className="w-[20px]" />,
     },
     {
       title: "Total Game Play",
       stat: 128,
       desc: "plays than usual",
-      icon: <Gamepad />,
+      icon: <Gamepad className="w-[20px]" />,
     },
     {
-      title: "overall Achievements",
+      title: "Overall Achievements",
       stat: 10,
       desc: "plays than usual",
-      icon: <Award />,
+      icon: <Award className="w-[20px]" />,
     },
     {
       title: "Followers",
       stat: 121,
       desc: "plays than usual",
-      icon: <Users />,
+      icon: <Users className="w-[20px]" />,
     },
   ];
 
@@ -73,7 +73,7 @@ const UserDetails = () => {
       {isModalOpen && (
         <DashboardModal
           onClose={handleCloseModal}
-          className="w-[480px] font-axiforma"
+          className="w-[450px] font-axiforma"
         >
           <div>
             <h3 className="mb-[15px] text-center text-[20px] font-bold">
@@ -105,7 +105,7 @@ const UserDetails = () => {
       {isReactivateModalOpen && (
         <DashboardModal
           onClose={handleCloseModal}
-          className="w-[480px] font-axiforma"
+          className="w-[450px] font-axiforma"
         >
           <div>
             <h3 className="mb-[15px] text-center text-[20px] font-bold">
@@ -200,10 +200,12 @@ const UserDetails = () => {
       )}
       <div className="mb-[25px] mt-[25px] flex items-center justify-between md:mt-0">
         <div>
-          <h3 className="font-lilita text-[17px] font-semibold text-secondary-100">
-            Deactivate User
+          <h3 className="font-axiforma text-[17px] font-semibold text-secondary-100">
+            User Profile
           </h3>
-          <p className="text-[14px] text-secondary-80">sometext goes here</p>
+          <p className="text-[14px] text-secondary-80">
+            Management / user Profile
+          </p>
         </div>
         <div>
           {isDeactivated ? (
@@ -217,7 +219,7 @@ const UserDetails = () => {
           ) : (
             <CustomButton
               variant="default"
-              className="bg-critical-90 px-[30px] text-white"
+              className="bg-critical-90 px-[30px] text-white md:w-[10rem]"
               onClick={() => setsModalOpen(true)}
             >
               Deactivate User
@@ -226,7 +228,9 @@ const UserDetails = () => {
         </div>
       </div>
       <section className="block items-center gap-[20px] lg:flex">
-        <UserDetailsCard className="w-[100%] lg:flex-1" />
+        <div className="lg:flex-1">
+          <UserDetailsCard className="w-full" />
+        </div>
         <div className="mt-[20px] grid grid-cols-1 gap-[10px] sm:grid-cols-2 lg:mt-0 lg:flex-1">
           {metricsSchema.map((item, index) => (
             <UserMetricsCard

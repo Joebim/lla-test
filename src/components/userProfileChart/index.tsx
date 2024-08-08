@@ -25,8 +25,16 @@ const chartConfig = {
 const UserProfileChart = ({ className }: { className?: string }) => {
   return (
     <div className="mb-[20px] w-full rounded-[10px] border-2 p-[20px] lg:mb-0">
-      <div>
+      <div className="flex items-center justify-between pb-[7px]">
         <h3 className="font-bold">Gameplay Stats</h3>
+        <select
+          name=""
+          id=""
+          className="rounded-[5px] border-[1px] border-secondary-20 p-[6px] text-[13px] text-secondary-70 outline-none"
+        >
+          <option value="">Last 7 days</option>
+          <option value="">Last 30 days</option>
+        </select>
       </div>
       <ChartContainer className={clsx(className)} config={chartConfig}>
         <BarChart
