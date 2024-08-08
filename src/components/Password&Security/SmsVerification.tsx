@@ -14,12 +14,14 @@ const SMSVerificationModal: React.FC<SMSVerificationModalProperties> = ({
   const [code, setCode] = useState<string>("");
   const [isVerified, setIsVerified] = useState<boolean>(false);
 
-  if (!isOpen) return null;
+  if (!isOpen) return; 
 
   const handleInputChange = (index: number, value: string) => {
-    const newCode = code.split("");
-    newCode[index] = value;
-    setCode(newCode.join(""));
+    setCode((previousCode) => {
+      const codeArray = [...previousCode]; // Use spread operator
+      codeArray[index] = value;
+      return codeArray.join("");
+    });
   };
 
   const handleSubmit = () => {
@@ -43,30 +45,38 @@ const SMSVerificationModal: React.FC<SMSVerificationModalProperties> = ({
       aria-modal="true"
     >
       <div
-        className="w-full flex flex-col items-center max-w-md bg-white px-8 py-8 rounded-lg"
+        className="flex w-full max-w-md flex-col items-center rounded-lg bg-white px-8 py-8"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 id="sms-verification-title" className="text-xl font-lilita">SMS Verification</h2>
+          <h2 id="sms-verification-title" className="font-lilita text-xl">
+            SMS Verification
+          </h2>
         </div>
-        {!isVerified ? (
+        {isVerified ? (
+          <div className="text-center text-green-500">
+            <p>Success! Your code has been verified.</p>
+          </div>
+        ) : (
           <>
             <div className="mb-4">
               <label
                 htmlFor="sms-code"
-                className="block text-sm font-medium text-center text-gray-400"
+                className="block text-center text-sm font-medium text-gray-400"
               >
                 Enter the code sent to your phone
               </label>
-              <div className="flex mt-2">
+              <div className="mt-2 flex">
                 {Array.from({ length: 6 }).map((_, index) => (
                   <input
                     key={index}
                     type="text"
                     maxLength={1}
                     value={code[index] || ""}
-                    onChange={(e) => handleInputChange(index, e.target.value)}
-                    className="w-12 h-12 border border-gray-300 rounded-md outline-none text-center text-lg font-semibold"
+                    onChange={(event) =>
+                      handleInputChange(index, event.target.value)
+                    }
+                    className="h-12 w-12 rounded-md border border-gray-300 text-center text-lg font-semibold outline-none"
                     placeholder="•"
                     autoFocus={index === 0 && code === ""}
                   />
@@ -80,13 +90,12 @@ const SMSVerificationModal: React.FC<SMSVerificationModalProperties> = ({
               Verify
             </button>
           </>
-        ) : (
-          <div className="text-center text-green-500">
-            <p>Success! Your code has been verified.</p>
-          </div>
         )}
-        <div className="text-xs pt-20">
-          Need Help? <a href="#" className="text-blue-300">contact support</a>
+        <div className="pt-20 text-xs">
+          Need Help?{" "}
+          <a href="#" className="text-blue-300">
+            contact support
+          </a>
         </div>
       </div>
     </div>
