@@ -24,7 +24,8 @@ const LanguageSelectionDiv: React.FC = () => {
   const dropdownReference = useRef<HTMLDivElement | null>(null);
   const containerReference = useRef<HTMLDivElement | null>(null);
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (event: React.MouseEvent) => {
+    event.stopPropagation();
     setIsOpen((previousState) => !previousState);
   };
 
