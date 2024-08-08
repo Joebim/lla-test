@@ -7,19 +7,22 @@ interface PasswordResetModalProperties {
 }
 
 const validatePassword = (password: string) => {
-  const minLength = /.{8,}/;
-  const upperCase = /[A-Z]/;
-  const lowerCase = /[a-z]/;
-  const number = /\d/;
-  const specialChar = /[!#$%&*@^]/;
+  const criteria = {
+    minLength: password.length >= 8,
+    upperCase: /[A-Z]/.test(password),
+    lowerCase: /[a-z]/.test(password),
+    number: /\d/.test(password),
+    specialChar: /[!#$%&*@^]/.test(password),
+  };
 
-  return (
-    minLength.test(password) &&
-    upperCase.test(password) &&
-    lowerCase.test(password) &&
-    number.test(password) &&
-    specialChar.test(password)
-  );
+  const isValid =
+    criteria.minLength &&
+    criteria.upperCase &&
+    criteria.lowerCase &&
+    criteria.number &&
+    criteria.specialChar;
+
+  return { isValid, criteria };
 };
 
 const PasswordResetModal: React.FC<PasswordResetModalProperties> = ({
@@ -31,6 +34,13 @@ const PasswordResetModal: React.FC<PasswordResetModalProperties> = ({
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [passwordCriteria, setPasswordCriteria] = useState({
+    minLength: false,
+    upperCase: false,
+    lowerCase: false,
+    number: false,
+    specialChar: false,
+  });
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -40,27 +50,56 @@ const PasswordResetModal: React.FC<PasswordResetModalProperties> = ({
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  // const validatePassword = (password: string) => {
-  //   const minLength = /.{8,}/;
-  //   const upperCase = /[A-Z]/;
-  //   const lowerCase = /[a-z]/;
-  //   const number = /\d/;
-  //   const specialChar = /[!#$%&*@^]/;
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = event.target.value;
+    setPassword(newPassword);
+    setErrorMessage(""); // Clear error message when user starts typing
 
-  //   return (
-  //     minLength.test(password) &&
-  //     upperCase.test(password) &&
-  //     lowerCase.test(password) &&
-  //     number.test(password) &&
-  //     specialChar.test(password)
-  //   );
-  // };
+    if (newPassword) {
+      const { isValid, criteria } = validatePassword(newPassword);
+      setPasswordCriteria(criteria);
+
+      if (isValid) {
+        setErrorMessage("");
+      }
+    } else {
+      setPasswordCriteria({
+        minLength: false,
+        upperCase: false,
+        lowerCase: false,
+        number: false,
+        specialChar: false,
+      });
+    }
+  };
+
+  const handleConfirmPasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setConfirmPassword(event.target.value);
+    setErrorMessage(""); // Clear error message when user starts typing
+  };
 
   const handleSubmit = () => {
-    if (!validatePassword(password)) {
-      setErrorMessage(
-        "Password must be at least 8 characters long, include uppercase and lowercase letters, numbers, and special characters.",
-      );
+    if (!password && !confirmPassword) {
+      setErrorMessage("New Password and Confirm New Password are required.");
+      return;
+    }
+
+    if (!password) {
+      setErrorMessage("New Password is required.");
+      return;
+    }
+
+    if (!confirmPassword) {
+      setErrorMessage("Confirm New Password is required.");
+      return;
+    }
+
+    const { isValid } = validatePassword(password);
+
+    if (!isValid) {
+      setErrorMessage("Password must meet the criteria listed.");
       return;
     }
 
@@ -95,7 +134,7 @@ const PasswordResetModal: React.FC<PasswordResetModalProperties> = ({
                 value={password}
                 placeholder="**********"
                 required
-                onChange={(event) => setPassword(event.target.value)}
+                onChange={handlePasswordChange}
               />
               <span
                 className="absolute right-2 top-3 cursor-pointer"
@@ -104,6 +143,39 @@ const PasswordResetModal: React.FC<PasswordResetModalProperties> = ({
                 {showPassword ? <EyeOff /> : <Eye />}
               </span>
             </div>
+            {password && !validatePassword(password).isValid && (
+              <ul className="mt-2 text-sm text-red-500">
+                <li
+                  className={passwordCriteria.minLength ? "text-green-500" : ""}
+                >
+                  {passwordCriteria.minLength ? "✔" : "✖"} At least 8
+                  characters
+                </li>
+                <li
+                  className={passwordCriteria.upperCase ? "text-green-500" : ""}
+                >
+                  {passwordCriteria.upperCase ? "✔" : "✖"} At least one
+                  uppercase letter
+                </li>
+                <li
+                  className={passwordCriteria.lowerCase ? "text-green-500" : ""}
+                >
+                  {passwordCriteria.lowerCase ? "✔" : "✖"} At least one
+                  lowercase letter
+                </li>
+                <li className={passwordCriteria.number ? "text-green-500" : ""}>
+                  {passwordCriteria.number ? "✔" : "✖"} At least one number
+                </li>
+                <li
+                  className={
+                    passwordCriteria.specialChar ? "text-green-500" : ""
+                  }
+                >
+                  {passwordCriteria.specialChar ? "✔" : "✖"} At least one
+                  special character
+                </li>
+              </ul>
+            )}
           </div>
           <div className="mb-4">
             <label className="mb-2 block text-[16px]">
@@ -116,7 +188,7 @@ const PasswordResetModal: React.FC<PasswordResetModalProperties> = ({
                 value={confirmPassword}
                 placeholder="**********"
                 required
-                onChange={(event) => setConfirmPassword(event.target.value)}
+                onChange={handleConfirmPasswordChange}
               />
               <span
                 className="absolute right-2 top-3 cursor-pointer"
