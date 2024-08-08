@@ -8,7 +8,7 @@ export default function SettingsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="sm:pb-auto flex h-full w-full flex-col items-center justify-start bg-white py-[20px] font-axiforma sm:bg-[#F8FAFB] md:px-[24px] md:py-[52px]">
+    <main className="sm:pb-auto flex h-full w-full flex-col items-center justify-start bg-[#F8FAFB] py-[20px] font-axiforma md:px-[24px] md:py-[52px]">
       <header className="flex w-full max-w-[900px] rounded-[0px] border border-neutral-40 bg-white px-4 py-4 sm:rounded-[10px]">
         <p className="text-[20px] sm:text-[30px]">Account Settings</p>
       </header>

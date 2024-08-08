@@ -15,20 +15,20 @@ const Particles404 = () => {
     }, 500);
   }, [winWidth]);
   return (
-    <div className="absolute left-0 top-0 mx-auto h-full w-full max-w-[1440px] overflow-hidden">
+    <div className="absolute left-0 top-0 mx-auto h-full w-full overflow-hidden">
       <canvas
         ref={canvaReference}
         id="particles_404"
         className="absolute left-0 top-0 h-[100dvh] w-full"
       />
-      <header className="absolute left-0 top-0 w-full bg-white px-10 py-8 font-medium uppercase text-[#f97415] md:text-3xl">
+      <header className="absolute left-0 top-0 w-full bg-black px-10 py-8 font-medium uppercase text-[#f97415] md:text-3xl xl:text-4xl xl:font-bold">
         <h1
-          className=""
+          className="w-fit"
           // @ts-expect-error Hacking the type
           onMouseEnter={handleMouseEnter}
-          data-value="HNG-BOILERPLATE"
+          data-value="DELVE"
         >
-          Hng-boilerplate
+          Delve
         </h1>
       </header>
       <div className="absolute bottom-10 left-10 font-sans text-2xl uppercase">
@@ -40,7 +40,7 @@ const Particles404 = () => {
         >
           404
         </p>
-        <p className="font-medium md:text-3xl lg:text-4xl">
+        <p className="rounded-md pt-1 font-medium text-[#f97415] backdrop-blur-xl md:text-3xl lg:text-4xl">
           This is not the page <br /> you are looking for
         </p>
       </div>
