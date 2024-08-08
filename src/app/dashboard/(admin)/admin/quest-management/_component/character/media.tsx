@@ -24,13 +24,19 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import useBackgroundsStore from "~/store/background";
+import useCharactersStore from "~/store/characters";
 
-const MediaLibrary = ({ type, id }: { type: "add" | "edit"; id?: string }) => {
+const CharacterMediaLibrary = ({
+  type,
+  id,
+}: {
+  type: "add" | "edit";
+  id?: string;
+}) => {
   const pathname = usePathname();
   const [newCollectionName, setNewCollectionName] = useState("");
   const { addCollection, collections, addImageToCollection } =
-    useBackgroundsStore((state) => state);
+    useCharactersStore((state) => state);
   const router = useRouter();
 
   const handleCreateCollection = () => {
@@ -83,7 +89,7 @@ const MediaLibrary = ({ type, id }: { type: "add" | "edit"; id?: string }) => {
   useEffect(() => {
     // Redirect if type is "add" and collections are empty
     if (type === "edit" && collections.length === 0) {
-      router.push("/dashboard/admin/quest-management/backgrounds");
+      router.push("/dashboard/admin/quest-management/characters");
     }
   }, [type, collections, router]);
 
@@ -119,7 +125,7 @@ const MediaLibrary = ({ type, id }: { type: "add" | "edit"; id?: string }) => {
               <div className="flex flex-col items-center justify-center gap-4 bg-white p-6">
                 <Inbox className="h-8 w-8" />
                 <p className="text-center">
-                  You have not added any backgrounds. No worries! <br /> You can
+                  You have not added any character. No worries! <br /> You can
                   add some now.
                 </p>
 
@@ -182,57 +188,55 @@ const MediaLibrary = ({ type, id }: { type: "add" | "edit"; id?: string }) => {
         )}
 
         {type === "add" && collections.length > 0 && (
-          <ScrollArea className="h-[400px] w-full">
-            <div className="flex flex-1 flex-col gap-6 p-6">
-              {collections.map((collection) => {
-                return (
-                  <div
-                    key={collection.id}
-                    className="w-full rounded-bl-[10px] rounded-br-[10px] rounded-tl-[10px] rounded-tr-[10px] border"
-                  >
-                    <div className="flex items-center gap-[10px] self-stretch rounded-tl-[10px] rounded-tr-[10px] bg-[#F8FAFB] px-4 py-2">
-                      <span> {collection.title}</span>
-                      <Link
-                        href={`/dashboard/admin/quest-management/backgrounds/${collection.id}`}
-                      >
-                        <CustomButton size="icon" className="ml-auto">
-                          <Link2 />
-                        </CustomButton>
-                      </Link>
-                    </div>
-                    <div className="flex min-h-40 w-full gap-3 px-2 py-3">
-                      {collection.images.map((img) => (
-                        <div key={img.id} className="flex-col gap-5">
-                          <div className="group relative h-[200px] w-full overflow-hidden">
-                            <div className="absolute inset-0 z-20 hidden rounded-[10px] bg-transparent-black-30 p-4 group-hover:block group-hover:cursor-pointer">
-                              <Checkbox
-                                className={clsx(
-                                  "rounded=[10px] h-7 w-7 border data-[state=checked]:bg-[#FE5900] data-[state=checked]:text-white",
-                                )}
-                              />
-                            </div>
-                            <Image
-                              src={img.url}
-                              alt="background collections"
-                              fill
-                              layout="fill"
-                              objectFit="cover"
-                              className="rounded-[10px] border-[3px] border-transparent transition-all group-hover:border-[#888]"
+          <div className="flex flex-1 flex-col gap-6 p-6">
+            {collections.map((collection) => {
+              return (
+                <div
+                  key={collection.id}
+                  className="w-full rounded-bl-[10px] rounded-br-[10px] rounded-tl-[10px] rounded-tr-[10px] border"
+                >
+                  <div className="flex items-center gap-[10px] self-stretch rounded-tl-[10px] rounded-tr-[10px] bg-[#F8FAFB] px-4 py-2">
+                    <span> {collection.title}</span>
+                    <Link
+                      href={`/dashboard/admin/quest-management/characters/${collection.id}`}
+                    >
+                      <CustomButton size="icon" className="ml-auto">
+                        <Link2 />
+                      </CustomButton>
+                    </Link>
+                  </div>
+                  <div className="flex min-h-40 w-full gap-3 px-2 py-3">
+                    {collection.images.map((img) => (
+                      <div key={img.id} className="flex-col gap-5">
+                        <div className="group relative h-[200px] w-full overflow-hidden">
+                          <div className="absolute inset-0 z-20 hidden rounded-[10px] bg-transparent-black-30 p-4 group-hover:block group-hover:cursor-pointer">
+                            <Checkbox
+                              className={clsx(
+                                "rounded=[10px] h-7 w-7 border data-[state=checked]:bg-[#FE5900] data-[state=checked]:text-white",
+                              )}
                             />
                           </div>
-                          <Input
-                            disabled
-                            value={collection.title}
-                            className="rounded-[10px] focus:outline-offset-0 focus-visible:outline-offset-0"
+                          <Image
+                            src={img.url}
+                            alt="background collections"
+                            fill
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-[10px] border-[3px] border-transparent transition-all group-hover:border-[#888]"
                           />
                         </div>
-                      ))}
-                    </div>
+                        <Input
+                          disabled
+                          value={collection.title}
+                          className="rounded-[10px] focus:outline-offset-0 focus-visible:outline-offset-0"
+                        />
+                      </div>
+                    ))}
                   </div>
-                );
-              })}
-            </div>
-          </ScrollArea>
+                </div>
+              );
+            })}
+          </div>
         )}
         {type === "edit" && (
           <div className="flex flex-1 flex-col gap-6 p-6">
@@ -275,7 +279,7 @@ const MediaLibrary = ({ type, id }: { type: "add" | "edit"; id?: string }) => {
                 <div className="flex w-80 flex-col items-center justify-center bg-white p-6">
                   <Inbox />
                   <p>
-                    Start uploading your backgrounds. <br />
+                    Start uploading your character. <br />
                     Formats supported: PNG, JPG & HEIC.
                   </p>
                   <CustomButton
@@ -331,4 +335,4 @@ const MediaLibrary = ({ type, id }: { type: "add" | "edit"; id?: string }) => {
   );
 };
 
-export default MediaLibrary;
+export default CharacterMediaLibrary;

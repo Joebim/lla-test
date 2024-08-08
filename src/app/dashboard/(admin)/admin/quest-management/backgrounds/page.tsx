@@ -5,7 +5,7 @@ const page = () => {
   return (
     <>
       <TabsContent value="medialibrary">
-        <MediaLibrary />
+        <MediaLibrary type="add" />
       </TabsContent>
     </>
   );

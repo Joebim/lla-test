@@ -1,11 +1,13 @@
 import { TabsContent } from "~/components/ui/tabs";
-import MediaLibrary from "../_component/media-library";
+import CharacterMediaLibrary from "../_component/character/media";
 
 const page = () => {
   return (
-    <TabsContent value="medialibrary">
-      <MediaLibrary />
-    </TabsContent>
+    <>
+      <TabsContent value="medialibrary">
+        <CharacterMediaLibrary type="add" />
+      </TabsContent>
+    </>
   );
 };
 

@@ -11,7 +11,7 @@ interface Collection {
   images: Image[];
 }
 
-interface CharactersState {
+interface AnimationsState {
   collections: Collection[];
   addCollection: (collection: Collection) => void;
   deleteCollection: (id: string) => void;
@@ -21,7 +21,7 @@ interface CharactersState {
   deleteImageFromCollection: (collectionId: string, imageId: string) => void;
 }
 
-const useCharactersStore = create<CharactersState>((set) => ({
+const useAnimationStore = create<AnimationsState>((set) => ({
   collections: [],
   addCollection: (collection) =>
     set((state) => ({ collections: [...state.collections, collection] })),
@@ -68,4 +68,4 @@ const useCharactersStore = create<CharactersState>((set) => ({
     })),
 }));
 
-export default useCharactersStore;
+export default useAnimationStore;
