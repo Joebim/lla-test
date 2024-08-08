@@ -6,12 +6,12 @@ export interface SidebarMenuItem {
   icon: LucideIcon;
 }
 
-const baseRoute = `/roles`;
+const baseRoute = `/dashboard/admin`;
 
 export const sidebarMenu: SidebarMenuItem[] = [
   {
     title: "Overview",
-    path: `${baseRoute}/overview`,
+    path: `${baseRoute}`,
     icon: Crown,
   },
   {
