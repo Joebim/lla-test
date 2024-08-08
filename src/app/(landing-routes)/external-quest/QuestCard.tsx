@@ -23,7 +23,7 @@ const QuestCard: FC<QuestCardProperties> = ({ title, words, imageUrl }) => {
         alt={`${title} thumbnail`}
         width={400}
         height={600}
-        className="w-full object-cover"
+        className="w-full object-cover hover:cursor-pointer"
         onClick={() => router.push("/explore-quests")}
       />
       <div className="py-4">
