@@ -21,24 +21,15 @@ const AdminPreferenceSettings: React.FC = () => {
 
 const LanguageSelectionDiv: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [canOpen, setCanOpen] = useState(true);
   const dropdownReference = useRef<HTMLDivElement | null>(null);
   const containerReference = useRef<HTMLDivElement | null>(null);
 
   const toggleDropdown = () => {
-    if (isOpen) {
-      setIsOpen(false);
-      setCanOpen(false);
-    } else if (canOpen) {
-      setIsOpen(true);
-    } else {
-      setCanOpen(true);
-    }
+    setIsOpen((previousState) => !previousState);
   };
 
   const closeDropdown = () => {
     setIsOpen(false);
-    setCanOpen(true);
   };
 
   const languages = [
@@ -62,7 +53,7 @@ const LanguageSelectionDiv: React.FC = () => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownReference.current &&
-        !(dropdownReference.current as Node).contains(event.target as Node)
+        !dropdownReference.current.contains(event.target as Node)
       ) {
         closeDropdown();
       }
@@ -73,38 +64,40 @@ const LanguageSelectionDiv: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative z-10">
+    <div className="relative">
       <div
         ref={containerReference}
         className="relative mb-8 w-full rounded-tl-xl bg-[#F8FAFB] p-5"
       >
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-axiforma text-base font-semibold text-[#2A2A2A]">
-            Language selection
-          </h2>
-          <button onClick={toggleDropdown}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className={`h-5 w-5 transform transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
+        <div className="relative z-30">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="font-axiforma text-base font-semibold text-[#2A2A2A]">
+              Language selection
+            </h2>
+            <button onClick={toggleDropdown}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-5 w-5 transform transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+          <p className="font-axiforma text-xs font-normal text-[#717171]">
+            Choose which languages are available for learners to study.
+          </p>
         </div>
-        <p className="font-axiforma text-xs font-normal text-[#717171]">
-          Choose which languages are available for learners to study.
-        </p>
       </div>
 
       {isOpen && (
         <>
-          <div className="fixed inset-0 z-20 bg-black/50 backdrop-blur-sm transition-opacity duration-300" />
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300" />
           <div
             ref={dropdownReference}
             className="shadow-lg absolute left-0 top-full z-30 w-full rounded-b-xl bg-white"
