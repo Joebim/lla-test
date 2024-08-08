@@ -1,7 +1,7 @@
 const FourthHero = () => {
   return (
     <article className="bg-secondary-120 px-[20px] py-[24px] lg:p-[40px]">
-      <div className="border-8px flex flex-col items-center gap-[48px] border-solid border-transparent-black-15 bg-white px-[12px] py-[28px] lg:flex-row lg:gap-[56px] lg:px-[80px] lg:py-[120px]">
+      <div className="flex flex-col items-center gap-[48px] border-[8px] border-solid border-transparent-black-15 bg-white px-[12px] py-[28px] lg:flex-row lg:gap-[56px] lg:px-[80px] lg:py-[120px]">
         <div className="w-full max-w-[686px] text-center lg:text-start">
           <h2 className="font-axiformaSemiBold text-[18px] font-semibold leading-[28px] tracking-[0.04em] md:text-[40px] md:leading-[60px]">
             <span className="text-secondary-60">Ready To </span>Start Your
@@ -14,9 +14,8 @@ const FourthHero = () => {
             Get Started Now
           </button>
         </div>
-        {/* flex flex-col gap-[40px] h-[56px] w-[213px]*/}
         <div className="w-full max-w-[746px]">
-          <p className="items-center text-center font-axiforma text-[14px] leading-[20px] lg:text-start lg:text-[20px] lg:leading-[30px]">
+          <p className="text-center text-[14px] leading-[20px] lg:text-start lg:text-[20px] lg:leading-[30px]">
             Now you&apos;ve learnt some basic Spanish phrases, it&apos;s time to
             put your language skills to the test! At Delve, we have different 3D
             Game scenarios, where you can learn and test your Spanish Speaking
@@ -33,4 +32,5 @@ const FourthHero = () => {
     </article>
   );
 };
+
 export default FourthHero;
