@@ -112,6 +112,7 @@ const DarkNav = () => {
             )}
           >
             <Logo />
+
             <div className="hidden items-center gap-5 md:flex lg:gap-7">
               <DropdownMenu>
                 <DropdownMenuTrigger

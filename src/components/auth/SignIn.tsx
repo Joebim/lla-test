@@ -56,13 +56,13 @@ const SignInPage: React.FC = () => {
       <div className="mb-4 flex justify-center rounded-[62px] border p-[4px]">
         <Link
           href="/signup"
-          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignIn ? "" : "bg-neutral-30"}`}
+          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignIn ? "" : "bg-neutral-30"} transition-all duration-300`}
           onClick={() => setIsSignIn(false)}
         >
           Sign Up
         </Link>
         <button
-          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignIn ? "bg-neutral-30" : ""}`}
+          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignIn ? "bg-neutral-30" : ""} transition-all duration-300`}
           onClick={() => setIsSignIn(true)}
         >
           Sign In
@@ -79,7 +79,7 @@ const SignInPage: React.FC = () => {
           <input
             id="email"
             type="email"
-            placeholder="johndoe@gmail.com"
+            placeholder="johndoe@example.com"
             {...register("email", {
               required: "Email is required",
               pattern: {
