@@ -5,7 +5,7 @@ import { ReactNode, useState } from "react";
 
 import AdminPreferenceSettings from "~/components/admin-settings/preference-settings/page";
 import AdminProfile from "~/components/admin-settings/profileSettings/page";
-import SecurityCard from "../admin-settings/Password&Security/SecurityCard";
+import SecurityCard from "../Password&Security/SecurityCard";
 import RolesAndPermission from "../admin-settings/roles/overview/rolesAndPermission/page";
 
 interface TabProperties {

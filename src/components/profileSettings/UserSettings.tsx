@@ -188,7 +188,7 @@ const UserSettings: React.FC<UserSettingsProperties> = ({
         isOpen={isModalOpen}
         onClose={closeModal}
         onFileSelect={handleFileSelect}
-        onAvatarSelect={handleAvatarSelect} // Pass this prop
+        onAvatarSelect={handleAvatarSelect}
       />
       {isSuccessModalOpen && (
         <div
