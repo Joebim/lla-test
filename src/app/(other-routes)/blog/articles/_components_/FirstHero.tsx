@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import LightNav from "~/components/light-navbar/LightNav";
-import blog from "../../../../public/blog/Image.svg";
+import blog from "../../../../../../public/blog/Image.svg";
 
 const FirstHero = () => {
   return (
