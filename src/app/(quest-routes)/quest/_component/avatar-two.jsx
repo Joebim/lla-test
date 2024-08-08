@@ -1,12 +1,27 @@
-import { useGLTF } from "@react-three/drei";
-import { useRef } from "react";
+import { useAnimations, useFBX, useGLTF } from "@react-three/drei";
+import { useEffect, useRef } from "react";
+
+
+
+
 
 export function AvatarTwo(properties) {
-	const { nodes, materials } = useGLTF("/models/66b22ea0183d0249c98fbd8b.glb");
+	const { nodes, materials } = useGLTF("/models/avatar-2.glb");
 	const groupReference = useRef();
+  const { animations: walkingAnimations } = useFBX("/animations/walking.fbx");
+  const { animations: idleAnimations } = useFBX("/animations/idle.fbx");
+  const { animations: wavingAnimations } = useFBX("/animations/waving.fbx");
+  walkingAnimations[0].name = "Walking";
+  idleAnimations[0].name = "Idle";
+  wavingAnimations[0].name = "Waving";
+  const { actions } = useAnimations(wavingAnimations, groupReference);
+
+  useEffect(() => {
+    actions.Waving.reset().play();
+  }, []);
 
 	return (
-		<group {...properties} ref={groupReference} dispose={null} scale={[2.2,2.2,2.2]}>
+		<group {...properties} ref={groupReference} dispose={null} scale={[3,3,3]}>
       <group rotation-x={-Math.PI / 2}>
         <primitive object={nodes.Hips} />
         <skinnedMesh
@@ -71,4 +86,4 @@ export function AvatarTwo(properties) {
   );
 }
 
-useGLTF.preload("/model/66b22ea0183d0249c98fbd8b.glb");
+useGLTF.preload("/models/avatar-2.glb");

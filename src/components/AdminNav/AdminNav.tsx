@@ -16,7 +16,11 @@ import NavGradientAnimation from "./NavGradientAnimation";
 
 const AdminNav = () => {
   return (
+<<<<<<< HEAD
     <nav className="relative z-50 h-12 w-full max-w-[1728px] font-axiforma text-black md:h-[90px] md:p-0">
+=======
+    <nav className="z-50 h-12 w-full font-axiforma text-black md:h-[90px] md:p-0">
+>>>>>>> ea455a17e6f46951546697adb87b83a42bc18c55
       <div
         className={`shadow sticky left-0 right-0 top-0 mx-auto flex items-center justify-between border-b border-b-neutral-40 bg-white px-[20px] lg:px-[70px] ${styles.navLinkGradient}`}
       >

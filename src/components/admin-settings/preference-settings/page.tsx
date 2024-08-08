@@ -21,24 +21,16 @@ const AdminPreferenceSettings: React.FC = () => {
 
 const LanguageSelectionDiv: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [canOpen, setCanOpen] = useState(true);
   const dropdownReference = useRef<HTMLDivElement | null>(null);
   const containerReference = useRef<HTMLDivElement | null>(null);
 
-  const toggleDropdown = () => {
-    if (isOpen) {
-      setIsOpen(false);
-      setCanOpen(false);
-    } else if (canOpen) {
-      setIsOpen(true);
-    } else {
-      setCanOpen(true);
-    }
+  const toggleDropdown = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsOpen((previousState) => !previousState);
   };
 
   const closeDropdown = () => {
     setIsOpen(false);
-    setCanOpen(true);
   };
 
   const languages = [
@@ -62,7 +54,7 @@ const LanguageSelectionDiv: React.FC = () => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownReference.current &&
-        !(dropdownReference.current as Node).contains(event.target as Node)
+        !dropdownReference.current.contains(event.target as Node)
       ) {
         closeDropdown();
       }
@@ -73,56 +65,62 @@ const LanguageSelectionDiv: React.FC = () => {
   }, []);
 
   return (
-    <div
-      ref={containerReference}
-      className="relative mb-8 w-full rounded-tl-xl bg-[#F8FAFB] p-5"
-    >
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-axiforma text-base font-semibold text-[#2A2A2A]">
-          Language selection
-        </h2>
-        <button onClick={toggleDropdown}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={`h-5 w-5 transform transition-transform ${isOpen ? "rotate-180" : ""}`}
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
+    <div className="relative">
+      <div
+        ref={containerReference}
+        className="relative mb-8 w-full rounded-tl-xl bg-[#F8FAFB] p-5"
+      >
+        <div className="relative z-30">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="font-axiforma text-base font-semibold text-[#2A2A2A]">
+              Language selection
+            </h2>
+            <button onClick={toggleDropdown}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-5 w-5 transform transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+          <p className="font-axiforma text-xs font-normal text-[#717171]">
+            Choose which languages are available for learners to study.
+          </p>
+        </div>
       </div>
-      <p className="font-axiforma text-xs font-normal text-[#717171]">
-        Choose which languages are available for learners to study.
-      </p>
 
       {isOpen && (
-        <div
-          ref={dropdownReference}
-          className="shadow-lg absolute left-0 top-full z-10 w-full rounded-b-xl bg-white"
-          style={{
-            boxShadow: "12px 12px 24px 0px rgba(0, 0, 0, 0.12)",
-            maxWidth: containerReference.current
-              ? containerReference.current.offsetWidth
-              : "100%",
-          }}
-        >
-          <div className="max-h-[340px] overflow-y-auto p-2">
-            {languages.map((language, index) => (
-              <div
-                key={index}
-                className="cursor-pointer p-2 transition-all duration-200 hover:border-b-2 hover:border-[#FF7B31] hover:bg-gray-100 hover:text-[#FF7B31]"
-                onClick={closeDropdown}
-              >
-                {language}
-              </div>
-            ))}
+        <>
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300" />
+          <div
+            ref={dropdownReference}
+            className="shadow-lg absolute left-0 top-full z-30 w-full rounded-b-xl bg-white"
+            style={{
+              maxWidth: containerReference.current
+                ? containerReference.current.offsetWidth
+                : "100%",
+            }}
+          >
+            <div className="max-h-[340px] overflow-y-auto p-2">
+              {languages.map((language, index) => (
+                <div
+                  key={index}
+                  className="cursor-pointer p-2 transition-all duration-200 hover:border-b-2 hover:border-[#FF7B31] hover:bg-gray-100 hover:text-[#FF7B31]"
+                  onClick={closeDropdown}
+                >
+                  {language}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
@@ -144,10 +142,8 @@ const SocialsDiv: React.FC = () => {
   };
 
   const handleButtonClick = (action: string) => {
-    // Perform the action (Remove or Unlink)
     // eslint-disable-next-line no-console
     console.log(`${action} clicked`);
-    // Close the dropdown
     setActiveDropdown(undefined);
   };
 
@@ -168,7 +164,7 @@ const SocialsDiv: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full bg-[#F8FAFB] p-5">
+    <div className="relative z-0 w-full bg-[#F8FAFB] p-5">
       <h2 className="mb-4 font-axiforma text-base font-semibold text-[#2A2A2A]">
         Socials
       </h2>
@@ -211,34 +207,20 @@ const SocialsDiv: React.FC = () => {
                 >
                   <div className="flex flex-col space-y-1 p-1">
                     <button
-                      className="w-full rounded-sm text-left text-sm transition-colors duration-150"
+                      className="w-full rounded-sm text-left text-sm transition-colors duration-150 hover:bg-[#F3F4F6]"
                       style={{
                         padding: "6px 8px",
-                        background: "#FFFFFF",
                       }}
                       onClick={() => handleButtonClick("Remove")}
-                      onMouseEnter={(event) =>
-                        (event.currentTarget.style.backgroundColor = "#F3F4F6")
-                      }
-                      onMouseLeave={(event) =>
-                        (event.currentTarget.style.backgroundColor = "#FFFFFF")
-                      }
                     >
                       Remove
                     </button>
                     <button
-                      className="w-full rounded-sm text-left text-sm transition-colors duration-150"
+                      className="w-full rounded-sm text-left text-sm transition-colors duration-150 hover:bg-[#F3F4F6]"
                       style={{
                         padding: "6px 8px",
-                        background: "#FFFFFF",
                       }}
                       onClick={() => handleButtonClick("Unlink")}
-                      onMouseEnter={(event) =>
-                        (event.currentTarget.style.backgroundColor = "#F3F4F6")
-                      }
-                      onMouseLeave={(event) =>
-                        (event.currentTarget.style.backgroundColor = "#FFFFFF")
-                      }
                     >
                       Unlink
                     </button>

@@ -3,7 +3,7 @@ import { FaqAccordions } from "./accordion";
 const FAQs = () => {
   return (
     <>
-      <div className="grid justify-items-center gap-y-8 pt-24 md:pt-32">
+      <div className="grid justify-items-center gap-y-8 pt-8 md:pt-16">
         <h1 className="font-axiformaBold text-4xl md:text-5xl lg:text-6xl">
           FAQs
         </h1>
@@ -12,12 +12,12 @@ const FAQs = () => {
           2024
         </p>
       </div>
-      <div className="mx-auto max-w-3xl p-6 md:py-9 lg:py-12">
-        <div className="grid gap-3 md:gap-2">
-          <h2 className="font-axiformaSemiBold text-2xl lg:text-3xl">
+      <div className="mx-auto max-w-3xl p-6 md:py-9 lg:py-16">
+        <div className="grid gap-3">
+          <h2 className="text-center font-axiformaSemiBold text-2xl lg:text-3xl">
             Introduction
           </h2>
-          <p className="text-sm">
+          <p className="text-sm sm:text-center">
             Welcome to our FAQ section! Here, we&apos;ve compiled answers to
             some of the most common questions about our AI-powered language
             learning game. Whether you&apos;re just starting or looking for

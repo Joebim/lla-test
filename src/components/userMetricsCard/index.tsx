@@ -9,15 +9,15 @@ interface metricsProperties {
 
 const UserMetricsCard = ({ title, stat, desc, icon }: metricsProperties) => {
   return (
-    <Card className="h-fit w-full rounded-[10px] bg-transparent pt-[13px] font-axiforma">
+    <Card className="h-fit w-full rounded-[10px] border-[1px] border-secondary-10 bg-transparent pt-[13px] font-axiforma">
       <CardContent>
         <div className="flex items-center justify-between">
-          <h3 className="text-[15px] font-medium text-neutral-110">{title}</h3>
-          <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-neutral-50">
+          <h3 className="text-[13px] font-bold text-neutral-110">{title}</h3>
+          <div className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-neutral-30">
             {icon}
           </div>
         </div>
-        <h3 className="mt-[15px] font-lilita text-[20px] font-semibold text-primary-60">
+        <h3 className="mt-[15px] font-lilita text-[20px] font-semibold text-primary-80">
           {stat}
         </h3>
         <p className="text-[12px]">
