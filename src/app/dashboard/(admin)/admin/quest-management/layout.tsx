@@ -1,9 +1,12 @@
 import { Crown, Download } from "lucide-react";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import MediaLibrary from "./_component/media-library";
+import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
-const QuestManagementPage = () => {
+export default function QuestLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="felx w-full flex-col">
       <div className="flex flex-col">
@@ -30,13 +33,8 @@ const QuestManagementPage = () => {
             </TabsTrigger>
           </div>
         </TabsList>
-        <TabsContent value="medialibrary">
-          <MediaLibrary />
-        </TabsContent>
-        <TabsContent value="quests">Change your quests here.</TabsContent>
+        {children}
       </Tabs>
     </div>
   );
-};
-
-export default QuestManagementPage;
+}
