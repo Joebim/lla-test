@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 
 import AdminNav from "~/components/AdminNav/AdminNav";
-import ProfileSettingsTab from "~/components/common/profileSettingsTab/ProfileSettingsTab";
 import AdminSidebar from "~/components/sidebar/admin/admin-sidebar";
 
 export default function AdminLayout({
@@ -15,7 +14,6 @@ export default function AdminLayout({
       <div className="flex flex-1">
         <AdminSidebar />
         <main className="flex-1 bg-white p-3 md:p-8">
-          <ProfileSettingsTab />
           <Suspense>{children}</Suspense>
         </main>
       </div>

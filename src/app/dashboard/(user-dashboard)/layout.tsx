@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
-import UserNav from "~/components/common/Navbars/UserNav";
 import LoggedInFooter from "~/components/footer/LoggedInFooter";
+import UserNav from "~/components/UserNav/UserNav";
 
 export default function DashboardLayout({
   children,

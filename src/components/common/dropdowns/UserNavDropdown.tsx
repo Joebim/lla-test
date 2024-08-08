@@ -49,7 +49,7 @@ const UserNavDropdown = ({
               )}
             </div>
 
-            <ChevronDown className="text-secondary-120" />
+            <ChevronDown className="hidden text-secondary-120 md:block" />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[230px] rounded-xl bg-white p-0">

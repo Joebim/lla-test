@@ -4,7 +4,6 @@ import Image from "next/image";
 
 import InviteAdminModal from "~/components/modals/AdminRolesModals/inviteAdmins";
 import AdminsInviteSent from "~/components/modals/AdminRolesModals/sentAdmins";
-import RolesTabs from "~/components/rolesAndPermission/rolesTabs";
 import add from "../../../public/adminRoles/add.svg";
 
 interface OverviewProperties {
@@ -56,9 +55,6 @@ const Overview = ({
                   Add Invite
                 </button>
               </div>
-            </div>
-            <div className="w-full">
-              <RolesTabs />
             </div>
           </div>
           {showInviteModal && (

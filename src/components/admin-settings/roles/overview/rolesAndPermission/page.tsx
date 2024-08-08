@@ -2,11 +2,9 @@
 
 import { useState } from "react";
 
-import AdminNav from "~/components/AdminNav/AdminNav";
 import DeleteInvitation from "~/components/modals/AdminRolesModals/deleteInvitationModal";
 import RolesAndPermissionUtils from "~/components/rolesAndPermission/rolesAndPermissionUtils";
 import Overview from "~/components/rolesComponents/overview";
-import AdminSidebar from "~/components/sidebar/admin/admin-sidebar";
 import PendingTable from "~/components/Table/pendingInvitationsTable";
 import RoleTable from "~/components/Table/theRoleListTable";
 
@@ -24,9 +22,7 @@ const RolesAndPermission = () => {
   return (
     <div>
       <div>
-        <AdminNav />
         <div className="flex">
-          <AdminSidebar />
           <div className="w-full">
             <Overview
               title={viewTitle}
