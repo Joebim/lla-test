@@ -144,7 +144,7 @@ const View = ({ params }: { params: { view: string } }) => {
       rewards: [
         {
           name: "champion",
-          imageURL: "/progress-images/champion.png",
+          imageURL: "/progress-images/Champion.png",
         },
         {
           name: "streak",
