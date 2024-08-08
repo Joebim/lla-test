@@ -130,11 +130,11 @@ const Footer: React.FC = () => {
                 <input
                   type="email"
                   placeholder="johndoe@gmail.com"
-                  className="w-full h-12 rounded-[10px] px-3 py-[18px] focus:outline-none border border-neutral-40"
+                  className="h-12 w-full rounded-[10px] border border-neutral-40 px-3 py-[18px] focus:outline-none"
                 />
                 <CustomButton
                   variant="primary"
-                  className=" h-12 w-full rounded-[12px] px-8 py-[10px] text-[18px] font-semibold"
+                  className="h-12 w-full rounded-[12px] px-8 py-[10px] text-[18px] font-semibold"
                 >
                   Subscribe
                 </CustomButton>
