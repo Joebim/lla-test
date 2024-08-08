@@ -10,12 +10,14 @@ export function AvatarTwo(properties) {
 	const groupReference = useRef();
   const { animations: walkingAnimations } = useFBX("/animations/walking.fbx");
   const { animations: idleAnimations } = useFBX("/animations/idle.fbx");
+  const { animations: wavingAnimations } = useFBX("/animations/waving.fbx");
   walkingAnimations[0].name = "Walking";
   idleAnimations[0].name = "Idle";
-  const { actions } = useAnimations(idleAnimations, groupReference);
+  wavingAnimations[0].name = "Waving";
+  const { actions } = useAnimations(wavingAnimations, groupReference);
 
   useEffect(() => {
-    actions.Idle.reset().play();
+    actions.Waving.reset().play();
   }, []);
 
 	return (
