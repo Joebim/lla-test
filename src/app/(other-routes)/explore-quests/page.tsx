@@ -22,7 +22,7 @@ const ExploreQuests = () => {
 
   return (
     <>
-      <div className="grid gap-y-8 pt-28 md:pt-32">
+      <div className="grid gap-y-8 pt-8 md:pt-16">
         <h1 className="text-center font-axiformaBold text-3xl max-md:pb-8 md:text-4xl lg:text-5xl">
           Explore Language Quests
         </h1>

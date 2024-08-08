@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import CustomButton from "~/components/common/common-button/common-button";
 
@@ -244,13 +245,16 @@ const Progress = () => {
             </div>
             <div className="grid w-full gap-[3%] md:grid-cols-2">
               {categories.map(
-                (category: {
-                  id: number;
-                  imageURL: string;
-                  categoryName: string;
-                  maxWords: number;
-                  learntWords: number;
-                }) => (
+                (
+                  category: {
+                    id: number;
+                    imageURL: string;
+                    categoryName: string;
+                    maxWords: number;
+                    learntWords: number;
+                  },
+                  index: number,
+                ) => (
                   <div key={category.id} className="flex flex-col gap-[48px]">
                     <div>
                       <Image
@@ -285,7 +289,9 @@ const Progress = () => {
                           Words Learnt
                         </div>
                         <div>
-                          <CustomButton variant="primary">View</CustomButton>
+                          <Link href={`/dashboard/progress/${index}`}>
+                            <CustomButton variant="primary">View</CustomButton>
+                          </Link>
                         </div>
                       </div>
                     </div>

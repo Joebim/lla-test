@@ -1,6 +1,13 @@
-import { ChevronDown, CircleHelp, LogOut, Settings } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  CircleHelp,
+  LogOut,
+  Settings,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 import {
   DropdownMenu,
@@ -22,9 +29,10 @@ const AdminNavDropdown = ({
   username,
   email,
 }: ComponentProperties) => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu onOpenChange={(open: boolean) => setIsOpen(open)}>
         <DropdownMenuTrigger className="outline-none">
           <div className="flex items-center gap-1.5 rounded-[40px] border border-neutral-40 bg-white p-1 pr-2.5">
             <div className="flex items-center gap-2">
@@ -55,7 +63,12 @@ const AdminNavDropdown = ({
                 </h6>
               </div>
             </div>
-            <ChevronDown className="text-secondary-120" />
+            {isOpen ? (
+              <ChevronUp className="text-secondary-120" />
+            ) : (
+              <ChevronDown className="text-secondary-120" />
+            )}
+            {/* <ChevronDown className="text-secondary-120" /> */}
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent
