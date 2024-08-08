@@ -51,7 +51,7 @@ const AdminSettingsTab = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <main>
+    <main className="mx-auto max-w-[1728px] px-4 lg:px-[70px]">
       <div className="mt-4 md:mt-0">
         <h2 className="m-0 text-[15px] font-bold text-neutral-150 md:text-[19px]">
           {tabs[activeTab].title}
