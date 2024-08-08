@@ -16,13 +16,8 @@ const baseRoute = `/dashboard/admin`;
 export const sidebarMenu: SidebarMenuItem[] = [
   {
     title: "Overview",
-<<<<<<< HEAD
     path: `${baseRoute}/overview`,
     icon: ChartNoAxesColumnIncreasing,
-=======
-    path: `${baseRoute}`,
-    icon: Crown,
->>>>>>> ea455a17e6f46951546697adb87b83a42bc18c55
   },
   {
     title: "User Management",
