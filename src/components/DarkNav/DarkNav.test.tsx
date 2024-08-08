@@ -37,7 +37,7 @@ describe("darkNav", () => {
   it("renders mobile logo", () => {
     expect.assertions(2);
     render(<DarkNav />);
-    expect(screen.getByText("How it works")).toBeInTheDocument();
+    expect(screen.getByText("How It Works")).toBeInTheDocument();
     expect(screen.getAllByText("Delve In")).toHaveLength(2);
   });
 });

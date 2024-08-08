@@ -45,7 +45,7 @@ const SignUpPage: React.FC = () => {
   };
 
   return (
-    <div className="mt-16 w-96 rounded-[16px] bg-[#FFFF] p-6 lg:w-[600px]">
+    <div className="w-96 rounded-[16px] bg-[#FFFF] p-6 lg:w-[600px]">
       <div className="mb-4 flex justify-center rounded-[62px] border p-[4px]">
         <button
           className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignUp ? "bg-neutral-30" : ""}`}
@@ -156,8 +156,14 @@ const SignUpPage: React.FC = () => {
           </p>
         )}
       </form>
-      <div className="mt-4 flex items-center justify-center">
-        <span className="text-gray-500">OR</span>
+      <div className="my-8 flex items-center justify-center">
+        <div className="mr-6 w-1/2">
+          <hr />
+        </div>
+        <span className="text-neutral-90">OR</span>
+        <div className="ml-6 w-1/2">
+          <hr />
+        </div>
       </div>
       <button className="mt-4 flex h-[56px] w-full items-center justify-center gap-2 rounded-[59px] bg-secondary-120 px-4 py-2 text-secondary-10 hover:bg-secondary-110 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-opacity-50">
         <Image src="/signup/googleicon.png" alt="" width={20} height={20} />{" "}

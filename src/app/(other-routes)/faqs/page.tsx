@@ -3,7 +3,7 @@ import { FaqAccordions } from "./accordion";
 const FAQs = () => {
   return (
     <>
-      <div className="grid justify-items-center gap-y-8 pt-24 md:pt-32">
+      <div className="grid justify-items-center gap-y-8 pt-8 md:pt-16">
         <h1 className="font-axiformaBold text-4xl md:text-5xl lg:text-6xl">
           FAQs
         </h1>

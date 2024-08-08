@@ -1,21 +1,19 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { TransitionLink } from "../miscellaneous/transition-link";
 
 const Logo = () => {
   return (
     <>
-      <TransitionLink
-        href="/"
-        className="hidden no-underline outline-none md:block"
-      >
+      <Link href="/" className="hidden no-underline outline-none md:block">
         <Image
           src="/navbar/delve-black__desktop.svg"
           width={100}
           height={32}
           alt="desktop-logo"
         />
-      </TransitionLink>
+      </Link>
 
       <TransitionLink
         href="/"
