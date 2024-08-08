@@ -1,7 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { FC } from "react";
 
 interface QuestCardProperties {
@@ -11,8 +8,6 @@ interface QuestCardProperties {
 }
 
 const QuestCard: FC<QuestCardProperties> = ({ title, words, imageUrl }) => {
-  const router = useRouter();
-
   return (
     <div
       className="shadow-md overflow-hidden rounded-lg bg-white"
@@ -24,7 +19,6 @@ const QuestCard: FC<QuestCardProperties> = ({ title, words, imageUrl }) => {
         width={400}
         height={600}
         className="w-full object-cover"
-        onClick={() => router.push("/explore-quests")}
       />
       <div className="py-4">
         <h3 className="text-lg font-bold">{title}</h3>
