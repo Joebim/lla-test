@@ -59,7 +59,6 @@ const TransitionLink = React.forwardRef<HTMLButtonElement, ButtonProperties>(
     const Comp = asChild ? Slot : "button";
     const router = useRouter();
     const pathname = usePathname();
-
     const handleClick = () => {
       if (pathname !== href) {
         animatePageOut(href, router);

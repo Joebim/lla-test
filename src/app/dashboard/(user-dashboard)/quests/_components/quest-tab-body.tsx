@@ -69,11 +69,11 @@ export const QuestTabBody: React.FC<tabProperties> = ({ tab }) => {
         </div>
       ) : (
         <div
-          className="flex cursor-pointer flex-col items-center gap-[10px]"
+          className="flex cursor-pointer flex-col items-center gap-[10px] px-[30px]"
           onClick={() => setShow(true)}
         >
           <Image src={gamepad} height={40} width={80} alt="Gamepad" />
-          <p className="text-[20px] text-transparent-black-35">
+          <p className="text-center text-[15px] text-transparent-black-35 sm:text-[20px]">
             You currently have no quest in progress.
           </p>
         </div>
