@@ -16,7 +16,7 @@ describe("lightNav", () => {
   it("renders the signed-out state correctly", () => {
     expect.assertions(2);
     render(<LightNav />);
-    expect(screen.getByText("How it works")).toBeInTheDocument();
+    expect(screen.getByText("How It Works")).toBeInTheDocument();
     expect(screen.getAllByText("Delve In")).toHaveLength(2);
   });
 });
