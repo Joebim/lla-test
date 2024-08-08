@@ -99,7 +99,7 @@ export default function StepTabs() {
         ))}
       </div>
 
-      <div className="mx-4 bg-black p-4 text-white md:mx-10 md:p-20">
+      <div className="mx-0 bg-black p-4 text-white md:mx-10 lg:mx-4 lg:p-20">
         <div className="flex flex-col md:flex-row md:items-center md:gap-[72px]">
           <div className="p-4 md:w-1/2">
             <Image
@@ -113,7 +113,7 @@ export default function StepTabs() {
             <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border-2 border-white text-white lg:mb-9">
               {tabContent[activeTab].number}
             </div>
-            <p className="mb-4 text-2xl leading-[60px] lg:text-[40px]">
+            <p className="mb-4 text-2xl leading-[35px] lg:text-[40px] lg:leading-[60px]">
               {tabContent[activeTab].description}
             </p>
           </div>

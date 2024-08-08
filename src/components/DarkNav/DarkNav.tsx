@@ -124,7 +124,7 @@ const DarkNav = () => {
                       width={8}
                       height={8}
                     />
-                    How it works
+                    How It Works
                     <Image
                       src="/navbar/howitworks-dot.svg"
                       alt="mobile-logo"
