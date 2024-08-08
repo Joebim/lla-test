@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 
+import AdminNavDropdown from "../common/dropdowns/AdminNavDropdown";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -143,30 +144,7 @@ const AdminNav = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            <div className="flex h-11 w-full cursor-pointer flex-row items-center gap-1 rounded-full border-2 border-[#E9EEF3] pl-[4px] pr-[8px]">
-              <Image
-                src="/navbar/profile-standin.svg"
-                alt="profile-icon"
-                width={36}
-                height={36}
-                className="rounded-full"
-              />
-              <div className="flex flex-col">
-                <p className="text-[11.5px] font-semibold text-secondary-120">
-                  John Doe
-                </p>
-                <p className="text-[11.5px] font-normal text-secondary-70">
-                  Super Admin
-                </p>
-              </div>
-              <Image
-                src="/logo/about-down.svg"
-                alt="profile-arrow"
-                width={16}
-                height={16}
-              />
-            </div>
+            <AdminNavDropdown />
           </div>
         </div>
 

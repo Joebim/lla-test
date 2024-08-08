@@ -16,7 +16,7 @@ describe("adminNav", () => {
   it("renders mobile navigation with correct elements", () => {
     expect.assertions(2);
     render(<AdminNav />);
-    expect(screen.getAllByAltText("profile-icon")[1]).toBeInTheDocument();
+    expect(screen.getByAltText("profile-icon")).toBeInTheDocument();
     expect(screen.getByAltText("menu-icon")).toBeInTheDocument();
   });
 });
