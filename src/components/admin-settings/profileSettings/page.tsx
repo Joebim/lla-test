@@ -191,7 +191,7 @@ const AdminProfile = () => {
                 <div
                   data-testid="profileImage"
                   onClick={() => setIsModalOpen(true)}
-                  className="relative h-[180px] w-[180px] cursor-pointer sm:h-[300px] sm:w-[300px] lg:h-[500px] lg:w-[500px]"
+                  className="relative h-[180px] w-[180px] cursor-pointer sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]"
                 >
                   <Image
                     src={temporaryImage || "/images/profile_avatar.svg"}
@@ -203,7 +203,7 @@ const AdminProfile = () => {
                   <Camera className="absolute left-[20px] top-[20px] text-neutral-110 sm:top-[30px] md:left-[30px] md:top-[50px]" />
                 </div>
               ) : (
-                <div className="h-[180px] w-[180px] sm:h-[300px] sm:w-[300px] lg:h-[500px] lg:w-[500px]">
+                <div className="h-[180px] w-[180px] sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]">
                   <Image
                     src={image || "/images/profile_avatar.svg"}
                     alt="Profile Image"
@@ -256,12 +256,14 @@ const AdminProfile = () => {
                       </div>
                     </div>
                     <div className="block items-center justify-between sm:flex">
-                      <label htmlFor="gender" className="font-semibold">
-                        Gender
-                      </label>
-                      <div className="mr-auto flex w-full flex-col items-end">
+                      <div>
+                        <label htmlFor="gender" className="font-semibold">
+                          Gender
+                        </label>
+                      </div>
+                      <div className="flex w-full sm:w-fit">
                         <select
-                          className="w-full rounded-[5px] border border-secondary-30 py-[8px] outline-none"
+                          className="w-full rounded-[5px] border border-secondary-30 py-[8px] outline-none sm:w-[250px]"
                           value={temporaryGender}
                           onChange={(event) =>
                             updateProfile({ gender: event.target.value })
