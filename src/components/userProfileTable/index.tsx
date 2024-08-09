@@ -58,7 +58,7 @@ const UserProfileTable = ({ className }: { className?: string }) => {
   };
 
   return (
-    <div className="w-full rounded-[10px] border-2 p-[20px]">
+    <div className="w-full rounded-[10px] border-[1px] border-secondary-10 p-[20px]">
       <div className="flex items-center justify-between pb-[10px]">
         <h3 className="font-bold">Sessions By Device</h3>
         <select
