@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-negated-condition */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -20,8 +21,10 @@ const ToggleSwitch = ({
   useEffect(() => {
     if (!isChanged) {
       setIsOn(false);
+    } else {
+      setIsOn(true);
     }
-  }, [isChanged]);
+  }, [isChanged, handleInteraction]);
 
   const toggleSwitch = () => {
     setIsOn((previousIsOn) => {
