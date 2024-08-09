@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Abel, Inter, Lilita_One } from "next/font/google";
+import { Inter, Lilita_One } from "next/font/google";
 
 import { ToastProvider } from "~/components/ui/toast";
 
@@ -20,11 +20,6 @@ export const lilitaOne = Lilita_One({
   subsets: ["latin"],
   weight: ["400"],
 });
-export const abel = Abel({
-  subsets: ["latin"],
-  weight: ["400"],
-});
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <div className="mx-auto w-full">
+        <div className="mx-auto w-full font-axiforma">
           <ToastProvider>
             <Progress_bar />
             {children}

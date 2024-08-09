@@ -12,11 +12,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { cn } from "~/lib/utils";
 import { overviewData, userData } from "./data";
 import { ChevronLeft, ChevronRight, ExpandMore, FilterIcon } from "./icons";
 
 export default function Overview() {
   const [data, setData] = useState(userData);
+
+  const [currentPage, setCurrentPage] = useState(0);
 
   const activeFilterHandler = () => {
     const results = userData.filter((item) => item.isActive);
@@ -27,6 +30,16 @@ export default function Overview() {
     const results = userData.filter((item) => !item.isActive);
     setData(results);
   };
+
+  const total = data.length;
+  const limit = 6;
+
+  const pageCount = Math.floor(total / limit) + (total % limit === 0 ? 0 : 1);
+
+  const paginatedData = data.slice(
+    currentPage * limit,
+    (currentPage + 1) * limit,
+  );
 
   return (
     <div className="font-axiforma">
@@ -114,7 +127,7 @@ export default function Overview() {
             <h3>Status</h3>
             <h3>Action</h3>
           </div>
-          {data.map((data, index) => (
+          {paginatedData.map((data, index) => (
             <div
               key={index}
               className="grid min-h-[58px] w-full grid-cols-[120px_1fr_240px_200px_100px] items-center justify-between gap-2 px-[24px] py-[16px] odd:bg-neutral-10 even:bg-white 2xl:px-[56px]"
@@ -177,22 +190,40 @@ export default function Overview() {
         </div>
         {/* Pagination */}
         <div className="flex items-center gap-[16px] pt-[20px]">
-          <Button className="flex items-center gap-[11px] font-semibold">
+          <Button
+            onClick={() =>
+              setCurrentPage((previous) =>
+                previous > 0 ? previous - 1 : previous,
+              )
+            }
+            className="flex items-center gap-[11px] font-semibold"
+          >
             <ChevronLeft />
             <div className="mt-[2px]">Previous</div>
           </Button>
           <div className="flex font-medium text-[#09090B]">
-            <button className="grid h-[40px] w-[40px] place-items-center rounded-[6px]">
-              1
-            </button>
-            <button className="grid h-[40px] w-[40px] place-items-center rounded-[6px] border-[1px] border-[#E4E4E7]">
-              2
-            </button>
-            <button className="grid h-[40px] w-[40px] place-items-center rounded-[6px]">
-              3
-            </button>
+            {Array.from({ length: pageCount }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentPage(index)}
+                className={cn(
+                  "grid h-[40px] w-[40px] place-items-center rounded-[6px] border-[1px] border-transparent",
+                  currentPage === index && "border-[#E4E4E7]",
+                )}
+              >
+                {index + 1}
+              </button>
+            ))}
           </div>
-          <Button className="flex items-center gap-[11px] font-semibold">
+          <button className="cursor-pointer">...</button>
+          <Button
+            onClick={() =>
+              setCurrentPage((previous) =>
+                previous < pageCount - 1 ? previous + 1 : previous,
+              )
+            }
+            className="flex items-center gap-[11px] font-semibold"
+          >
             <div className="mt-[2px]">Next</div>
             <ChevronRight />
           </Button>
