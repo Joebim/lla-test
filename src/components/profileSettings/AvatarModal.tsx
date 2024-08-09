@@ -1,4 +1,4 @@
-import { Upload } from "lucide-react";
+import { Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -72,9 +72,14 @@ const AvatarModal: React.FC<ModalProperties> = ({
       style={{ background: "#0000005e" }}
     >
       <div
-        className="w-full max-w-lg rounded-xl bg-white px-6 py-6"
+        className="relative w-full max-w-lg rounded-xl bg-white px-6 py-6"
         onClick={(event) => event.stopPropagation()}
       >
+        <X
+          size={20}
+          className="absolute right-8 cursor-pointer"
+          onClick={onClose}
+        />
         <div className="flex flex-col items-center space-y-2">
           <Image
             src={selectedImage}
