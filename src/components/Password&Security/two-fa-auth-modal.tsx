@@ -29,8 +29,8 @@ const TwoFAAuthModal: React.FC<TwoFAAuthModalProperties> = ({
   };
 
   const handleConfirm = () => {
-    isClose(); // Close the current modal
-    setIsSMSModalOpen(true); // Open the SMS Verification modal
+    isClose();
+    setIsSMSModalOpen(true);
   };
 
   return (
@@ -139,7 +139,6 @@ const TwoFAAuthModal: React.FC<TwoFAAuthModalProperties> = ({
         </DialogContent>
       </Dialog>
 
-      {/* SMS Verification Modal */}
       <SMSVerificationModal
         isOpen={isSMSModalOpen}
         onClose={() => setIsSMSModalOpen(false)}

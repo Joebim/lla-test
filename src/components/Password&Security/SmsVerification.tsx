@@ -14,7 +14,7 @@ const SMSVerificationModal: React.FC<SMSVerificationModalProperties> = ({
   const [code, setCode] = useState<string>("");
   const [isVerified, setIsVerified] = useState<boolean>(false);
 
-  if (!isOpen) return; 
+  if (!isOpen) return;
 
   const handleInputChange = (index: number, value: string) => {
     setCode((previousCode) => {
