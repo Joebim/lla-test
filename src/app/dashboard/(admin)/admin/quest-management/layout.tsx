@@ -9,7 +9,7 @@ export default function QuestLayout({
 }) {
   return (
     <div className="felx w-full flex-col">
-      <div className="mt-10 flex flex-col">
+      <div className="mt-10 flex flex-col md:mt-0">
         <h1 className="font-axiforma text-2xl font-semibold capitalize">
           manage your quests
         </h1>

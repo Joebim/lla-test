@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { Edit, Inbox, Link2, Plus, Trash } from "lucide-react";
+import { Edit, Inbox, Link2, Plus, Trash, Upload } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -98,7 +98,59 @@ const AnimationsMediaLibrary = ({
         <div className="flex w-[200px] items-center justify-center border-r p-6 text-lg">
           <span className="font-axiformaBold"> Media Library</span>
         </div>
-        <div className="flex flex-1 items-center justify-center p-6"></div>
+        <div className="flex flex-1 items-center justify-center p-4">
+          <div className="mr-auto flex items-center justify-start gap-2">
+            <Link href={`/dashboard/admin/quest-management/backgrounds`}>
+              <span className="text-[#888888]">Animations</span>
+            </Link>
+            <span>/</span>
+            <strong className="capitalize">
+              <span>{collections[0] ? collections[0].title : "No name"}</span>
+            </strong>
+          </div>
+          <div className="ml-auto flex max-w-[357px] items-center justify-center gap-2 rounded-[7px] border px-3 py-2 focus-within:ring-1 focus-within:ring-primary-100">
+            <Input
+              placeholder="Search anything here..."
+              className="h-fit border-none p-1 focus:outline-none focus:ring-0 focus-visible:ring-0"
+            />
+            <span className="flex items-center justify-center rounded-[4px]">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="24" height="24" rx="4" fill="#F6F8FA" />
+                <path
+                  d="M16 6C15.4696 6 14.9609 6.21071 14.5858 6.58579C14.2107 6.96086 14 7.46957 14 8V16C14 16.5304 14.2107 17.0391 14.5858 17.4142C14.9609 17.7893 15.4696 18 16 18C16.5304 18 17.0391 17.7893 17.4142 17.4142C17.7893 17.0391 18 16.5304 18 16C18 15.4696 17.7893 14.9609 17.4142 14.5858C17.0391 14.2107 16.5304 14 16 14H8C7.46957 14 6.96086 14.2107 6.58579 14.5858C6.21071 14.9609 6 15.4696 6 16C6 16.5304 6.21071 17.0391 6.58579 17.4142C6.96086 17.7893 7.46957 18 8 18C8.53043 18 9.03914 17.7893 9.41421 17.4142C9.78929 17.0391 10 16.5304 10 16V8C10 7.46957 9.78929 6.96086 9.41421 6.58579C9.03914 6.21071 8.53043 6 8 6C7.46957 6 6.96086 6.21071 6.58579 6.58579C6.21071 6.96086 6 7.46957 6 8C6 8.53043 6.21071 9.03914 6.58579 9.41421C6.96086 9.78929 7.46957 10 8 10H16C16.5304 10 17.0391 9.78929 17.4142 9.41421C17.7893 9.03914 18 8.53043 18 8C18 7.46957 17.7893 6.96086 17.4142 6.58579C17.0391 6.21071 16.5304 6 16 6Z"
+                  stroke="#FFBD99"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+            <span className="flex items-center justify-center rounded-[4px]">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="24" height="24" rx="4" fill="#F6F8FA" />
+                <path
+                  d="M16 6C15.4696 6 14.9609 6.21071 14.5858 6.58579C14.2107 6.96086 14 7.46957 14 8V16C14 16.5304 14.2107 17.0391 14.5858 17.4142C14.9609 17.7893 15.4696 18 16 18C16.5304 18 17.0391 17.7893 17.4142 17.4142C17.7893 17.0391 18 16.5304 18 16C18 15.4696 17.7893 14.9609 17.4142 14.5858C17.0391 14.2107 16.5304 14 16 14H8C7.46957 14 6.96086 14.2107 6.58579 14.5858C6.21071 14.9609 6 15.4696 6 16C6 16.5304 6.21071 17.0391 6.58579 17.4142C6.96086 17.7893 7.46957 18 8 18C8.53043 18 9.03914 17.7893 9.41421 17.4142C9.78929 17.0391 10 16.5304 10 16V8C10 7.46957 9.78929 6.96086 9.41421 6.58579C9.03914 6.21071 8.53043 6 8 6C7.46957 6 6.96086 6.21071 6.58579 6.58579C6.21071 6.96086 6 7.46957 6 8C6 8.53043 6.21071 9.03914 6.58579 9.41421C6.96086 9.78929 7.46957 10 8 10H16C16.5304 10 17.0391 9.78929 17.4142 9.41421C17.7893 9.03914 18 8.53043 18 8C18 7.46957 17.7893 6.96086 17.4142 6.58579C17.0391 6.21071 16.5304 6 16 6Z"
+                  stroke="#FFBD99"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
       </div>
       <div className="flex h-full flex-1 flex-col md:flex-row">
         <div className="min-w-0 border-r bg-[#F8FAFB] md:min-w-[200px]">
@@ -122,7 +174,7 @@ const AnimationsMediaLibrary = ({
           <div className="flex-1 items-center justify-center p-8">
             <div className="group flex h-full w-full items-center justify-center rounded-[9px] border-2 border-dashed">
               <div className="flex flex-col items-center justify-center gap-4 bg-white p-6">
-                <Inbox className="h-8 w-8" />
+                <Inbox className="h-[56px] w-[56px] text-gray-200" />
                 <p className="text-center">
                   You have not added any animations. No worries! <br /> You can
                   add some now.
@@ -132,7 +184,7 @@ const AnimationsMediaLibrary = ({
                   <DialogTrigger asChild>
                     <CustomButton
                       variant="primary"
-                      className="flex w-full items-center justify-center"
+                      className="flex w-fit items-center justify-center gap-0 px-3"
                     >
                       <Plus /> Create A Collection
                     </CustomButton>
@@ -197,9 +249,10 @@ const AnimationsMediaLibrary = ({
                   <div className="flex items-center gap-[10px] self-stretch rounded-tl-[10px] rounded-tr-[10px] bg-[#F8FAFB] px-4 py-2">
                     <span> {collection.title}</span>
                     <Link
+                      className="ml-auto"
                       href={`/dashboard/admin/quest-management/animations/${collection.id}`}
                     >
-                      <CustomButton size="icon" className="ml-auto">
+                      <CustomButton size="icon">
                         <Link2 />
                       </CustomButton>
                     </Link>
@@ -244,13 +297,12 @@ const AnimationsMediaLibrary = ({
                 {collections.length > 0 ? collections[0].title : ""}
               </span>
               <div className="flex gap-2">
-                <CustomButton
-                  className="flex items-center justify-center rounded-[59px] border p-2"
-                  size="icon"
+                <button
+                  className="flex items-center justify-center rounded-full border p-1"
                   onClick={handleUploadClick}
                 >
                   <Plus />
-                </CustomButton>
+                </button>
                 <input
                   type="file"
                   ref={fileInputReference}
@@ -275,11 +327,15 @@ const AnimationsMediaLibrary = ({
             </div>
             {collections[0] && collections[0].images.length === 0 && (
               <div className="group flex h-full w-full items-center justify-center rounded-[9px] border-2 border-dashed">
-                <div className="flex w-80 flex-col items-center justify-center bg-white p-6">
-                  <Inbox />
-                  <p>
-                    Start uploading your character. <br />
-                    Formats supported: PNG, JPG & HEIC.
+                <div className="flex w-80 flex-col items-center justify-center gap-2 bg-white p-6 text-center">
+                  <Upload className="h-[56px] w-[56px] text-gray-200" />
+                  <p className="line-clamp-2">
+                    Start uploading your animations.
+                    <br />
+                    Formats supported{" "}
+                    <strong className="whitespace-normal">
+                      PNG, JPG & HEIC.
+                    </strong>
                   </p>
                   <CustomButton
                     variant="primary"
