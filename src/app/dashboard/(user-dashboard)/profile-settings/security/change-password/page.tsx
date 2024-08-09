@@ -43,6 +43,9 @@ const ChangePasswordPage = () => {
       const currentPass = event.target.value;
       setCurrentPassword(currentPass);
       setIsCurrentPasswordEntered(currentPass.length > 0);
+      if (currentPass.length > 0) {
+        setShowCurrentPassword(false);
+      }
       setFormChanged(true);
     },
     [],
@@ -93,7 +96,7 @@ const ChangePasswordPage = () => {
 
         // Reset form
         handleDiscard();
-      }, 1000); // Simulating a 1-second delay
+      }, 1000);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [toast],
@@ -136,7 +139,7 @@ const ChangePasswordPage = () => {
   }, [newPassword, checkPasswordStrength]);
 
   return (
-    <div className="bg h-[750px] rounded-[18px] border bg-[#FFFFFF] pb-[24px]">
+    <div className="bg h-[650px] rounded-[18px] border bg-[#FFFFFF] pb-[24px]">
       <div className="rounded-t-[18px] bg-primary-10 px-[20px] py-[32px]">
         <p className="text-[22px]">Change Your Password</p>
       </div>
@@ -181,11 +184,17 @@ const ChangePasswordPage = () => {
                 id="newPassword"
                 value={newPassword}
                 onChange={handleNewPasswordChange}
+                onFocus={() => {
+                  if (!isCurrentPasswordEntered) {
+                    setShowCurrentPassword(true);
+                  }
+                }}
                 placeholder="Enter new password"
                 className={`w-full rounded-[10px] border border-neutral-40 px-[12px] py-[18px] ${
-                  isCurrentPasswordEntered ? "" : "bg-red-50"
+                  showCurrentPassword && !isCurrentPasswordEntered
+                    ? "bg-red-50"
+                    : ""
                 }`}
-                disabled={!isCurrentPasswordEntered}
               />
               <button
                 type="button"
@@ -199,7 +208,7 @@ const ChangePasswordPage = () => {
                 )}
               </button>
             </div>
-            {!isCurrentPasswordEntered && (
+            {showCurrentPassword && !isCurrentPasswordEntered && (
               <p className="mt-1 text-sm text-red-600">
                 Please enter your current password first
               </p>
@@ -254,6 +263,10 @@ const ChangePasswordPage = () => {
           </div>
         </form>
       </div>
+
+      {/* Add a gap here */}
+      <div className="h-6"></div>
+
       <div className="flex items-center gap-x-[24px] px-[24px] pb-[24px]">
         <button
           onClick={handleDiscard}
