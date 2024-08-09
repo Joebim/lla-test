@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 import AvatarModal from "./AvatarModal";
+import CustomDropdown from "./custom-drop-down";
 import { SuccessModal } from "./SuccessModal";
 
 interface UserSettingsProperties {
@@ -26,6 +27,11 @@ const UserSettings: React.FC<UserSettingsProperties> = ({
   const [profileImage, setProfileImage] = useState("/profile/profile.png");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [selectedGender, setSelectedGender] = useState("Male");
+
+  const handleGenderSelect = (gender: string) => {
+    setSelectedGender(gender);
+  };
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -70,7 +76,7 @@ const UserSettings: React.FC<UserSettingsProperties> = ({
   return (
     <div className="w-full rounded-2xl bg-white font-axiformaSemiBold">
       <div
-        className="title flex h-14 w-full items-center justify-between rounded-t-2xl p-4 text-black"
+        className="title flex h-16 w-full items-center justify-between rounded-t-2xl px-4 py-8 text-black"
         style={{ background: "#F7F2EC" }}
       >
         <h2 className="text-xl font-semibold">User Information</h2>
@@ -153,19 +159,12 @@ const UserSettings: React.FC<UserSettingsProperties> = ({
           >
             Gender
           </label>
-          <select
-            id="gender"
-            name="gender"
-            value={userDetails.gender}
-            onChange={handleChange}
+          <CustomDropdown
+            options={["Male", "Female", "Prefer not to say"]}
+            selectedOption={selectedGender}
+            onSelect={handleGenderSelect}
             disabled={!isEditing}
-            className={`mt-2 w-full border px-4 py-2 focus:border focus:border-orange-300 focus:outline-none ${isEditing ? "" : "bg-gray-100"}`}
-            style={{ borderRadius: "6px" }}
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Prefer not to say</option>
-          </select>
+          />
         </div>
         {isEditing && (
           <div className="flex w-full items-center space-x-4 pt-6">
@@ -188,7 +187,7 @@ const UserSettings: React.FC<UserSettingsProperties> = ({
         isOpen={isModalOpen}
         onClose={closeModal}
         onFileSelect={handleFileSelect}
-        onAvatarSelect={handleAvatarSelect} // Pass this prop
+        onAvatarSelect={handleAvatarSelect}
       />
       {isSuccessModalOpen && (
         <div
