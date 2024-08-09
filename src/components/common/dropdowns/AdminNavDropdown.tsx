@@ -96,7 +96,7 @@ const AdminNavDropdown = ({
           <DropdownMenuSeparator />
           <DropdownMenuItem className="w-full p-0">
             <Link
-              href={"/"}
+              href={"/dashboard/admin/settings"}
               className="flex w-full items-center gap-3 border-b border-b-neutral-30 px-5 py-3 no-underline outline-none hover:bg-neutral-30"
             >
               <Settings size={16} className="text-neutral-90" />
@@ -110,7 +110,7 @@ const AdminNavDropdown = ({
           </DropdownMenuItem>
           <DropdownMenuItem className="w-full p-0">
             <Link
-              href={"/"}
+              href={"/dashboard/profile-settings/support"}
               className="flex w-full items-center gap-3 border-b border-b-neutral-30 px-5 py-3 no-underline outline-none hover:bg-neutral-30"
             >
               <CircleHelp size={16} className="text-neutral-90" />
@@ -125,7 +125,7 @@ const AdminNavDropdown = ({
           <DropdownMenuSeparator className="h-1 bg-primary-10" />
           <DropdownMenuItem className="w-full p-0">
             <Link
-              href={"/"}
+              href={"/signin"}
               className="flex items-center gap-3 px-5 py-3 text-critical-100 no-underline outline-none"
             >
               <LogOut size={16} />
