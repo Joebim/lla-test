@@ -26,7 +26,7 @@ const ExploreQuests = () => {
     <>
       <div className="px-8 md:px-16">
         <div className="flex pb-10 pt-4 lg:pb-16 lg:pt-10">
-          <Link className="flex gap-1 text-sm" href="/quest-external-page">
+          <Link className="flex gap-1 text-sm" href="/external-quest">
             <ArrowLeft className="pt-0.5" size={18} />
             Back
           </Link>
