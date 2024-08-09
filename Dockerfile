@@ -1,4 +1,3 @@
-# Use the official Node.js image based on Alpine Linux for a smaller image size
 FROM node:20-alpine AS base
 
 FROM base AS deps
