@@ -24,13 +24,16 @@ const ExploreQuests = () => {
 
   return (
     <>
-      <div className="px-8 md:px-16">
-        <div className="flex pb-10 pt-4 lg:pb-16 lg:pt-10">
-          <Link className="flex gap-1 text-sm" href="/external-quest">
+      <div className="px-6 md:px-10">
+        <div className="pb-10 pt-4 sm:flex lg:pb-16 lg:pt-10">
+          <Link
+            className="flex gap-1 text-sm max-sm:pb-2"
+            href="/external-quest"
+          >
             <ArrowLeft className="pt-0.5" size={18} />
             Back
           </Link>
-          <h1 className="mx-auto font-axiformaBold text-3xl md:text-4xl lg:text-5xl">
+          <h1 className="mx-auto text-center font-axiformaBold text-3xl md:text-4xl lg:text-5xl">
             The Burning Building
           </h1>
         </div>

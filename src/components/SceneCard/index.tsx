@@ -8,12 +8,9 @@ interface cardProperties {
 
 const SceneCard = ({ levels, wordNos, description }: cardProperties) => {
   return (
-    <section
-      className="relative h-fit max-sm:max-w-[375px] sm:max-w-[600px]"
-      data-testid="mobile-element"
-    >
-      <div className="absolute inset-0 bg-black p-4 opacity-75 sm:rounded-[28px] lg:p-6"></div>
-      <div className="p-4 backdrop-blur-sm sm:rounded-[28px] lg:p-6">
+    <section className="relative" data-testid="mobile-element">
+      <div className="absolute inset-0 bg-black p-4 opacity-75 sm:rounded-[28px] sm:p-6"></div>
+      <div className="p-4 backdrop-blur-sm sm:rounded-[28px] sm:p-6">
         <p className="pb-6 pt-2 font-axiforma text-sm text-white md:text-base">
           {description}
         </p>
