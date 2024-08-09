@@ -6,12 +6,14 @@ interface ToggleSwitchProperties {
   variant?: "default" | "bordered";
   isChanged?: boolean;
   handleInteraction?: () => void;
+  onChange?: (isEnabled: boolean) => void;
 }
 
 const ToggleSwitch = ({
   variant = "default",
   isChanged,
   handleInteraction,
+  onChange,
 }: ToggleSwitchProperties) => {
   const [isOn, setIsOn] = useState(false);
 
@@ -25,6 +27,7 @@ const ToggleSwitch = ({
     setIsOn((previousIsOn) => {
       const newIsOn = !previousIsOn;
       if (handleInteraction) handleInteraction();
+      if (onChange) onChange(newIsOn);
       return newIsOn;
     });
   };
@@ -40,8 +43,8 @@ const ToggleSwitch = ({
       onClick={toggleSwitch}
     >
       <div
-        className={`shadow-md h-[16px] w-[16px] transform rounded-full bg-white duration-300 ease-in-out ${
-          isOn && isChanged ? "translate-x-4" : ""
+        className={`shadow-md h-[16px] w-[16px] transform rounded-full bg-white transition-transform duration-300 ease-in-out ${
+          isOn ? "translate-x-4" : "translate-x-0"
         }`}
       ></div>
     </div>

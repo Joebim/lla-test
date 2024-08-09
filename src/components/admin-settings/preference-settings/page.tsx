@@ -2,6 +2,7 @@ import { Apple, Facebook, Instagram, Mail } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import ToggleSwitch from "~/components/toggle/ToggleSwitch";
+import { useToast } from "~/components/ui/use-toast";
 
 const AdminPreferenceSettings: React.FC = () => {
   return (
@@ -68,7 +69,11 @@ const LanguageSelectionDiv: React.FC = () => {
     <div className="relative">
       <div
         ref={containerReference}
-        className="relative mb-8 w-full rounded-tl-xl bg-[#F8FAFB] p-5"
+        className={`relative mb-8 w-full rounded-xl ${
+          isOpen ? "rounded-b-none" : "rounded-b-xl"
+        } bg-[#F8FAFB] p-5 transition-shadow duration-300 ${
+          isOpen ? "shadow-[0_4px_12px_rgba(0,0,0,0.1)]" : ""
+        }`}
       >
         <div className="relative z-30">
           <div className="mb-4 flex items-center justify-between">
@@ -98,10 +103,13 @@ const LanguageSelectionDiv: React.FC = () => {
 
       {isOpen && (
         <>
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300" />
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+            onClick={closeDropdown}
+          />
           <div
             ref={dropdownReference}
-            className="shadow-lg absolute left-0 top-full z-30 w-full rounded-b-xl bg-white"
+            className="absolute left-0 top-[calc(100%-8px)] z-30 w-full rounded-b-xl bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
             style={{
               maxWidth: containerReference.current
                 ? containerReference.current.offsetWidth
@@ -164,7 +172,7 @@ const SocialsDiv: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative z-0 w-full bg-[#F8FAFB] p-5">
+    <div className="relative z-0 w-full overflow-hidden rounded-xl bg-[#F8FAFB] p-5">
       <h2 className="mb-4 font-axiforma text-base font-semibold text-[#2A2A2A]">
         Socials
       </h2>
@@ -202,7 +210,7 @@ const SocialsDiv: React.FC = () => {
                     background: "#FFFFFF",
                     boxShadow: "0px 5px 22px 4px rgba(0, 0, 0, 0.12)",
                     top: "-22px",
-                    right: "-22px",
+                    right: "-20px",
                   }}
                 >
                   <div className="flex flex-col space-y-1 p-1">
@@ -231,13 +239,30 @@ const SocialsDiv: React.FC = () => {
           </div>
         ))}
       </div>
+
+      <div className="h-6"></div>
     </div>
   );
 };
 
 const NotificationCommunicationDiv: React.FC = () => {
+  const { toast } = useToast();
+
+  const handleToggle = (
+    category: string,
+    option: string,
+    isEnabled: boolean,
+  ) => {
+    const action = isEnabled ? "enabled" : "disabled";
+    toast({
+      title: `${category} Updated`,
+      description: `${option} has been ${action}.`,
+      duration: 3000,
+    });
+  };
+
   return (
-    <div className="w-full bg-[#F8FAFB] p-5">
+    <div className="w-full rounded-xl bg-[#F8FAFB] p-5">
       <div className="max-h-full space-y-6 overflow-y-auto">
         <div className="mb-6">
           <h2 className="mb-4 font-axiforma text-base font-semibold text-[#2A2A2A]">
@@ -258,7 +283,15 @@ const NotificationCommunicationDiv: React.FC = () => {
               progress updates
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle(
+                    "Notification Preference",
+                    "Progress updates",
+                    isEnabled,
+                  )
+                }
+              />
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -266,7 +299,15 @@ const NotificationCommunicationDiv: React.FC = () => {
               new content available
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle(
+                    "Notification Preference",
+                    "New content available",
+                    isEnabled,
+                  )
+                }
+              />
             </div>
           </div>
         </div>
@@ -280,7 +321,11 @@ const NotificationCommunicationDiv: React.FC = () => {
               Email
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle("Delivery Method", "Email", isEnabled)
+                }
+              />
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -288,7 +333,11 @@ const NotificationCommunicationDiv: React.FC = () => {
               SMS
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle("Delivery Method", "SMS", isEnabled)
+                }
+              />
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -296,7 +345,11 @@ const NotificationCommunicationDiv: React.FC = () => {
               In-app
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle("Delivery Method", "In-app", isEnabled)
+                }
+              />
             </div>
           </div>
         </div>
@@ -315,7 +368,11 @@ const NotificationCommunicationDiv: React.FC = () => {
               Daily
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle("Notification Frequency", "Daily", isEnabled)
+                }
+              />
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -323,7 +380,11 @@ const NotificationCommunicationDiv: React.FC = () => {
               Weekly
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle("Notification Frequency", "Weekly", isEnabled)
+                }
+              />
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -331,7 +392,11 @@ const NotificationCommunicationDiv: React.FC = () => {
               Monthly
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle("Notification Frequency", "Monthly", isEnabled)
+                }
+              />
             </div>
           </div>
         </div>
