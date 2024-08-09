@@ -10,7 +10,6 @@ export default function LandingLayout({
     <div className="flex min-h-screen w-full flex-col justify-between">
       <LightNav />
       <div className="flex-1">{children}</div>
-
       <Footer />
     </div>
   );
