@@ -1,10 +1,21 @@
+/* eslint-disable unicorn/new-for-builtins */
+/* eslint-disable prettier/prettier */
+
 "use client";
 
-import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-
 import ToggleSwitch from "~/components/toggle/ToggleSwitch";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+
 import {
   Dialog,
   DialogClose,
@@ -13,7 +24,7 @@ import {
 } from "~/components/ui/dialog";
 
 const Notifications = () => {
-  const [isChanged, setIsChanged] = useState(false);
+  const [toggleStates, setToggleStates] = useState(Array<boolean>(6).fill(false));
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const notificationItems = [
@@ -25,8 +36,12 @@ const Notifications = () => {
     "Security alert",
   ];
 
-  const handleInteraction = () => {
-    setIsChanged(true);
+  const handleInteraction = (index: number) => {
+    setToggleStates((previousStates) =>
+      previousStates.map((state, index_) =>
+        index_ === index ? !state : state,
+      ),
+    );
   };
 
   const handleSaveClick = () => {
@@ -34,9 +49,7 @@ const Notifications = () => {
   };
 
   const handleDiscardChange = () => {
-    if (isChanged) {
-      setIsChanged(false);
-    }
+    setToggleStates(Array<boolean>(6).fill(false));
   };
 
   return (
@@ -52,12 +65,13 @@ const Notifications = () => {
           {notificationItems.map((item, index) => (
             <div
               key={index}
-              className="flex items-center justify-between rounded-[8px] border border-neutral-40 px-[8px] py-[14px] md:rounded-[10px] md:px-[12px] md:py-[18px]"
+              className="flex cursor-pointer items-center justify-between rounded-[8px] border border-neutral-40 px-[8px] py-[14px] md:rounded-[10px] md:px-[12px] md:py-[18px]"
+              onClick={() => handleInteraction(index)}
             >
               <p className="text-[14px] md:text-[16px]">{item}</p>
               <ToggleSwitch
-                isChanged={isChanged}
-                handleInteraction={handleInteraction}
+                isChanged={toggleStates[index]}
+                handleInteraction={() => handleInteraction(index)}
               />
             </div>
           ))}
@@ -67,36 +81,35 @@ const Notifications = () => {
             Notification Frequency
           </p>
           <div className="relative">
-            <select
-              className="w-full appearance-none rounded-[8px] border border-neutral-40 bg-transparent px-[8px] py-[14px] text-[14px] text-gray-700 focus:outline-none focus:ring-0 md:rounded-[10px] md:px-[12px] md:py-[18px] md:text-sm"
-              aria-label="Notification Type"
-              onClick={() => handleInteraction()}
-            >
-              <option value="Daily">Daily</option>
-              <option value="Weekly">Weekly</option>
-              <option value="other">Other</option>
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 transform" />
+            <Select>
+              <SelectTrigger className="w-full appearance-none rounded-[8px] border border-neutral-40 bg-transparent px-[8px] py-[14px] text-[14px] text-gray-700 focus:outline-none focus:ring-0 md:rounded-[10px] md:px-[12px] md:py-[18px] md:text-sm"
+                aria-label="Notification Type">
+                <SelectValue placeholder="Snooze" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="Snooze">Snooze</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="flex w-full flex-col items-center gap-x-[16px] gap-y-[10px] whitespace-nowrap px-[16px] pb-[8px] max-[450px]:flex-col-reverse min-[450px]:flex-row md:gap-x-[24px] md:gap-y-0 md:px-[24px] md:pb-[24px]">
           <button
-            className={`w-full rounded-[40px] px-[18px] py-[8px] text-sm min-[450px]:w-auto md:rounded-[59px] md:px-[32px] md:py-[10px] md:text-base ${
-              isChanged
-                ? "bg-neutral-10 text-secondary-120"
-                : "bg-neutral-20 text-secondary-30"
-            }`}
+            className={`w-full rounded-[40px] px-[18px] py-[8px] text-sm min-[450px]:w-auto md:rounded-[59px] md:px-[32px] md:py-[10px] md:text-base ${toggleStates.includes(true)
+              ? "bg-neutral-10 text-secondary-120"
+              : "bg-neutral-20 text-secondary-30"
+              }`}
             onClick={handleDiscardChange}
           >
             Discard Changes
           </button>
           <button
             onClick={handleSaveClick}
-            className={`w-full whitespace-nowrap rounded-[40px] px-[18px] py-[8px] text-sm min-[450px]:w-auto md:rounded-[59px] md:px-[32px] md:py-[10px] md:text-base ${
-              isChanged
-                ? "bg-primary-100 text-[#FFFFFF]"
-                : "bg-primary-40 text-transparent-white-50"
-            }`}
+            className={`w-full whitespace-nowrap rounded-[40px] px-[18px] py-[8px] text-sm min-[450px]:w-auto md:rounded-[59px] md:px-[32px] md:py-[10px] md:text-base ${toggleStates.includes(true)
+              ? "bg-primary-100 text-[#FFFFFF]"
+              : "bg-primary-40 text-transparent-white-50"
+              }`}
           >
             Save Changes
           </button>
@@ -104,9 +117,9 @@ const Notifications = () => {
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="flex items-center justify-center border-0 p-4">
+        <DialogContent className="max-w-[600px] lg:w-[600px] flex items-center justify-center border-0 p-4 font-axiforma">
           <div className="w-full max-w-md rounded-[12px] border-0 bg-white px-[24px] pb-[24px] pt-[36px] md:rounded-[18px] md:px-[36px] md:pb-[32px] md:pt-[48px]">
-            <DialogTitle className="mb-4 flex justify-center text-lg font-semibold">
+            <DialogTitle className="mb-4 flex justify-center font-semibold">
               <Image
                 src={"/images/_check.svg"}
                 alt="check"
@@ -114,21 +127,21 @@ const Notifications = () => {
                 height={80}
               />
             </DialogTitle>
-            <p className="mb-6 text-center text-[24px] md:text-[28px]">
+            <p className="mb-6 text-center font-bold text-[18px] md:text-[20px] font-axiformaBold tracking-[0.8px] md:tracking-[1.12px] leading-[38px] lg:leading-[42px]">
               Your notification settings have been successfully updated.
             </p>
-            <div className="flex justify-center gap-x-4">
-              <DialogClose asChild>
-                <button
-                  className="rounded-[40px] bg-secondary-110 px-[24px] py-[8px] text-[16px] text-[#FFFFFF] md:rounded-[59px] md:px-[32px] md:py-[10px] md:text-[18px]"
+            <DialogClose className="flex justify-center gap-x-4 mt-[48px] w-full">
+              <div className="w-full">
+                <div
+                  className="w-full text-center rounded-[40px] bg-secondary-110 px-[24px] py-[8px] text-[14px] text-[#FFFFFF] md:rounded-[59px] md:px-[32px] md:py-[10px] md:text-[16px]"
                   onClick={() => {
                     setIsDialogOpen(false);
                   }}
                 >
                   Close
-                </button>
-              </DialogClose>
-            </div>
+                </div>
+              </div>
+            </DialogClose>
           </div>
         </DialogContent>
       </Dialog>

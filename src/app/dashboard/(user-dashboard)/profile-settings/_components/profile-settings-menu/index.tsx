@@ -37,12 +37,6 @@ const links = [
     alt: "security",
     label: "Security",
   },
-  {
-    href: "/dashboard/profile-settings/support",
-    src: "/images/_security.svg",
-    alt: "support",
-    label: "Support",
-  },
 ];
 
 const ProfileSettingsMenu = () => {
