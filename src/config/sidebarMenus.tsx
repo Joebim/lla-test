@@ -1,4 +1,9 @@
-import { Crown, LucideIcon, Users } from "lucide-react";
+import {
+  ChartNoAxesColumnIncreasing,
+  Crown,
+  LucideIcon,
+  Users,
+} from "lucide-react";
 
 export interface SidebarMenuItem {
   title: string;
@@ -11,8 +16,8 @@ const baseRoute = `/dashboard/admin`;
 export const sidebarMenu: SidebarMenuItem[] = [
   {
     title: "Overview",
-    path: `${baseRoute}`,
-    icon: Crown,
+    path: `${baseRoute}/overview`,
+    icon: ChartNoAxesColumnIncreasing,
   },
   {
     title: "User Management",

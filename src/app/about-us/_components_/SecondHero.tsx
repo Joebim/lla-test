@@ -4,7 +4,7 @@ import imgData from "../data";
 
 const SecondHero = () => {
   return (
-    <article className="flex w-full flex-col gap-[40px] px-[8px] py-[16px] lg:gap-[10px] lg:px-[40px] lg:py-[80px]">
+    <article className="mx-auto flex w-full max-w-[1734px] flex-col gap-[40px] px-[8px] py-[16px] lg:gap-[10px] lg:px-[40px] lg:py-[80px]">
       <div className="mx-auto flex w-full max-w-[1654px] flex-col gap-[56px]">
         <div className="text-center">
           <h2 className="font-axiformaBold text-[28px] font-bold leading-[42px] tracking-[0.06em] md:text-[48px] md:leading-[72px]">

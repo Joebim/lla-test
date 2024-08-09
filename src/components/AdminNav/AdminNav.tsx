@@ -18,7 +18,7 @@ const AdminNav = () => {
   return (
     <nav className="z-50 h-12 w-full font-axiforma text-black md:h-[90px] md:p-0">
       <div
-        className={`shadow mx-auto flex items-center justify-between border-b border-b-neutral-40 bg-white px-[20px] lg:px-[70px] ${styles.navLinkGradient}`}
+        className={`shadow sticky left-0 right-0 top-0 mx-auto flex items-center justify-between border-b border-b-neutral-40 bg-white px-[20px] lg:px-[70px] ${styles.navLinkGradient}`}
       >
         {/* Desktop Navigation */}
         <div className="hidden w-full items-center justify-between pb-[15px] pt-[19px] md:flex">
