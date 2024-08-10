@@ -44,8 +44,9 @@ jobs:
             mkdir -p /tmp/php
             cd /tmp/php
             gunzip languagelearningfe.tar.gz
+            rm -f languagelearningfe.tar.gz
             docker load < languagelearningfe.tar
-            # rm -f languagelearningfe.tar
+            rm -f languagelearningfe.tar
             # cd /var/www/html/delve_fe/dev
             # git pull origin devops
             # docker-compose -f docker-compose.docker-compose.staging.yml down
