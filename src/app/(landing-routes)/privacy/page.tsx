@@ -1,4 +1,3 @@
-import Footer from "~/components/footer/Footer";
 import termsOfUse from "./data";
 
 const PrivacyPolicy = () => {
@@ -69,7 +68,6 @@ const PrivacyPolicy = () => {
           </div>
         </article>
       </section>
-      <Footer />
     </>
   );
 };

@@ -86,7 +86,7 @@ const UserNavDropdown = ({
           </DropdownMenuItem>
           <DropdownMenuItem className="w-full p-0">
             <Link
-              href={"/about-us"}
+              href={"/profile-settings/support"}
               className="flex items-center gap-3 p-2 no-underline outline-none"
             >
               <CircleHelp size={16} className="text-neutral-90" />

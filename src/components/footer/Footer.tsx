@@ -50,7 +50,10 @@ const Footer: React.FC = () => {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="text-sm text-white md:text-xl">
+                    <a
+                      href="/about-us"
+                      className="text-sm text-white md:text-xl"
+                    >
                       Contact Us
                     </a>
                   </li>
@@ -60,7 +63,7 @@ const Footer: React.FC = () => {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="text-sm text-white md:text-xl">
+                    <a href="/blog" className="text-sm text-white md:text-xl">
                       Blog
                     </a>
                   </li>
@@ -82,7 +85,10 @@ const Footer: React.FC = () => {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="text-sm text-white md:text-xl">
+                    <a
+                      href="/privacy"
+                      className="text-sm text-white md:text-xl"
+                    >
                       Privacy Policy
                     </a>
                   </li>

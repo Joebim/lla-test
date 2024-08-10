@@ -45,17 +45,17 @@ const SignUpPage: React.FC = () => {
   };
 
   return (
-    <div className="w-96 rounded-[16px] bg-[#FFFF] p-6 lg:w-[600px]">
+    <div className="my-auto w-full rounded-[16px] bg-[#FFFF] p-6 lg:w-[600px]">
       <div className="mb-4 flex justify-center rounded-[62px] border p-[4px]">
         <button
-          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignUp ? "bg-neutral-30" : ""}`}
+          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignUp ? "bg-neutral-30" : ""} transition-all duration-300`}
           onClick={() => setIsSignUp(true)}
         >
           Sign Up
         </button>
         <Link
           href="/signin"
-          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignUp ? "" : "bg-neutral-30"}`}
+          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignUp ? "" : "bg-neutral-30"} transition-all duration-300`}
           onClick={() => setIsSignUp(false)}
         >
           Sign In
@@ -63,15 +63,18 @@ const SignUpPage: React.FC = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-[16px] text-gray-700">
+          <label
+            htmlFor="email"
+            className="mb-2 block text-[16px] text-secondary-120"
+          >
             Email
           </label>
           <input
             id="email"
             type="email"
-            placeholder="johndoe@gmail.com"
+            placeholder="johndoe@example.com"
             {...register("email", { required: "Email is required" })}
-            className="h-[52px] w-full rounded-[10px] border px-3 py-2 outline-none"
+            className="h-[52px] w-full rounded-[10px] border px-4 py-2 text-base text-secondary-70 outline-none sm:text-[18px]"
           />
           {errors.email && (
             <p className="mt-1 text-sm text-critical-120">
@@ -80,7 +83,10 @@ const SignUpPage: React.FC = () => {
           )}
         </div>
         <div className="relative mb-4">
-          <label htmlFor="password" className="block text-[16px] text-gray-700">
+          <label
+            htmlFor="password"
+            className="mb-2 block text-[16px] text-secondary-120"
+          >
             Password
           </label>
           <div className="relative w-full">
@@ -96,7 +102,7 @@ const SignUpPage: React.FC = () => {
                   message: "Password did not meet criteria",
                 },
               })}
-              className="h-[52px] w-full rounded-[10px] border px-3 pt-2 outline-none"
+              className="h-[52px] w-full rounded-[10px] border px-4 py-2 text-base text-secondary-70 outline-none sm:text-[18px]"
             />
             <button
               type="button"
@@ -104,7 +110,7 @@ const SignUpPage: React.FC = () => {
               onClick={() => setShowPassword(!showPassword)}
               aria-label="Toggle password visibility"
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
             </button>
           </div>
           {errors.password && (
