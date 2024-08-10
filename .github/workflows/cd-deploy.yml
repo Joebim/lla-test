@@ -16,7 +16,7 @@ jobs:
       - name: Build Docker Image
         run: |
           IMAGE_TAG="latest"
-          docker buildx build --tag languagelearningfe:${IMAGE_TAG} --file Dockerfile .
+          sudo docker buildx build --tag languagelearningfe:${IMAGE_TAG} --file Dockerfile .
 
       - name: List Docker Images
         run: docker images
@@ -24,7 +24,7 @@ jobs:
       - name: Save Docker Image
         run: |
           IMAGE_TAG="latest"
-          docker save languagelearningfe:${IMAGE_TAG} -o languagelearningfe.tar
+          sudo docker save languagelearningfe:${IMAGE_TAG} -o languagelearningfe.tar
 
       - name: Upload Docker Image Artifact
         uses: actions/upload-artifact@v2
