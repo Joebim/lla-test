@@ -127,7 +127,7 @@ const LightNav: React.FC<LightNavProperties> = ({ className }) => {
 
             <div className="flex space-x-6">
               <>
-                <CustomButton href="/signup" variant="primary">
+                <CustomButton href="/external-quest" variant="primary">
                   Delve In
                 </CustomButton>
               </>
