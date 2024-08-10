@@ -10,10 +10,6 @@ jobs:
     runs-on: self-hosted
 
     steps:
-
-      - name: Print current user
-        run: whoami
-        
       - name: Checkout Code
         uses: actions/checkout@v3
 
@@ -21,8 +17,7 @@ jobs:
         
       - name: Build Docker Image
         run: |
-          IMAGE_TAG="latest"
-          docker build --tag languagelearningfe:${IMAGE_TAG} --file Dockerfile .
+          docker build --tag languagelearningfe:dev --file Dockerfile .
           
 
       - name: Save Docker Image
@@ -37,7 +32,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: languagelearningfe.tar
+          source: "languagelearningfe.tar.gz"
           target: /tmp/php
 
       - name: Load and Deploy Docker Image on Server
