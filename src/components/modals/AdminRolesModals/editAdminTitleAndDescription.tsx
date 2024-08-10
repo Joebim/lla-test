@@ -72,7 +72,7 @@ const EditAdminTitleAndDescription = ({
             <p className="text-center font-inter text-base font-normal leading-[1.5rem] text-[#2A425D] sm:text-[1.125rem]">
               Edit Admin Title and Description here
             </p>
-            <div className="flex flex-col gap-[1.5rem] sm:gap-[2rem]">
+            <div className="flex w-full flex-col gap-[1.5rem] sm:gap-[2rem]">
               <div className="mt-[1.5rem] flex flex-col gap-[0.75rem]">
                 <label className="font-inter text-base font-normal leading-[1.5rem] text-secondary-40">
                   Title
