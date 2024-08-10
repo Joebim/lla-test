@@ -13,6 +13,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Print current user
+        run: whoami
       - name: Build Docker Image
         run: |
           IMAGE_TAG="latest"
