@@ -37,6 +37,12 @@ const links = [
     alt: "security",
     label: "Security",
   },
+  {
+    href: "/dashboard/profile-settings/support",
+    src: "/images/_security.svg",
+    alt: "support",
+    label: "Support",
+  },
 ];
 
 const ProfileSettingsMenu = () => {
@@ -46,14 +52,14 @@ const ProfileSettingsMenu = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const handleClick = () => setIsMenuOpen(false);
   return (
-    <div className="sm:max-w-[300px] md:w-[300px]">
+    <div className="sm:max-w-[240px]">
       <button
         onClick={toggleMenu}
         className={`ml-4 block rounded-full border bg-[#FFFFFF] p-[12px] md:hidden ${isMenuOpen ? "hidden" : "flex"}`}
       >
         <Menu />
       </button>
-      <ul className="hidden h-fit w-full max-w-[260px] flex-col gap-[12px] rounded-[18px] border bg-[#FFFFFF] p-[12px] md:flex">
+      <ul className="hidden h-fit w-full max-w-[240px] flex-col gap-[12px] rounded-[18px] border bg-[#FFFFFF] p-[12px] md:flex">
         {links.map((link) => (
           <Link key={link.href} href={link.href}>
             <li
