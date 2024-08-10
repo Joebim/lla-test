@@ -17,8 +17,11 @@ const SignInPage: React.FC = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
-    trigger,
-  } = useForm<SigninFormData>();
+  } = useForm<SigninFormData>({
+    mode: "onBlur",
+    reValidateMode: "onChange",
+  });
+
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [isSignIn, setIsSignIn] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -41,8 +44,7 @@ const SignInPage: React.FC = () => {
 
   useEffect(() => {
     setPasswordTyping(password?.length > 0 || false);
-    trigger();
-  }, [password, trigger]);
+  }, [password]);
 
   const onSubmit = () => {
     setSubmitSuccess(true);
@@ -54,13 +56,13 @@ const SignInPage: React.FC = () => {
       <div className="mb-4 flex justify-center rounded-[62px] border p-[4px]">
         <Link
           href="/signup"
-          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignIn ? "" : "bg-neutral-30"}`}
+          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignIn ? "" : "bg-neutral-30"} transition-all duration-300`}
           onClick={() => setIsSignIn(false)}
         >
           Sign Up
         </Link>
         <button
-          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignIn ? "bg-neutral-30" : ""}`}
+          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignIn ? "bg-neutral-30" : ""} transition-all duration-300`}
           onClick={() => setIsSignIn(true)}
         >
           Sign In
@@ -77,7 +79,7 @@ const SignInPage: React.FC = () => {
           <input
             id="email"
             type="email"
-            placeholder="johndoe@gmail.com"
+            placeholder="johndoe@example.com"
             {...register("email", {
               required: "Email is required",
               pattern: {
@@ -121,7 +123,7 @@ const SignInPage: React.FC = () => {
               onClick={() => setShowPassword(!showPassword)}
               aria-label="Toggle password visibility"
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
             </button>
           </div>
           {errors.password && (
@@ -161,12 +163,14 @@ const SignInPage: React.FC = () => {
             </ul>
           )}
         </div>
-        <Link
-          href={"/forgot-password"}
-          className="my-3 flex justify-end font-axiforma font-[500] text-primary-100"
-        >
-          Forgot Password?
-        </Link>
+        <div className="my-3 flex justify-end">
+          <Link
+            href={"/forgot-password"}
+            className="font-axiforma font-[500] text-primary-100"
+          >
+            Forgot Password?
+          </Link>
+        </div>
         <button
           type="submit"
           className="h-[56px] w-full rounded-[59px] bg-primary-100 px-4 py-2 text-[#FFFF] hover:bg-primary-80 focus:outline-none focus:ring-2 focus:ring-primary-100 focus:ring-opacity-50"

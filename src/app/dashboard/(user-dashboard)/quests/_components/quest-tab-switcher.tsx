@@ -39,7 +39,7 @@ const QuestTabSwitcher: React.FC<QuestTabSwitcherProperties> = ({
       if (screenWidth < 640) {
         setTransformValue((tab - 1) * 100);
       } else {
-        setTransformValue((tab - 1) * 140);
+        setTransformValue((tab - 1) * 110);
       }
     };
 
@@ -57,14 +57,14 @@ const QuestTabSwitcher: React.FC<QuestTabSwitcherProperties> = ({
       {tabItems.map((tabItem) => (
         <div
           key={tabItem.id}
-          className={`z-[1] flex w-[100px] cursor-pointer items-center justify-center rounded-full py-[11px] text-[14px] duration-300 sm:w-[140px] ${tab == tabItem.id ? "font-bold text-secondary-120" : "text-secondary-60"}`}
+          className={`z-[1] flex w-[100px] cursor-pointer items-center justify-center rounded-full py-[5px] text-[14px] duration-300 sm:w-[110px] ${tab == tabItem.id ? "font-bold text-secondary-120" : "text-secondary-60"}`}
           onClick={() => setTab(tabItem.id)}
         >
           {tabItem.name}
         </div>
       ))}
       <div
-        className={`absolute flex h-[90%] w-[100px] transform cursor-pointer items-center justify-center rounded-full bg-neutral-5 duration-300 sm:w-[140px]`}
+        className={`absolute flex h-[90%] w-[100px] transform cursor-pointer items-center justify-center rounded-full bg-neutral-5 duration-300 sm:w-[110px]`}
         style={{
           transform: `translateX(${transformValue}px)`,
         }}

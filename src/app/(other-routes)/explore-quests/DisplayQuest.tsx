@@ -26,15 +26,13 @@ const DisplayQuest = ({
       style={{
         background: `url(${currentImage.src}) no-repeat center/cover`,
       }}
-      className="grid items-end transition-all max-md:justify-center max-md:py-20 md:min-h-[768px] md:grid-cols-2 md:px-10 md:pb-10"
+      className="grid items-end pb-10 transition-all max-md:justify-center max-md:pt-40 md:min-h-[768px] md:px-10 lg:grid-cols-2"
     >
       <SceneCard
-        title="The Burning Building"
         description="Lora lives in California and needs to get on the plane to Paris where she meets her boss for Fashion Week. Problem is, she just might miss that flight and get fired. How fast can you help her get to the airport?"
-        stage={imgIndex}
         levels={8}
       />
-      <div className="ms-auto hidden gap-4 *:rounded-full *:border *:border-transparent-white-10 *:bg-transparent-black-75 *:p-2 *:text-white md:flex">
+      <div className="ms-auto hidden gap-4 *:rounded-full *:border *:border-transparent-white-10 *:bg-transparent-black-75 *:p-2 *:text-white lg:flex">
         <ChevronLeft
           size={38}
           onClick={() =>
@@ -42,7 +40,6 @@ const DisplayQuest = ({
               previousIndex === 0 ? questNo - 1 : previousIndex - 1,
             )
           }
-          className=""
         />
         <ChevronRight
           size={38}
@@ -51,7 +48,6 @@ const DisplayQuest = ({
               previousIndex === questNo - 1 ? 0 : previousIndex + 1,
             )
           }
-          className=""
         />
       </div>
     </div>

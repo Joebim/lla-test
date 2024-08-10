@@ -31,7 +31,7 @@ const LightNav: React.FC<LightNavProperties> = ({ className }) => {
   return (
     <>
       <nav
-        className={`${className || "fixed left-0 right-0 top-0 z-50 mx-auto w-screen px-0"}`}
+        className={`${className || "left-0 right-0 top-0 z-50 w-full px-0"}`}
       >
         {isSignedIn ? (
           <div
@@ -118,7 +118,7 @@ const LightNav: React.FC<LightNavProperties> = ({ className }) => {
                     className="flex items-center gap-4 text-secondary-120"
                   >
                     <div className="h-2 w-2 rounded-full bg-primary-100"></div>
-                    How it works
+                    How It Works
                     <div className="h-2 w-2 rounded-full bg-primary-100"></div>
                   </Link>
                 </DropdownMenuTrigger>
@@ -127,7 +127,7 @@ const LightNav: React.FC<LightNavProperties> = ({ className }) => {
 
             <div className="flex space-x-6">
               <>
-                <CustomButton href="/signup" variant="secondary">
+                <CustomButton href="/external-quest" variant="primary">
                   Delve In
                 </CustomButton>
               </>
@@ -176,9 +176,9 @@ const LightNav: React.FC<LightNavProperties> = ({ className }) => {
               </div>
             ) : (
               <>
-                <button className="h-10 w-[109px] rounded-[59px] border border-[#E9EEF3] bg-[#2A2A2A] text-white">
+                <CustomButton href="/signup" variant="primary">
                   Delve In
-                </button>
+                </CustomButton>
                 <button onClick={toggleSidebar}>
                   <Image
                     src="/logo/mobile-3lines.svg"

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import CustomButton from "~/components/common/common-button/common-button";
 
@@ -18,12 +19,23 @@ const Progress = () => {
     { num: 7, initial: "S", short: "Sun" },
   ];
 
+  // The following is an array containing several objects associated with the categories in the progress page
   const categories: {
     id: number;
     imageURL: string;
     categoryName: string;
     maxWords: number;
     learntWords: number;
+    maxLevels: number;
+    completedLevels: number;
+    accuracy: number;
+    attempts: number;
+    timeSpent: number;
+    avgTimeSpent: number;
+    rewards: { name: string; imageURL: string }[];
+    // all the words that are newly learnt and those that are associated with this quest
+    newWords: string[];
+    words: { local: string; interpretation: string }[];
   }[] = [
     {
       id: 1,
@@ -31,30 +43,137 @@ const Progress = () => {
       categoryName: "Jungle Suvival",
       maxWords: 24,
       learntWords: 18,
+      maxLevels: 4,
+      completedLevels: 3,
+      accuracy: 70,
+      attempts: 5,
+      timeSpent: 15,
+      avgTimeSpent: 3,
+      rewards: [
+        {
+          name: "champion",
+          imageURL: "/progress-images/champion.png",
+        },
+        {
+          name: "streak",
+          imageURL: "/progress-images/streak.png",
+        },
+      ],
+      newWords: ["rescue", "open", "carry"],
+      words: [
+        { local: "enter", interpretation: "entrer" },
+        { local: "rescue", interpretation: "secourir" },
+        { local: "leave", interpretation: "en arrière" },
+        { local: "climb", interpretation: "monter" },
+        { local: "run", interpretation: "ouvrir" },
+        { local: "open", interpretation: "partir" },
+        { local: "carry", interpretation: "porter" },
+        { local: "return", interpretation: "arrière" },
+      ],
     },
     {
-      id: 2,
+      id: 1,
       imageURL: "/progress-images/save-the-cyclist.png",
-      categoryName: "Save the Cyclist",
+      categoryName: "Save The Cyclist",
       maxWords: 24,
       learntWords: 12,
+      maxLevels: 4,
+      completedLevels: 3,
+      accuracy: 70,
+      attempts: 5,
+      timeSpent: 15,
+      avgTimeSpent: 3,
+      rewards: [
+        {
+          name: "champion",
+          imageURL: "/progress-images/champion.png",
+        },
+        {
+          name: "streak",
+          imageURL: "/progress-images/streak.png",
+        },
+      ],
+      newWords: ["rescue", "open", "carry"],
+      words: [
+        { local: "enter", interpretation: "entrer" },
+        { local: "rescue", interpretation: "secourir" },
+        { local: "leave", interpretation: "en arrière" },
+        { local: "climb", interpretation: "monter" },
+        { local: "run", interpretation: "ouvrir" },
+        { local: "open", interpretation: "partir" },
+        { local: "carry", interpretation: "porter" },
+        { local: "return", interpretation: "arrière" },
+      ],
     },
     {
-      id: 3,
+      id: 1,
       imageURL: "/progress-images/the-burning-building.png",
-      categoryName: "The Burning building",
+      categoryName: "The Burning Building",
       maxWords: 18,
       learntWords: 18,
+      maxLevels: 4,
+      completedLevels: 3,
+      accuracy: 70,
+      attempts: 5,
+      timeSpent: 15,
+      avgTimeSpent: 3,
+      rewards: [
+        {
+          name: "champion",
+          imageURL: "/progress-images/champion.png",
+        },
+        {
+          name: "streak",
+          imageURL: "/progress-images/streak.png",
+        },
+      ],
+      newWords: ["rescue", "open", "carry"],
+      words: [
+        { local: "enter", interpretation: "entrer" },
+        { local: "rescue", interpretation: "secourir" },
+        { local: "leave", interpretation: "en arrière" },
+        { local: "climb", interpretation: "monter" },
+        { local: "run", interpretation: "ouvrir" },
+        { local: "open", interpretation: "partir" },
+        { local: "carry", interpretation: "porter" },
+        { local: "return", interpretation: "arrière" },
+      ],
     },
     {
-      id: 4,
+      id: 1,
       imageURL: "/progress-images/catch-the-flight.png",
       categoryName: "Catch The Flight",
       maxWords: 24,
       learntWords: 10,
+      maxLevels: 4,
+      completedLevels: 3,
+      accuracy: 70,
+      attempts: 5,
+      timeSpent: 15,
+      avgTimeSpent: 3,
+      rewards: [
+        {
+          name: "champion",
+          imageURL: "/progress-images/Champion.png",
+        },
+        {
+          name: "streak",
+          imageURL: "/progress-images/streak.png",
+        },
+      ],
+      newWords: ["enter", "rescue", "leave"],
+      words: [
+        { local: "enter", interpretation: "entrer" },
+        { local: "rescue", interpretation: "secourir" },
+        { local: "leave", interpretation: "en arrière" },
+        { local: "climb", interpretation: "monter" },
+        { local: "run", interpretation: "ouvrir" },
+        { local: "open", interpretation: "partir" },
+        { local: "carry", interpretation: "porter" },
+        { local: "return", interpretation: "arrière" },
+      ],
     },
   ];
-
   const activeDays = new Set(["Mon", "Wed", "Fri", "Sat"]);
 
   const pronunciationScore: number = 100;
@@ -83,7 +202,7 @@ const Progress = () => {
     <div className="w-full">
       <div className="flex w-full items-center justify-center bg-[#F9FAFA] px-[20px] py-[65px] sm:px-[40px] lg:px-[80px]">
         <div className="flex w-full flex-col gap-[48px]">
-          <div className="flex flex-col gap-[24px] p-0 xl:p-[65px]">
+          <div className="flex w-full flex-col gap-[24px] p-0 xl:p-[65px]">
             <div className="font-axiforma text-[24px] font-bold">
               Game Statistics
             </div>
@@ -136,7 +255,7 @@ const Progress = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-[28px] rounded-[16px] border border-neutral-50 bg-[#DEE5ED] p-[24px]">
+              <div className="flex flex-col gap-[28px] rounded-[16px] border border-neutral-50 bg-[#F4F6F9] p-[24px]">
                 <div className="flex w-full flex-row items-center justify-between">
                   <div className="font-axiforma text-[18px] font-medium text-secondary-120">
                     Pronunciation Accuracy
@@ -192,7 +311,7 @@ const Progress = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-[28px] rounded-[16px] border bg-[#DCDD8F] p-[24px]">
+              <div className="flex flex-col gap-[28px] rounded-[16px] border border-[1px] border-[#DCDD8F] bg-[#FBFCDD] p-[24px]">
                 <div className="flex w-full flex-row items-center justify-between">
                   <div className="font-axiforma text-[18px] font-medium text-secondary-120">
                     Words Learnt
@@ -238,19 +357,22 @@ const Progress = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-[28px]">
+          <div className="flex w-full flex-col gap-[28px]">
             <div className="font-axiforma text-[24px] font-bold">
               Words Learnt
             </div>
             <div className="grid w-full gap-[3%] md:grid-cols-2">
               {categories.map(
-                (category: {
-                  id: number;
-                  imageURL: string;
-                  categoryName: string;
-                  maxWords: number;
-                  learntWords: number;
-                }) => (
+                (
+                  category: {
+                    id: number;
+                    imageURL: string;
+                    categoryName: string;
+                    maxWords: number;
+                    learntWords: number;
+                  },
+                  index: number,
+                ) => (
                   <div key={category.id} className="flex flex-col gap-[48px]">
                     <div>
                       <Image
@@ -285,7 +407,9 @@ const Progress = () => {
                           Words Learnt
                         </div>
                         <div>
-                          <CustomButton variant="primary">View</CustomButton>
+                          <Link href={`/dashboard/progress/${index}`}>
+                            <CustomButton variant="primary">View</CustomButton>
+                          </Link>
                         </div>
                       </div>
                     </div>

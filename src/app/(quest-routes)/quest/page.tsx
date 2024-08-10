@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import LevelDisplay from "~/components/level-display/LevelDisplay";
 import QuestLevelTimer from "~/components/quest-level-timer/QuestLevelTimer";
@@ -50,11 +50,14 @@ const Home: React.FC = () => {
           <div className="absolute bg-secondary-80 border-white hover:bg-secondary-50 cursor-pointer mb-3 rounded-full p-6 bottom-0 left-1/2">
           <Mic size={30} aria-label="mic icon" className="text-white" />
           </div>
+          <Suspense>
           <Canvas >
 
           <Scene />
-          {/* <SceneTwo /> */}
+          
           </Canvas>
+
+          </Suspense>
         </div>
 
     </div>

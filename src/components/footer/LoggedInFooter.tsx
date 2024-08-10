@@ -14,17 +14,17 @@ export default function LoggedInFooter() {
           Your go-to language learning app.
         </p>
       </div>
-      <div className="flex flex-row items-center gap-[28px] text-[12px] text-secondary-120">
-        <a href="" className="hover:text-[#000000]">
+      <div className="flex flex-col items-center gap-[10px] text-[12px] text-secondary-120 sm:flex-row sm:gap-[28px]">
+        <a href="/about-us" className="hover:text-[#000000]">
           About Us
         </a>
-        <a href="" className="hover:text-[#000000]">
+        <a href="/about-us" className="hover:text-[#000000]">
           Contact Us
         </a>
         <a href="/how-it-works" className="hover:text-[#000000]">
           How It Works
         </a>
-        <a href="" className="hover:text-[#000000]">
+        <a href="/privacy" className="hover:text-[#000000]">
           Privacy Policy
         </a>
       </div>

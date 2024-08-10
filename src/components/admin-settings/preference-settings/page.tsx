@@ -2,6 +2,7 @@ import { Apple, Facebook, Instagram, Mail } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import ToggleSwitch from "~/components/toggle/ToggleSwitch";
+import { useToast } from "~/components/ui/use-toast";
 
 const AdminPreferenceSettings: React.FC = () => {
   return (
@@ -20,30 +21,115 @@ const AdminPreferenceSettings: React.FC = () => {
 };
 
 const LanguageSelectionDiv: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownReference = useRef<HTMLDivElement | null>(null);
+  const containerReference = useRef<HTMLDivElement | null>(null);
+
+  const toggleDropdown = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsOpen((previousState) => !previousState);
+  };
+
+  const closeDropdown = () => {
+    setIsOpen(false);
+  };
+
+  const languages = [
+    "English",
+    "Spanish",
+    "French",
+    "German",
+    "Italian",
+    "Portuguese",
+    "Russian",
+    "Chinese",
+    "Japanese",
+    "Korean",
+    "Arabic",
+    "Hindi",
+    "Dutch",
+    "Swedish",
+  ];
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownReference.current &&
+        !dropdownReference.current.contains(event.target as Node)
+      ) {
+        closeDropdown();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className="mb-8 w-full rounded-tl-xl bg-[#F8FAFB] p-5">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-axiforma text-base font-semibold text-[#2A2A2A]">
-          Language selection
-        </h2>
-        <button>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
+    <div className="relative">
+      <div
+        ref={containerReference}
+        className={`relative mb-8 w-full rounded-xl ${
+          isOpen ? "rounded-b-none" : "rounded-b-xl"
+        } bg-[#F8FAFB] p-5 transition-shadow duration-300 ${
+          isOpen ? "shadow-[0_4px_12px_rgba(0,0,0,0.1)]" : ""
+        }`}
+      >
+        <div className="relative z-30">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="font-axiforma text-base font-semibold text-[#2A2A2A]">
+              Language selection
+            </h2>
+            <button onClick={toggleDropdown}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-5 w-5 transform transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+          <p className="font-axiforma text-xs font-normal text-[#717171]">
+            Choose which languages are available for learners to study.
+          </p>
+        </div>
       </div>
-      <p className="font-axiforma text-xs font-normal text-[#717171]">
-        Choose which languages are available for learners to study.
-      </p>
+
+      {isOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+            onClick={closeDropdown}
+          />
+          <div
+            ref={dropdownReference}
+            className="absolute left-0 top-[calc(100%-8px)] z-30 w-full rounded-b-xl bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
+            style={{
+              maxWidth: containerReference.current
+                ? containerReference.current.offsetWidth
+                : "100%",
+            }}
+          >
+            <div className="max-h-[340px] overflow-y-auto p-2">
+              {languages.map((language, index) => (
+                <div
+                  key={index}
+                  className="cursor-pointer p-2 transition-all duration-200 hover:border-b-2 hover:border-[#FF7B31] hover:bg-gray-100 hover:text-[#FF7B31]"
+                  onClick={closeDropdown}
+                >
+                  {language}
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
@@ -64,10 +150,8 @@ const SocialsDiv: React.FC = () => {
   };
 
   const handleButtonClick = (action: string) => {
-    // Perform the action (Remove or Unlink)
     // eslint-disable-next-line no-console
     console.log(`${action} clicked`);
-    // Close the dropdown
     setActiveDropdown(undefined);
   };
 
@@ -88,7 +172,7 @@ const SocialsDiv: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full bg-[#F8FAFB] p-5">
+    <div className="relative z-0 w-full overflow-hidden rounded-xl bg-[#F8FAFB] p-5">
       <h2 className="mb-4 font-axiforma text-base font-semibold text-[#2A2A2A]">
         Socials
       </h2>
@@ -126,39 +210,25 @@ const SocialsDiv: React.FC = () => {
                     background: "#FFFFFF",
                     boxShadow: "0px 5px 22px 4px rgba(0, 0, 0, 0.12)",
                     top: "-22px",
-                    right: "-22px",
+                    right: "-20px",
                   }}
                 >
                   <div className="flex flex-col space-y-1 p-1">
                     <button
-                      className="w-full rounded-sm text-left text-sm transition-colors duration-150"
+                      className="w-full rounded-sm text-left text-sm transition-colors duration-150 hover:bg-[#F3F4F6]"
                       style={{
                         padding: "6px 8px",
-                        background: "#FFFFFF",
                       }}
                       onClick={() => handleButtonClick("Remove")}
-                      onMouseEnter={(event) =>
-                        (event.currentTarget.style.backgroundColor = "#F3F4F6")
-                      }
-                      onMouseLeave={(event) =>
-                        (event.currentTarget.style.backgroundColor = "#FFFFFF")
-                      }
                     >
                       Remove
                     </button>
                     <button
-                      className="w-full rounded-sm text-left text-sm transition-colors duration-150"
+                      className="w-full rounded-sm text-left text-sm transition-colors duration-150 hover:bg-[#F3F4F6]"
                       style={{
                         padding: "6px 8px",
-                        background: "#FFFFFF",
                       }}
                       onClick={() => handleButtonClick("Unlink")}
-                      onMouseEnter={(event) =>
-                        (event.currentTarget.style.backgroundColor = "#F3F4F6")
-                      }
-                      onMouseLeave={(event) =>
-                        (event.currentTarget.style.backgroundColor = "#FFFFFF")
-                      }
                     >
                       Unlink
                     </button>
@@ -169,13 +239,30 @@ const SocialsDiv: React.FC = () => {
           </div>
         ))}
       </div>
+
+      <div className="h-6"></div>
     </div>
   );
 };
 
 const NotificationCommunicationDiv: React.FC = () => {
+  const { toast } = useToast();
+
+  const handleToggle = (
+    category: string,
+    option: string,
+    isEnabled: boolean,
+  ) => {
+    const action = isEnabled ? "enabled" : "disabled";
+    toast({
+      title: `${category} Updated`,
+      description: `${option} has been ${action}.`,
+      duration: 3000,
+    });
+  };
+
   return (
-    <div className="w-full bg-[#F8FAFB] p-5">
+    <div className="w-full rounded-xl bg-[#F8FAFB] p-5">
       <div className="max-h-full space-y-6 overflow-y-auto">
         <div className="mb-6">
           <h2 className="mb-4 font-axiforma text-base font-semibold text-[#2A2A2A]">
@@ -196,7 +283,15 @@ const NotificationCommunicationDiv: React.FC = () => {
               progress updates
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle(
+                    "Notification Preference",
+                    "Progress updates",
+                    isEnabled,
+                  )
+                }
+              />
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -204,7 +299,15 @@ const NotificationCommunicationDiv: React.FC = () => {
               new content available
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle(
+                    "Notification Preference",
+                    "New content available",
+                    isEnabled,
+                  )
+                }
+              />
             </div>
           </div>
         </div>
@@ -218,7 +321,11 @@ const NotificationCommunicationDiv: React.FC = () => {
               Email
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle("Delivery Method", "Email", isEnabled)
+                }
+              />
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -226,7 +333,11 @@ const NotificationCommunicationDiv: React.FC = () => {
               SMS
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle("Delivery Method", "SMS", isEnabled)
+                }
+              />
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -234,7 +345,11 @@ const NotificationCommunicationDiv: React.FC = () => {
               In-app
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle("Delivery Method", "In-app", isEnabled)
+                }
+              />
             </div>
           </div>
         </div>
@@ -253,7 +368,11 @@ const NotificationCommunicationDiv: React.FC = () => {
               Daily
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle("Notification Frequency", "Daily", isEnabled)
+                }
+              />
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -261,7 +380,11 @@ const NotificationCommunicationDiv: React.FC = () => {
               Weekly
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle("Notification Frequency", "Weekly", isEnabled)
+                }
+              />
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -269,7 +392,11 @@ const NotificationCommunicationDiv: React.FC = () => {
               Monthly
             </span>
             <div className="scale-75 transform">
-              <ToggleSwitch />
+              <ToggleSwitch
+                onChange={(isEnabled: boolean) =>
+                  handleToggle("Notification Frequency", "Monthly", isEnabled)
+                }
+              />
             </div>
           </div>
         </div>

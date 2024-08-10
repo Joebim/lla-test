@@ -72,8 +72,8 @@ const RolesAndPermissionUtils = ({
 
   return (
     <>
-      <div className="ml-4 mt-[2.8rem] flex w-[90%] flex-col items-center rounded-[0.625rem] border border-solid border-[#E9EEF3] bg-[#fff] sm:ml-[2.5rem]">
-        <div className="mx-auto grid max-w-[63.9375rem] grid-cols-1 gap-4 px-4 py-[3rem] lg:grid-cols-2">
+      <div className="ml-4 mt-[2.8rem] flex w-[100%] flex-col items-center rounded-[0.625rem] border border-solid border-[#E9EEF3] bg-[#fff] sm:ml-[0rem]">
+        <div className="mx-auto grid max-w-[63.9375rem] grid-cols-1 gap-6 px-4 py-[3rem] lg:grid-cols-2">
           {roles.map((role, index) => (
             <div key={index}>
               <div className="shadow-sm rounded-[0.75rem] border-2 border-[#D0D0D0] bg-white px-4 py-[1.25rem]">

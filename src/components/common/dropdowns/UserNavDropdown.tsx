@@ -72,7 +72,7 @@ const UserNavDropdown = ({
           <DropdownMenuSeparator />
           <DropdownMenuItem className="w-full p-0">
             <Link
-              href={"/"}
+              href={"/dashboard/profile-settings"}
               className="flex w-full items-center gap-3 border-b border-b-neutral-30 p-2 no-underline outline-none"
             >
               <Settings size={16} className="text-neutral-90" />
@@ -86,7 +86,7 @@ const UserNavDropdown = ({
           </DropdownMenuItem>
           <DropdownMenuItem className="w-full p-0">
             <Link
-              href={"/"}
+              href={"/profile-settings/support"}
               className="flex items-center gap-3 p-2 no-underline outline-none"
             >
               <CircleHelp size={16} className="text-neutral-90" />
@@ -101,7 +101,7 @@ const UserNavDropdown = ({
           <DropdownMenuSeparator className="h-1 bg-primary-10" />
           <DropdownMenuItem className="w-full p-0">
             <Link
-              href={"/"}
+              href={"/signin"}
               className="flex items-center gap-3 p-2 text-critical-100 no-underline outline-none"
             >
               <LogOut size={16} />

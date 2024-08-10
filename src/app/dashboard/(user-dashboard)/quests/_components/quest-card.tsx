@@ -35,16 +35,18 @@ export default function QuestCard({ quest }: QuestCardProperties) {
           />
         </div>
         <div className="border-stroke flex flex-[1] flex-row items-center justify-between rounded-[20px] border border-solid p-[14px] duration-100 group-hover:border-[3px] group-hover:border-primary-60 group-hover:shadow-primary">
-          <div>
-            <h1 className="text-[14px] font-bold text-black">{quest.name}</h1>
-            <p className="text-[14px] text-secondary-100">{`${quest.words} Words`}</p>
+          <div className="block group-hover:hidden sm:group-hover:block">
+            <h1 className="text-[11px] font-bold text-black sm:text-[14px]">
+              {quest.name}
+            </h1>
+            <p className="text-[11px] text-secondary-100 sm:text-[14px]">{`${quest.words} Words`}</p>
           </div>
-          <div className="">
+          <div className="hidden w-full items-center justify-center group-hover:flex sm:w-auto sm:justify-end">
             {
               <Button
                 onClick={() => router.push("/dashboard/quests/1")}
                 variant="primary"
-                className="hidden w-[90px] group-hover:block"
+                className="group-hover:w-[120px] sm:group-hover:w-[90px]"
               >
                 View
               </Button>

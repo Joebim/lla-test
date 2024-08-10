@@ -112,6 +112,7 @@ const DarkNav = () => {
             )}
           >
             <Logo />
+
             <div className="hidden items-center gap-5 md:flex lg:gap-7">
               <DropdownMenu>
                 <DropdownMenuTrigger
@@ -124,7 +125,7 @@ const DarkNav = () => {
                       width={8}
                       height={8}
                     />
-                    How it works
+                    How It Works
                     <Image
                       src="/navbar/howitworks-dot.svg"
                       alt="mobile-logo"
@@ -138,7 +139,7 @@ const DarkNav = () => {
 
             <div className="flex space-x-6">
               <>
-                <TransitionLink href="/signup" variant="secondary-two">
+                <TransitionLink href="/external-quest" variant="secondary-two">
                   Delve In
                 </TransitionLink>
               </>

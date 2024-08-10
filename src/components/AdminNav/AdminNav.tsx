@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 
+import AdminNavDropdown from "../common/dropdowns/AdminNavDropdown";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,9 +16,9 @@ import NavGradientAnimation from "./NavGradientAnimation";
 
 const AdminNav = () => {
   return (
-    <nav className="z-50 h-12 w-full max-w-[1728px] font-axiforma text-black md:h-[90px] md:p-0">
+    <nav className="z-50 h-12 w-full font-axiforma text-black md:h-[90px] md:p-0">
       <div
-        className={`shadow mx-auto flex items-center justify-between border-b border-b-neutral-40 bg-white px-[20px] lg:px-[70px] ${styles.navLinkGradient}`}
+        className={`shadow sticky left-0 right-0 top-0 mx-auto flex items-center justify-between border-b border-b-neutral-40 bg-white px-[20px] lg:px-[70px] ${styles.navLinkGradient}`}
       >
         {/* Desktop Navigation */}
         <div className="hidden w-full items-center justify-between pb-[15px] pt-[19px] md:flex">
@@ -143,30 +144,7 @@ const AdminNav = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            <div className="flex h-11 w-full cursor-pointer flex-row items-center gap-1 rounded-full border-2 border-[#E9EEF3] pl-[4px] pr-[8px]">
-              <Image
-                src="/navbar/profile-standin.svg"
-                alt="profile-icon"
-                width={36}
-                height={36}
-                className="rounded-full"
-              />
-              <div className="flex flex-col">
-                <p className="text-[11.5px] font-semibold text-secondary-120">
-                  John Doe
-                </p>
-                <p className="text-[11.5px] font-normal text-secondary-70">
-                  Super Admin
-                </p>
-              </div>
-              <Image
-                src="/logo/about-down.svg"
-                alt="profile-arrow"
-                width={16}
-                height={16}
-              />
-            </div>
+            <AdminNavDropdown />
           </div>
         </div>
 

@@ -70,20 +70,20 @@ const EditAdmin: React.FC<EditAdminProperties> = ({ setOpen, admin }) => {
                   onClick={() => setDropdownOpen((previous) => !previous)}
                 />
                 {dropDownOpen && (
-                  <ul className="shadow-lg absolute right-[20px] top-[100%] z-10 mt-1 w-full rounded-md bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <div className="shadow-4xl flex w-full flex-col rounded-[10px] border border-neutral-40 bg-white p-2">
                     {dropDownList.map((role, index) => (
-                      <li
+                      <p
                         key={index}
-                        className="cursor-pointer select-none p-2 text-gray-900"
+                        className="cursor-pointer px-2 py-2 font-inter text-[1.125rem] font-normal leading-[1.5rem] text-secondary-40 transition-all hover:bg-neutral-40"
                         onClick={() => {
                           setNewRole(role);
                           setDropdownOpen(false);
                         }}
                       >
                         {role}
-                      </li>
+                      </p>
                     ))}
-                  </ul>
+                  </div>
                 )}
               </div>
             </div>

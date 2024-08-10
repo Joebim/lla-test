@@ -565,3 +565,16 @@ body {
   line-height: 48px;
   text-transform: capitalize;
 }
+
+.increment-loader-width-animation {
+  animation: incrementWidthAnimation 20s forwards;
+}
+
+@keyframes incrementWidthAnimation {
+  from {
+    width: 20%;
+  }
+  to {
+    width: 100%;
+  }
+}

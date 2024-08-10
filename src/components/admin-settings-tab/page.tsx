@@ -5,7 +5,8 @@ import { ReactNode, useState } from "react";
 
 import AdminPreferenceSettings from "~/components/admin-settings/preference-settings/page";
 import AdminProfile from "~/components/admin-settings/profileSettings/page";
-import SecurityCard from "../admin-settings/Password&Security/SecurityCard";
+import RolesAndPermission from "../admin-settings/roles/overview/rolesAndPermission/page";
+import SecurityCard from "../Password&Security/SecurityCard";
 
 interface TabProperties {
   label: string;
@@ -39,7 +40,7 @@ const tabs: TabProperties[] = [
   },
   {
     label: "Roles & Permission",
-    children: <>Nothing yet!</>,
+    children: <RolesAndPermission />,
     title: "Roles & Permissions",
     subDescription: "Creating and assign various roles to admins",
     icon: <ShieldCheck className="h-5 w-5" />,
@@ -50,8 +51,8 @@ const AdminSettingsTab = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <main>
-      <div className="mt-4 md:mt-0">
+    <main className="mx-auto max-w-[1728px] px-4 lg:px-[70px]">
+      <div className="mt-4">
         <h2 className="m-0 text-[15px] font-bold text-neutral-150 md:text-[19px]">
           {tabs[activeTab].title}
         </h2>
@@ -59,6 +60,7 @@ const AdminSettingsTab = () => {
           {tabs[activeTab].subDescription}
         </p>
       </div>
+
       <section className="mt-[25px] flex w-full items-center justify-between border-b border-t py-[10px]">
         {tabs.map((tab, index: number) => (
           <button

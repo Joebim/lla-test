@@ -4,7 +4,6 @@ import Image from "next/image";
 
 import InviteAdminModal from "~/components/modals/AdminRolesModals/inviteAdmins";
 import AdminsInviteSent from "~/components/modals/AdminRolesModals/sentAdmins";
-import RolesTabs from "~/components/rolesAndPermission/rolesTabs";
 import add from "../../../public/adminRoles/add.svg";
 
 interface OverviewProperties {
@@ -35,7 +34,7 @@ const Overview = ({
     <div>
       <div>
         <div>
-          <div className="w-full px-4 py-8 lg:px-[2.5rem]">
+          <div className="w-full px-4 py-8 lg:px-[0rem]">
             <div className="flex w-full flex-col flex-wrap justify-between gap-2 lg:flex-row lg:items-center">
               <div>
                 <h1 className="font-axiforma text-[1.2rem] font-bold leading-[2rem] text-[#2A2A2A] sm:text-[1.75rem] sm:leading-[2.625rem]">
@@ -56,9 +55,6 @@ const Overview = ({
                   Add Invite
                 </button>
               </div>
-            </div>
-            <div className="w-full">
-              <RolesTabs />
             </div>
           </div>
           {showInviteModal && (
