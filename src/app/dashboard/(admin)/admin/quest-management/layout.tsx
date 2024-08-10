@@ -8,7 +8,7 @@ export default function QuestLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="felx w-full flex-col">
+    <div className="felx w-full flex-col p-12">
       <div className="mt-10 flex flex-col md:mt-0">
         <h1 className="font-axiforma text-2xl font-semibold capitalize">
           manage your quests
@@ -33,7 +33,7 @@ export default function QuestLayout({
             </TabsTrigger>
           </div>
         </TabsList>
-        {children}
+        <>{children}</>
       </Tabs>
     </div>
   );

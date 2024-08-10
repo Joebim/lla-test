@@ -1,27 +1,8 @@
 import { create } from "zustand";
 
-interface Image {
-  id: string;
-  url: string;
-}
+import { MediaState } from "~/app/dashboard/(admin)/admin/quest-management/types";
 
-interface Collection {
-  id: string;
-  title: string;
-  images: Image[];
-}
-
-interface CharactersState {
-  collections: Collection[];
-  addCollection: (collection: Collection) => void;
-  deleteCollection: (id: string) => void;
-  editCollection: (id: string, updatedCollection: Collection) => void;
-  clearAllCollections: () => void;
-  addImageToCollection: (image: Image, collectionId?: string) => void;
-  deleteImageFromCollection: (collectionId: string, imageId: string) => void;
-}
-
-const useCharactersStore = create<CharactersState>((set) => ({
+const useMediaStore = create<MediaState>((set) => ({
   collections: [],
   addCollection: (collection) =>
     set((state) => ({ collections: [...state.collections, collection] })),
@@ -47,7 +28,8 @@ const useCharactersStore = create<CharactersState>((set) => ({
       if (collectionIndex === -1) {
         collectionsCopy.push({
           id: collectionId,
-          title: "Default Collection",
+          type: "backgrounds",
+          title: "Collection 01",
           images: [image],
         });
       } else {
@@ -68,4 +50,4 @@ const useCharactersStore = create<CharactersState>((set) => ({
     })),
 }));
 
-export default useCharactersStore;
+export default useMediaStore;
