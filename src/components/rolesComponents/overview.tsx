@@ -34,7 +34,7 @@ const Overview = ({
     <div>
       <div>
         <div>
-          <div className="w-full px-4 py-8 lg:px-[2.5rem]">
+          <div className="w-full px-4 py-8 lg:px-[0rem]">
             <div className="flex w-full flex-col flex-wrap justify-between gap-2 lg:flex-row lg:items-center">
               <div>
                 <h1 className="font-axiforma text-[1.2rem] font-bold leading-[2rem] text-[#2A2A2A] sm:text-[1.75rem] sm:leading-[2.625rem]">
