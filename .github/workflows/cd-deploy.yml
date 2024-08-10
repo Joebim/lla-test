@@ -22,8 +22,7 @@ jobs:
 
       - name: Save Docker Image
         run: |
-          IMAGE_TAG="latest"
-          docker save languagelearningfe:${IMAGE_TAG} > languagelearningfe.tar
+          docker save languagelearningfe:dev > languagelearningfe.tar
           gzip languagelearningfe.tar
 
       - name: Transfer Docker Image to Server
@@ -42,7 +41,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            IMAGE_TAG="latest"
             mkdir -p /tmp/php
             cd /tmp/php
             gunzip languagelearningfe.tar.gz
