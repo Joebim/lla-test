@@ -7,7 +7,7 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <TabsContent value="medialibrary">
-        <MutateMediaLibrary id={params.id} />
+        <MutateMediaLibrary id={params.id} dataType="animations" />
       </TabsContent>
     </>
   );
