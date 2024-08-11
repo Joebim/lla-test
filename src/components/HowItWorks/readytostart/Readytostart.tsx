@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import CustomButton from "~/components/common/common-button/common-button";
 
 const ReadyToStart = () => {
@@ -11,7 +13,9 @@ const ReadyToStart = () => {
             </span>
             Start Your Language Adventure?
           </h3>
-          <CustomButton variant="primary">Delve In</CustomButton>
+          <Link href="/signup">
+            <CustomButton variant="primary">Delve In</CustomButton>
+          </Link>
         </div>
         <div className="flex self-center lg:w-[746px]">
           <p className="text-[18px] font-normal leading-[30px] tracking-tighter text-secondary-110">
