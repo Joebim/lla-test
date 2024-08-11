@@ -7,7 +7,6 @@ const Quest = () => {
       <div>
         <QuestHero />
       </div>
-
       <CallToAction />
     </main>
   );

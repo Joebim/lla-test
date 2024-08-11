@@ -1,6 +1,8 @@
 "use client";
 
+import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { questImages } from "./constants";
@@ -22,38 +24,38 @@ const ExploreQuests = () => {
 
   return (
     <>
-      <div className="grid gap-y-8 pt-8 md:pt-16">
-        <h1 className="text-center font-axiformaBold text-3xl max-md:pb-8 md:text-4xl lg:text-5xl">
-          Explore Language Quests
-        </h1>
-        <div className="hidden items-center justify-center gap-6 sm:justify-between md:flex md:px-6 md:py-10 lg:px-10">
-          <h3 className="font-axiformaSemiBold text-xl lg:text-2xl">
+      <div className="px-6 md:px-10">
+        <div className="pb-10 pt-4 sm:flex lg:pb-16 lg:pt-10">
+          <Link
+            className="flex gap-1 text-sm max-sm:pb-2"
+            href="/external-quest"
+          >
+            <ArrowLeft className="pt-0.5" size={18} />
+            Back
+          </Link>
+          <h1 className="mx-auto text-center font-axiformaBold text-3xl md:text-4xl lg:text-5xl">
             The Burning Building
-          </h3>
-          <div className="flex gap-2 transition-all *:object-cover lg:gap-4">
-            {questImages.map((image, index) => (
-              <Image
-                width={120}
-                height={120}
-                key={index}
-                src={image}
-                alt={`image ${index}`}
-                className={
-                  index === imgIndex ? "border-2 border-primary-90" : ""
-                }
-                onClick={() => setImgIndex(index)}
-              />
-            ))}
-          </div>
+          </h1>
         </div>
-      </div>
-      <div className="md:px-6 md:py-10 lg:px-10">
         <DisplayQuest
           imgs={questImages}
           imgIndex={imgIndex}
           questNo={questImages.length}
           setImgIndex={setImgIndex}
         />
+        <div className="hidden flex-wrap gap-2 pt-6 transition-all *:object-cover sm:flex lg:gap-4">
+          {questImages.map((image, index) => (
+            <Image
+              width={120}
+              height={120}
+              key={index}
+              src={image}
+              alt={`image ${index}`}
+              className={index === imgIndex ? "border-2 border-primary-90" : ""}
+              onClick={() => setImgIndex(index)}
+            />
+          ))}
+        </div>
         <ReadyToStart />
       </div>
     </>

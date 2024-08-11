@@ -1,4 +1,11 @@
-import { Crown, LucideIcon, Users } from "lucide-react";
+import {
+  ChartNoAxesColumnIncreasing,
+  Crown,
+  FileCheck,
+  Files,
+  LucideIcon,
+  Users,
+} from "lucide-react";
 
 export interface SidebarMenuItem {
   title: string;
@@ -6,13 +13,13 @@ export interface SidebarMenuItem {
   icon: LucideIcon;
 }
 
-const baseRoute = `/roles`;
+const baseRoute = `/dashboard/admin`;
 
 export const sidebarMenu: SidebarMenuItem[] = [
   {
     title: "Overview",
     path: `${baseRoute}/overview`,
-    icon: Crown,
+    icon: ChartNoAxesColumnIncreasing,
   },
   {
     title: "User Management",
@@ -20,8 +27,18 @@ export const sidebarMenu: SidebarMenuItem[] = [
     icon: Users,
   },
   {
+    title: "Media Library",
+    path: `${baseRoute}/media-library`,
+    icon: Files,
+  },
+  {
     title: "Quest Management",
     path: `${baseRoute}/quest-management`,
     icon: Crown,
+  },
+  {
+    title: "Manage FAQ",
+    path: `${baseRoute}/faq`,
+    icon: FileCheck,
   },
 ];

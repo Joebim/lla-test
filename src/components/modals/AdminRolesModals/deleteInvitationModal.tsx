@@ -21,7 +21,7 @@ const DeleteInvitation = ({
     <div className="">
       <div
         className="fixed inset-0 flex items-center justify-center bg-black opacity-[50%] backdrop-blur-sm"
-        onClick={() => setOpenDeletedModal}
+        onClick={() => setShowDeletingInvitationModal(false)}
       ></div>
       <div className="fixed inset-0 z-50 flex items-center justify-center">
         <div
@@ -29,7 +29,7 @@ const DeleteInvitation = ({
         >
           <div className="absolute right-3 top-3">
             <Image
-              onClick={() => setOpenDeletedModal}
+              onClick={() => setShowDeletingInvitationModal(false)}
               src={CloseImage}
               alt="close"
               height={20}

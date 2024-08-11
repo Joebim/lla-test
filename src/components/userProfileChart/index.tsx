@@ -1,7 +1,14 @@
 "use client";
 
 import clsx from "clsx";
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import {
   ChartConfig,
@@ -24,11 +31,22 @@ const chartConfig = {
 
 const UserProfileChart = ({ className }: { className?: string }) => {
   return (
-    <div className="mb-[20px] w-full rounded-[10px] border-2 p-[20px] lg:mb-0">
-      <div>
+    <div className="mb-[20px] w-full rounded-[10px] border-[1px] border-secondary-10 lg:mb-0">
+      <div className="mb-[5px] flex items-center justify-between border-b-[2px] border-b-neutral-5 p-[20px]">
         <h3 className="font-bold">Gameplay Stats</h3>
+        <select
+          name=""
+          id=""
+          className="rounded-[5px] border-[1px] border-secondary-20 p-[6px] text-[13px] text-secondary-70 outline-none"
+        >
+          <option value="">Last 7 days</option>
+          <option value="">Last 30 days</option>
+        </select>
       </div>
-      <ChartContainer className={clsx(className)} config={chartConfig}>
+      <ChartContainer
+        className={clsx(className, "p-[20px]")}
+        config={chartConfig}
+      >
         <BarChart
           accessibilityLayer
           data={chartData}
@@ -37,6 +55,7 @@ const UserProfileChart = ({ className }: { className?: string }) => {
           }}
         >
           <CartesianGrid vertical={false} />
+          <YAxis tickLine={false} tickMargin={10} axisLine={false} />
           <XAxis
             dataKey="month"
             tickLine={false}
@@ -47,7 +66,12 @@ const UserProfileChart = ({ className }: { className?: string }) => {
             cursor={false}
             content={<ChartTooltipContent hideLabel />}
           />
-          <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+          <Bar
+            dataKey="desktop"
+            fill="var(--color-desktop)"
+            radius={8}
+            barSize={70}
+          >
             <LabelList
               position="top"
               offset={12}
