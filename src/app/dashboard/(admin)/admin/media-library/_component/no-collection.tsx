@@ -18,7 +18,7 @@ import {
 } from "~/components/ui/dialog";
 import { Label } from "~/components/ui/label";
 import useMediaStore from "~/store/media-library-store";
-import { CollectionDataType } from "../types";
+import { CollectionDataType } from "../../../../../../config/types";
 
 interface Properties {
   dataType: CollectionDataType;

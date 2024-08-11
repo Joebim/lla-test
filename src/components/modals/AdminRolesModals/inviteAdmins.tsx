@@ -26,6 +26,7 @@ const InviteAdminModal = ({
   const [emailError, setEmailError] = useState("");
   const [dropDownOpen, setDropdownOpen] = useState(false);
   const [dropDownShow, setDropDownShow] = useState("");
+  const [roleError, setRoleError] = useState("");
   const dropDownList = ["Content Creator", "Developer"];
   const [valid, setValid] = useState(false);
 
@@ -43,10 +44,23 @@ const InviteAdminModal = ({
     setEmailError(validateEmail(emailValue) ? "" : "Invalid email address");
   };
 
+  const handleRoleSelect = (role: string) => {
+    setDropDownShow(role);
+    setDropdownOpen(false);
+    setRoleError(role ? "" : "Please select a role");
+  };
+
   const sendInvite = () => {
     if (valid) {
       setShowSuccess(true);
       setShowInviteModal(false);
+    } else {
+      if (!validateEmail(email)) {
+        setEmailError("Please enter a valid email address");
+      }
+      if (dropDownShow === "") {
+        setRoleError("Please select a role");
+      }
     }
   };
 
@@ -81,57 +95,73 @@ const InviteAdminModal = ({
               <label className="font-inter text-base font-normal leading-[1.5rem] text-secondary-40">
                 Enter Email Address
               </label>
-              <input
-                className={`active:shadow-custom-purple active:border-primary-default focus-within:border-primary-default focus-within:shadow-custom-purple relative flex w-full items-center gap-[15px] rounded-[8px] border bg-white px-[16px] py-[12px] text-secondary-40 outline-none duration-100 ${emailError ? "border-red text-red" : "text-dark border-neutral-40"}`}
-                type="email"
-                placeholder="Omojasolaade@gmail.com"
-                onChange={handleEmailChange}
-                value={email}
-              />
+              <div>
+                <input
+                  className={`active:shadow-custom-purple active:border-primary-default focus-within:border-primary-default focus-within:shadow-custom-purple relative flex w-full items-center gap-[15px] rounded-[8px] border bg-white px-[16px] py-[12px] text-secondary-40 outline-none duration-100 ${
+                    emailError
+                      ? "border-red-500 text-red-500"
+                      : "text-dark border-neutral-40"
+                  }`}
+                  type="email"
+                  placeholder="Omojasolaade@gmail.com"
+                  onChange={handleEmailChange}
+                  value={email}
+                />
+                {emailError && (
+                  <p className="text-sm text-red-500">{emailError}</p>
+                )}
+              </div>
             </div>
             <div className="flex flex-col gap-[0.75rem]">
               <label className="font-inter text-base font-normal leading-[1.5rem] text-secondary-40">
                 Select Admin Role
               </label>
-              <div className="relative">
-                <div
-                  className={`active:shadow-custom-purple active:border-primary-default focus-within:border-primary-default focus-within:shadow-custom-purple relative flex w-full items-center gap-[15px] rounded-[8px] border bg-white px-[16px] py-[12px] text-secondary-40 duration-100 ${emailError ? "border-red text-red" : "text-dark border-neutral-40"}`}
-                >
-                  {dropDownShow === "" ? "Role" : dropDownShow}
+              <div>
+                <div className="relative">
+                  <div
+                    className={`active:shadow-custom-purple active:border-primary-default focus-within:border-primary-default focus-within:shadow-custom-purple relative flex w-full items-center gap-[15px] rounded-[8px] border bg-white px-[16px] py-[12px] text-secondary-40 duration-100 ${
+                      roleError
+                        ? "border-red-500 text-red-500"
+                        : "text-dark border-neutral-40"
+                    }`}
+                  >
+                    {dropDownShow === "" ? "Role" : dropDownShow}
+                  </div>
+                  <Image
+                    className="absolute right-[20px] top-[15px] cursor-pointer"
+                    src={dropDown}
+                    onClick={() => setDropdownOpen(!dropDownOpen)}
+                    alt="dropdown"
+                    width={20}
+                    height={20}
+                  />
                 </div>
-                <Image
-                  className="absolute right-[20px] top-[15px] cursor-pointer"
-                  src={dropDown}
-                  onClick={() => setDropdownOpen(!dropDownOpen)}
-                  alt="dropdown"
-                  width={20}
-                  height={20}
-                />
-              </div>
-              {dropDownOpen && (
-                <div className="shadow-4xl flex w-full flex-col rounded-[10px] border border-neutral-40 bg-white p-2">
-                  {dropDownList.map((dropDown, index) => (
-                    <>
-                      <hr />
-                      <div
-                        className="cursor-pointer px-2 py-2 font-inter text-[1.125rem] font-normal leading-[1.5rem] text-secondary-40 transition-all hover:bg-neutral-40"
-                        key={index}
-                        onClick={() => {
-                          setDropDownShow(dropDown);
-                          setDropdownOpen(!dropDownOpen);
-                        }}
-                      >
-                        {dropDown}
+                {dropDownOpen && (
+                  <div className="shadow-4xl flex w-full flex-col rounded-[10px] border border-neutral-40 bg-white p-2">
+                    {dropDownList.map((dropDown, index) => (
+                      <div key={index}>
+                        <hr />
+                        <div
+                          className="cursor-pointer px-2 py-2 font-inter text-[1.125rem] font-normal leading-[1.5rem] text-secondary-40 transition-all hover:bg-neutral-40"
+                          onClick={() => handleRoleSelect(dropDown)}
+                        >
+                          {dropDown}
+                        </div>
+                        <hr />
                       </div>
-                      <hr />
-                    </>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
+                {roleError && (
+                  <p className="text-sm text-red-500">{roleError}</p>
+                )}
+              </div>
             </div>
             <button
               onClick={sendInvite}
-              className={`flex w-full items-center justify-center rounded-[3.6875rem] border border-solid py-[0.62rem] font-inter text-[1.125rem] ${valid ? "border-[#CC4900] bg-[#FE6A19]" : "bg-[#FFBD99]"} font-semibold leading-[1.75rem] text-white`}
+              className={`flex w-full items-center justify-center rounded-[3.6875rem] border border-solid py-[0.62rem] font-inter text-[1.125rem] ${
+                valid ? "border-[#CC4900] bg-[#FE6A19]" : "bg-[#FFBD99]"
+              } font-semibold leading-[1.75rem] text-white`}
             >
               Send Invite
             </button>
