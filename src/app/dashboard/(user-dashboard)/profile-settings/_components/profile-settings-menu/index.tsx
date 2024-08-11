@@ -52,7 +52,7 @@ const ProfileSettingsMenu = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const handleClick = () => setIsMenuOpen(false);
   return (
-    <div className="sm:max-w-[240px]">
+    <div className="w-full max-w-[240px]">
       <button
         onClick={toggleMenu}
         className={`ml-4 block rounded-full border bg-[#FFFFFF] p-[12px] md:hidden ${isMenuOpen ? "hidden" : "flex"}`}

@@ -43,11 +43,10 @@ const InviteLink: React.FC<InviteLinkProperties> = ({ inviteLink }) => {
 
   return (
     <div className="mt-6 w-full rounded-2xl bg-white font-axiformaSemiBold">
-      <div
-        className="title flex h-14 w-full items-center justify-between rounded-t-2xl p-4 text-black"
-        style={{ background: "#F7F2EC" }}
-      >
-        <h2 className="text-xl font-semibold">Your Invite Link</h2>
+      <div className="flex items-center rounded-tl-[16px] rounded-tr-[16px] bg-primary-10 p-5">
+        <h2 className="text-xl font-semibold text-secondary-120">
+          Your Invite Link
+        </h2>
       </div>
       <div className="p-4">
         <label
