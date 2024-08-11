@@ -52,7 +52,13 @@ const data = [
   },
 ];
 
-const AdminFAQTable = ({ className }: { className?: string }) => {
+const AdminFAQTable = ({
+  className,
+  isModalOpen,
+}: {
+  className?: string;
+  isModalOpen: () => void;
+}) => {
   const dropdownReference = useRef<HTMLDivElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState<number>();
 
@@ -92,7 +98,7 @@ const AdminFAQTable = ({ className }: { className?: string }) => {
                     style={{
                       padding: "6px 8px",
                     }}
-                    // onClick={() => handleButtonClick("Remove")}
+                    onClick={isModalOpen}
                   >
                     Delete
                   </button>
@@ -115,8 +121,8 @@ const AdminFAQTable = ({ className }: { className?: string }) => {
   };
 
   return (
-    <div className="w-full rounded-[10px] border-secondary-10">
-      <Table className={clsx(className, "w-[100%]")}>
+    <div className="w-full overflow-x-auto rounded-[10px] border-secondary-10">
+      <Table className={clsx(className, "w-fit")}>
         <TableHeader className="bg-neutral-10">
           <TableRow className="rounded-tl-[14px] rounded-tr-[14px] border-none">
             <TableHead className="font-semibold">Question</TableHead>
