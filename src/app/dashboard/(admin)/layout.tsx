@@ -13,7 +13,7 @@ export default function AdminLayout({
       <AdminNav />
       <div className="flex flex-1">
         <AdminSidebar />
-        <main className="flex-1 bg-white p-3">
+        <main className="flex-1 bg-neutral-5 p-3">
           <Suspense>{children}</Suspense>
         </main>
       </div>
