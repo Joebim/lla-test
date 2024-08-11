@@ -1,6 +1,5 @@
 "use client";
 
-import { TabsContent } from "~/components/ui/tabs";
 import useMediaStore from "~/store/media-library-store";
 import Collections from "../_component/collections";
 import { RenderMediaLibrary } from "../_component/media-library";
@@ -13,19 +12,17 @@ const CharacterPage = () => {
   );
   return (
     <>
-      <TabsContent value="medialibrary">
-        <RenderMediaLibrary dataType="characters">
-          {specificCollections.length > 0 && (
-            <Collections
-              collections={specificCollections}
-              dataType="characters"
-            />
-          )}
-          {specificCollections.length <= 0 && (
-            <NoCollection dataType="characters" />
-          )}
-        </RenderMediaLibrary>
-      </TabsContent>
+      <RenderMediaLibrary dataType="characters">
+        {specificCollections.length > 0 && (
+          <Collections
+            collections={specificCollections}
+            dataType="characters"
+          />
+        )}
+        {specificCollections.length <= 0 && (
+          <NoCollection dataType="characters" />
+        )}
+      </RenderMediaLibrary>
     </>
   );
 };

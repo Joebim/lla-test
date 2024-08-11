@@ -1,6 +1,5 @@
 "use client";
 
-import { TabsContent } from "~/components/ui/tabs";
 import useMediaStore from "~/store/media-library-store";
 import Collections from "../_component/collections";
 import { RenderMediaLibrary } from "../_component/media-library";
@@ -13,19 +12,17 @@ const BackgroundsPage = () => {
   );
   return (
     <>
-      <TabsContent value="medialibrary">
-        <RenderMediaLibrary dataType="backgrounds">
-          {specificCollections.length > 0 && (
-            <Collections
-              collections={specificCollections}
-              dataType="backgrounds"
-            />
-          )}
-          {specificCollections.length <= 0 && (
-            <NoCollection dataType="backgrounds" />
-          )}
-        </RenderMediaLibrary>
-      </TabsContent>
+      <RenderMediaLibrary dataType="backgrounds">
+        {specificCollections.length > 0 && (
+          <Collections
+            collections={specificCollections}
+            dataType="backgrounds"
+          />
+        )}
+        {specificCollections.length <= 0 && (
+          <NoCollection dataType="backgrounds" />
+        )}
+      </RenderMediaLibrary>
     </>
   );
 };
