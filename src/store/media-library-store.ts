@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { MediaState } from "~/app/dashboard/(admin)/admin/quest-management/types";
+import { MediaState } from "~/config/types";
 
 const useMediaStore = create<MediaState>((set) => ({
   collections: [],

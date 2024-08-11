@@ -12,8 +12,8 @@ import CustomInput from "~/components/input/CustomInput";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { ScrollArea } from "~/components/ui/scroll-area";
+import { CollectionDataType } from "../../../../../../config/types";
 import useMediaStore from "../../../../../../store/media-library-store";
-import { CollectionDataType } from "../types";
 
 const links = [
   { label: "Backgrounds", route: "backgrounds" },
@@ -41,7 +41,7 @@ export const RenderMediaLibrary = ({
         </div>
         <div className="flex flex-1 items-center justify-center p-4">
           <div className="mr-auto flex items-center justify-start gap-2">
-            <Link href={`/dashboard/admin/quest-management/backgrounds`}>
+            <Link href={`/dashboard/admin/media-library/${dataType}`}>
               <span className="capitalize text-[#888888]">{dataType}</span>
             </Link>
           </div>
@@ -95,7 +95,8 @@ export const RenderMediaLibrary = ({
             {links.map((link) => (
               <Link
                 key={link.route}
-                href={`/dashboard/admin/quest-management/${link.route}`}
+                href={`/dashboard/admin/media-library/${link.route}`}
+                scroll={false}
               >
                 <li
                   className={clsx(
@@ -117,6 +118,7 @@ export const RenderMediaLibrary = ({
 
 export const MutateMediaLibrary = ({
   id,
+  dataType,
 }: {
   id?: string;
   dataType: CollectionDataType;
@@ -163,13 +165,6 @@ export const MutateMediaLibrary = ({
     }
   };
 
-  // useEffect(() => {
-  //   // Redirect if type is "add" and collections are empty
-  //   if (type === "edit" && collections.length === 0) {
-  //     router.push("/dashboard/admin/quest-management/backgrounds");
-  //   }
-  // }, [type, collections, router]);
-
   return (
     <div className="flex min-h-[600px] w-full flex-col overflow-hidden rounded-[10px] border">
       <div className="flex w-full border-b">
@@ -178,8 +173,8 @@ export const MutateMediaLibrary = ({
         </div>
         <div className="flex flex-1 items-center justify-center p-4">
           <div className="mr-auto flex items-center justify-start gap-2">
-            <Link href={`/dashboard/admin/quest-management/backgrounds`}>
-              <span className="text-[#888888]">Backgound</span>
+            <Link href={`/dashboard/admin/media-library/${dataType}`}>
+              <span className="capitalize text-[#888888]">{dataType}</span>
             </Link>
             <span>/</span>
             <strong className="capitalize">
@@ -238,7 +233,8 @@ export const MutateMediaLibrary = ({
             {links.map((link) => (
               <Link
                 key={link.route}
-                href={`/dashboard/admin/quest-management/${link.route}`}
+                href={`/dashboard/admin/media-library/${link.route}`}
+                scroll={false}
               >
                 <li
                   className={clsx(
