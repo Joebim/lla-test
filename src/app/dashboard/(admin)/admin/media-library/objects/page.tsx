@@ -1,6 +1,5 @@
 "use client";
 
-import { TabsContent } from "~/components/ui/tabs";
 import useMediaStore from "~/store/media-library-store";
 import Collections from "../_component/collections";
 import { RenderMediaLibrary } from "../_component/media-library";
@@ -13,16 +12,12 @@ const ObjectsPage = () => {
   );
   return (
     <>
-      <TabsContent value="medialibrary">
-        <RenderMediaLibrary dataType="objects">
-          {specificCollections.length > 0 && (
-            <Collections collections={specificCollections} dataType="objects" />
-          )}
-          {specificCollections.length <= 0 && (
-            <NoCollection dataType="objects" />
-          )}
-        </RenderMediaLibrary>
-      </TabsContent>
+      <RenderMediaLibrary dataType="objects">
+        {specificCollections.length > 0 && (
+          <Collections collections={specificCollections} dataType="objects" />
+        )}
+        {specificCollections.length <= 0 && <NoCollection dataType="objects" />}
+      </RenderMediaLibrary>
     </>
   );
 };
