@@ -25,7 +25,7 @@ export async function GET(request: NextRequest, res: NextApiResponse) {
     headers.set("Expires", "0");
     return NextResponse.json({ success: true, data }, { headers });
   } catch (error) {
-    sole.error(`Error generating token:`, error);
+    console.log(`Error generating token:`, error);
     return NextResponse.json({ success: false, error: error });
   }
 }

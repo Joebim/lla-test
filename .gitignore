@@ -40,3 +40,4 @@ next-env.d.ts
 # react email
 /.react-email
 eslint-report.json
+.env
