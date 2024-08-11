@@ -1,7 +1,9 @@
 import {
   ChartNoAxesColumnIncreasing,
   Crown,
+  FileCheck,
   FileQuestion,
+  Files,
   LucideIcon,
   Users,
 } from "lucide-react";
@@ -26,9 +28,19 @@ export const sidebarMenu: SidebarMenuItem[] = [
     icon: Users,
   },
   {
+    title: "Media Library",
+    path: `${baseRoute}/media-library`,
+    icon: Files,
+  },
+  {
     title: "Quest Management",
     path: `${baseRoute}/quest-management`,
     icon: Crown,
+  },
+  {
+    title: "Manage FAQ",
+    path: `${baseRoute}/faq`,
+    icon: FileCheck,
   },
   {
     title: "Manage FAQ",

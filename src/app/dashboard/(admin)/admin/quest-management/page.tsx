@@ -1,7 +1,9 @@
-import { redirect } from "next/navigation";
-
-const QuestManagementPage = () => {
-  redirect("/dashboard/admin/quest-management/backgrounds");
+const QuestsPage = () => {
+  return (
+    <div>
+      <span className="text-red-700">Quest Page</span>
+    </div>
+  );
 };
 
-export default QuestManagementPage;
+export default QuestsPage;
