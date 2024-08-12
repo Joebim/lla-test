@@ -20,7 +20,7 @@ const DashboardModal = ({
         onClick={(event) => event.stopPropagation()}
         className={clsx(
           className,
-          "shadow-sm w-fit rounded-[20px] bg-white p-[20px]",
+          "shadow-sm rounded-[20px] bg-white p-[20px]",
         )}
       >
         {children}

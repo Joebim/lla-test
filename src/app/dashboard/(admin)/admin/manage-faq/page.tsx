@@ -1,20 +1,55 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import AdminFAQTable from "~/components/admin-faq-table";
+import AdminFAQTable from "~/components/admin-faq/admin-faq-table";
+import CreateFAQ from "~/components/admin-faq/form-modals/CreateFAQ";
+import EditFAQ from "~/components/admin-faq/form-modals/EditFAQ";
 import CustomButton from "~/components/common/common-button/common-button";
 import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
-import CustomInput from "~/components/input/CustomInput";
+import { useFAQStore } from "~/store/faq-store";
 
 const ManageFAQ = () => {
+  //states
+  const [error, setError] = useState("");
+  const [createModal, setCreateModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [createNew, setCreateNew] = useState(false);
+  const { fetchFAQs, addFAQ, addSuccess } = useFAQStore();
+  const [newFAQ, setNewFAQ] = useState({ question: "", answer: "" });
 
+  //close modal
   const handleCloseModal = () => {
-    if (createNew) {
-      setCreateNew(false);
+    if (createModal) {
+      setCreateModal(false);
     }
+    if (editModal) {
+      setEditModal(false);
+    }
+    setNewFAQ({ question: "", answer: "" });
+    setError("");
+  };
+
+  //fetch all FAQs
+  useEffect(() => {
+    fetchFAQs();
+  }, [fetchFAQs]);
+
+  //adds new FAQ
+  const handleAdd = async () => {
+    if (!newFAQ.question || !newFAQ.answer) {
+      setError("Can't be empty!");
+      return;
+    } else {
+      setError("");
+    }
+    if (addSuccess) {
+      setCreateModal(false);
+    } else {
+      return;
+    }
+    await addFAQ(newFAQ.question, newFAQ.answer);
+    setNewFAQ({ question: "", answer: "" });
   };
   return (
     <>
@@ -41,42 +76,44 @@ const ManageFAQ = () => {
           </div>
         </DashboardModal>
       )}
-      {createNew && (
+      {editModal && (
         <DashboardModal
           onClose={handleCloseModal}
           className="flex w-[500px] flex-col space-y-5"
         >
-          <h2 className="text-center text-[22px] font-bold">
-            Add New Question and Answer
-          </h2>
-          <div className="flex flex-col">
-            <label htmlFor="question" className="text-secondary-50">
-              Question
-            </label>
-            <CustomInput
-              inputType="text"
-              name="question"
-              placeholder="Question"
-              className="placeholder:text-[12px]"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="answer" className="text-secondary-50">
-              Answer
-            </label>
-            <textarea
-              draggable={false}
-              rows={6}
-              name="answer"
-              placeholder="write answer to question here"
-              className="rounded-[8px] border-[2px] border-neutral-20 p-[8px] outline-none placeholder:text-[12px]"
-            ></textarea>
-          </div>
-          <div className="mt-[20px] border-t-[5px] border-t-neutral-10 pt-[20px]">
-            <CustomButton variant="primary" className="w-full">
-              Add Question
-            </CustomButton>
-          </div>
+          <EditFAQ
+            onClose={handleCloseModal}
+            question={newFAQ.question}
+            answer={newFAQ.answer}
+            error={error}
+            onAdd={handleAdd}
+            onQuestionChange={(event) =>
+              setNewFAQ({ ...newFAQ, question: event.target.value })
+            }
+            onAnswerChange={(event) =>
+              setNewFAQ({ ...newFAQ, answer: event.target.value })
+            }
+          />
+        </DashboardModal>
+      )}
+      {createModal && (
+        <DashboardModal
+          onClose={handleCloseModal}
+          className="flex w-[500px] flex-col space-y-5"
+        >
+          <CreateFAQ
+            onClose={handleCloseModal}
+            question={newFAQ.question}
+            answer={newFAQ.answer}
+            error={error}
+            onAdd={handleAdd}
+            onQuestionChange={(event) =>
+              setNewFAQ({ ...newFAQ, question: event.target.value })
+            }
+            onAnswerChange={(event) =>
+              setNewFAQ({ ...newFAQ, answer: event.target.value })
+            }
+          />
         </DashboardModal>
       )}
       <main className="p-[15px]">
@@ -90,7 +127,10 @@ const ManageFAQ = () => {
         </div>
         <section className="mt-[10px] h-[100%] rounded-[14px] bg-white">
           <div className="flex items-center justify-end p-[14px]">
-            <CustomButton variant="primary" onClick={() => setCreateNew(true)}>
+            <CustomButton
+              variant="primary"
+              onClick={() => setCreateModal(true)}
+            >
               Add Question
             </CustomButton>
           </div>

@@ -9,24 +9,7 @@ import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
 import CustomInput from "~/components/input/CustomInput";
 import { useProfileStore } from "./useProfileStore";
 
-const handleFileInputClick = () => {
-  const fileInput = document.querySelector(
-    "#fileInput",
-  ) as HTMLInputElement | null;
-  fileInput?.click();
-};
-
-const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-  event.preventDefault();
-};
-
-const validateEmail = (email: string): boolean => {
-  const emailRegex = /^[\w.-]+@[\d.A-Za-z-]+\.[A-Za-z]{2,}$/;
-  return emailRegex.test(email);
-};
-
 const AdminProfile = () => {
-  //states
   const { image, name, email, gender, updateProfile } = useProfileStore();
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [temporaryGender, setTemporaryGender] = useState(gender);
@@ -35,24 +18,14 @@ const AdminProfile = () => {
   const [temporaryName, setTemporaryName] = useState(name);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isClient, setIsClient] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
-
-  useEffect(() => {
-    if (isClient) {
-      setTemporaryImage(image);
-      setTemporaryName(name);
-      setTemporaryEmail(email);
-      setTemporaryGender(gender);
-    }
-  }, [image, name, email, gender, isClient]);
+    setTemporaryImage(image);
+    setTemporaryName(name);
+    setTemporaryEmail(email);
+    setTemporaryGender(gender);
+  }, [image, name, email, gender]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -79,12 +52,7 @@ const AdminProfile = () => {
     }
   };
 
-  //handles save button click event
   const handleSave = () => {
-    if (!validateEmail(temporaryEmail)) {
-      setError("Please enter a valid email address");
-      return;
-    }
     updateProfile({
       image: temporaryImage,
       name: temporaryName,
@@ -96,14 +64,10 @@ const AdminProfile = () => {
     setIsSuccessModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    if (isModalOpen || isSuccessModalOpen) {
-      setIsSuccessModalOpen(false);
-      setIsModalOpen(false);
-    }
+  const handleGenderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setTemporaryGender(event.target.value);
   };
 
-  //handles update profile button click
   const handleUpdateProfileClick = () => {
     setIsEditing(!isEditing);
     if (error) {
@@ -111,23 +75,19 @@ const AdminProfile = () => {
     }
   };
 
-  if (!isClient) {
-    return;
-  }
-
   return (
     <main data-testid="profile-settings" className="font-inter">
-      {/* upload image modal ***********/}
+      {/* upload image modal */}
       {isModalOpen && (
         <DashboardModal
-          onClose={handleCloseModal}
+          onClose={() => setIsModalOpen(false)}
           className="flex w-full flex-col items-center justify-center space-y-[20px] md:w-[40rem]"
         >
           <section className="flex w-full flex-col items-center justify-center space-y-[20px] border-[3px] border-dashed py-[20px] md:w-[25rem]">
             <div
               className="drag-drop-area"
               onDrop={handleDrop}
-              onDragOver={handleDragOver}
+              onDragOver={(event) => event.preventDefault()}
             >
               <p>Drag and drop image to upload</p>
               <input
@@ -148,7 +108,9 @@ const AdminProfile = () => {
             <CustomButton
               variant="secondary-two"
               className="w-fit px-[15px]"
-              onClick={handleFileInputClick}
+              onClick={() =>
+                document.querySelector<HTMLInputElement>("#fileInput")?.click()
+              }
             >
               Select photo from device
             </CustomButton>
@@ -160,10 +122,10 @@ const AdminProfile = () => {
         </DashboardModal>
       )}
 
-      {/* success modal ***********/}
+      {/* success modal */}
       {isSuccessModalOpen && (
         <DashboardModal
-          onClose={handleCloseModal}
+          onClose={() => setIsSuccessModalOpen(false)}
           className="flex w-[25rem] flex-col items-center justify-center space-y-[20px]"
         >
           <div>
@@ -183,9 +145,9 @@ const AdminProfile = () => {
         </DashboardModal>
       )}
       <>
-        <section className="mt-[30px] w-full rounded-[15px] border-2 border-neutral-30 bg-white p-[20px] sm:p-[30px] md:p-[40px]">
+        <section className="mt-[30px] w-full rounded-[15px] border-2 border-neutral-30 bg-white p-[15px] sm:p-[30px] md:p-[40px]">
           <div className="block w-full items-center space-x-0 lg:flex lg:space-x-[70px]">
-            {/* profile image section ***********/}
+            {/* profile image section */}
             <section className="profile-image">
               {isEditing ? (
                 <div
@@ -215,7 +177,7 @@ const AdminProfile = () => {
               )}
             </section>
 
-            {/* profile details section ***********/}
+            {/* profile details section */}
             <section className="mt-[30px] w-full lg:mt-0">
               {isEditing ? (
                 <>
@@ -243,6 +205,7 @@ const AdminProfile = () => {
                       <div>
                         <CustomInput
                           name="email"
+                          isDisabled={true}
                           inputType="email"
                           value={temporaryEmail}
                           className="w-[100%]"
@@ -265,9 +228,7 @@ const AdminProfile = () => {
                         <select
                           className="w-full rounded-[5px] border border-secondary-30 py-[8px] outline-none sm:w-[250px]"
                           value={temporaryGender}
-                          onChange={(event) =>
-                            updateProfile({ gender: event.target.value })
-                          }
+                          onChange={handleGenderChange}
                         >
                           <option value="Male">Male</option>
                           <option value="Female">Female</option>
@@ -276,7 +237,7 @@ const AdminProfile = () => {
                       </div>
                     </div>
                   </section>
-                  <div className="mt-[2rem] space-x-2 sm:mt-[4rem]">
+                  <div className="mt-[2rem] space-x-1 whitespace-nowrap sm:mt-[4rem] sm:space-x-2">
                     <CustomButton variant="primary" onClick={handleSave}>
                       Save
                     </CustomButton>
@@ -312,7 +273,7 @@ const AdminProfile = () => {
                   </div>
                   <CustomButton
                     variant="outline"
-                    className="block border-2 border-b-primary-60 bg-transparent text-primary-60 md:hidden"
+                    className="block border-2 border-primary-60 bg-transparent text-primary-60 md:hidden"
                     onClick={handleUpdateProfileClick}
                   >
                     Edit your profile

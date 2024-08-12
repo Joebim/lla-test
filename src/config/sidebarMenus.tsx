@@ -1,7 +1,6 @@
 import {
   ChartNoAxesColumnIncreasing,
   Crown,
-  FileCheck,
   FileQuestion,
   Files,
   LucideIcon,
@@ -36,11 +35,6 @@ export const sidebarMenu: SidebarMenuItem[] = [
     title: "Quest Management",
     path: `${baseRoute}/quest-management`,
     icon: Crown,
-  },
-  {
-    title: "Manage FAQ",
-    path: `${baseRoute}/faq`,
-    icon: FileCheck,
   },
   {
     title: "Manage FAQ",

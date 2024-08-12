@@ -2,8 +2,9 @@
 
 import clsx from "clsx";
 import { EllipsisVertical } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
+import { useFAQStore } from "~/store/faq-store";
 import {
   Table,
   TableBody,
@@ -11,46 +12,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
+} from "../../ui/table";
 
 interface tableProperties {
-  id: number;
+  id: string;
   question: string;
   answer: string;
 }
-
-const data = [
-  {
-    id: 1,
-    question: "How does the AI personalize my learning experience?",
-    answer:
-      "The AI adapts to your progress, providing customized lessons ement.",
-  },
-  {
-    id: 2,
-    question: "How does the AI personalize my learning experience?",
-    answer:
-      "The AI adapts to your progress, providing customized lessons and challenges based on your performance. It offers real-time feedback on pronunciation, grammar, and fluency, ensuring you focus on areas that need improvement.",
-  },
-  {
-    id: 3,
-    question: "How does the AI personalize my learning experience?",
-    answer:
-      "The AI adapts to your progress, providing customized lessons and challenges based on your performance. It offers real-time feedback on pronunciation, grammar, and fluency, ensuring you focus on areas that need improvement.",
-  },
-  {
-    id: 4,
-    question: "How does the AI personalize my learning experience?",
-    answer:
-      "The AI adapts to your progress, providing customized lessons and challenges based on your performance. It offers real-time feedback on pronunciation, grammar, and fluency, ensuring you focus on areas that need improvement.",
-  },
-  {
-    id: 5,
-    question: "How does the AI personalize my learning experience?",
-    answer:
-      "The AI adapts to your progress, providing customized lessons and challenges based on your performance. It offers real-time feedback on pronunciation, grammar, and fluency, ensuring you focus on areas that need improvement.",
-  },
-];
 
 const AdminFAQTable = ({
   className,
@@ -60,9 +28,14 @@ const AdminFAQTable = ({
   isModalOpen: () => void;
 }) => {
   const dropdownReference = useRef<HTMLDivElement>(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState<number>();
+  const [isDropdownOpen, setIsDropdownOpen] = useState<string>();
+  const { faqs, fetchFAQs } = useFAQStore();
 
-  const toggleDropdown = (id: number) => {
+  useEffect(() => {
+    fetchFAQs();
+  }, []);
+
+  const toggleDropdown = (id: string) => {
     setIsDropdownOpen(isDropdownOpen === id ? undefined : id);
   };
 
@@ -121,8 +94,8 @@ const AdminFAQTable = ({
   };
 
   return (
-    <div className="w-full overflow-x-auto rounded-[10px] border-secondary-10">
-      <Table className={clsx(className, "w-fit")}>
+    <div className="w-full rounded-[10px] border-secondary-10">
+      <Table className={clsx(className, "w-full")}>
         <TableHeader className="bg-neutral-10">
           <TableRow className="rounded-tl-[14px] rounded-tr-[14px] border-none">
             <TableHead className="font-semibold">Question</TableHead>
@@ -131,7 +104,7 @@ const AdminFAQTable = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((slug, index) => renderRow(slug, index))}
+          {faqs.map((slug, index) => renderRow(slug, index))}
         </TableBody>
       </Table>
     </div>
