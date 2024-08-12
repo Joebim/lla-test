@@ -13,6 +13,8 @@ const FirstHero = () => {
   const sectionReference = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const currentSectionReference = sectionReference.current;
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -36,15 +38,17 @@ const FirstHero = () => {
       { threshold: 0.2 },
     );
 
-    if (sectionReference.current) {
-      observer.observe(sectionReference.current);
+    if (currentSectionReference) {
+      observer.observe(currentSectionReference);
     }
+
     return () => {
-      if (sectionReference.current) {
-        observer.unobserve(sectionReference.current);
+      if (currentSectionReference) {
+        observer.unobserve(currentSectionReference);
       }
     };
   }, [controlsLeft, controlsRight]);
+
   return (
     <header className="mx-auto flex w-full max-w-[1734px] gap-[10px] bg-secondary-120 p-[12px] lg:p-[40px]">
       <div className="flex w-full flex-col gap-[48px] border-transparent-white-15 bg-white py-[12px] md:pb-[48px] lg:gap-[64px] lg:border-[8px] lg:border-solid">
@@ -100,4 +104,5 @@ const FirstHero = () => {
     </header>
   );
 };
+
 export default FirstHero;

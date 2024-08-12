@@ -10,6 +10,8 @@ const FourthHero = () => {
   const sectionReference = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const currentSectionReference = sectionReference.current;
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -33,16 +35,17 @@ const FourthHero = () => {
       { threshold: 0.2 },
     );
 
-    if (sectionReference.current) {
-      observer.observe(sectionReference.current);
+    if (currentSectionReference) {
+      observer.observe(currentSectionReference);
     }
 
     return () => {
-      if (sectionReference.current) {
-        observer.unobserve(sectionReference.current);
+      if (currentSectionReference) {
+        observer.unobserve(currentSectionReference);
       }
     };
   }, [controlsLeft, controlsRight]);
+
   return (
     <article className="mx-auto max-w-[1734px] bg-white px-[20px] py-[24px] lg:p-[40px]">
       <div
@@ -65,7 +68,6 @@ const FourthHero = () => {
             Delve In
           </Link>
         </motion.div>
-        {/* flex flex-col gap-[40px] h-[56px] w-[213px]*/}
         <motion.div
           initial={{ x: 100, opacity: 0 }}
           animate={controlsRight}
@@ -87,4 +89,5 @@ const FourthHero = () => {
     </article>
   );
 };
+
 export default FourthHero;

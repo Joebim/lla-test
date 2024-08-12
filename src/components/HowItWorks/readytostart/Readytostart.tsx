@@ -12,6 +12,8 @@ const ReadyToStart = () => {
   const sectionReference = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const currentSectionReference = sectionReference.current;
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -35,16 +37,17 @@ const ReadyToStart = () => {
       { threshold: 0.2 },
     );
 
-    if (sectionReference.current) {
-      observer.observe(sectionReference.current);
+    if (currentSectionReference) {
+      observer.observe(currentSectionReference);
     }
 
     return () => {
-      if (sectionReference.current) {
-        observer.unobserve(sectionReference.current);
+      if (currentSectionReference) {
+        observer.unobserve(currentSectionReference);
       }
     };
   }, [controlsLeft, controlsRight]);
+
   return (
     <>
       <section
@@ -72,7 +75,6 @@ const ReadyToStart = () => {
           className="flex self-center lg:w-[746px]"
         >
           <p className="text-[18px] font-normal leading-[30px] tracking-tighter text-secondary-110">
-            {" "}
             Dive in now and play the game to explore different quests, beat the
             clock, and master new languages with ease. Start your journey today!
           </p>
@@ -88,7 +90,6 @@ const ReadyToStart = () => {
           Start Your Language Adventure?
         </h3>
         <p className="text-center text-[18px] font-normal leading-[30px] text-secondary-110">
-          {" "}
           Dive in now and play the game to explore different quests, beat the
           clock, and master new languages with ease. Start your journey today!
         </p>

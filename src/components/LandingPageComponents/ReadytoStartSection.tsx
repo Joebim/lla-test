@@ -12,6 +12,8 @@ const ReadytoStartSection = () => {
   const sectionReference = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const currentSectionReference = sectionReference.current;
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -35,13 +37,13 @@ const ReadytoStartSection = () => {
       { threshold: 0.2 },
     );
 
-    if (sectionReference.current) {
-      observer.observe(sectionReference.current);
+    if (currentSectionReference) {
+      observer.observe(currentSectionReference);
     }
 
     return () => {
-      if (sectionReference.current) {
-        observer.unobserve(sectionReference.current);
+      if (currentSectionReference) {
+        observer.unobserve(currentSectionReference);
       }
     };
   }, [controlsLeft, controlsRight]);
