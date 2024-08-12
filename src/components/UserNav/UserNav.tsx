@@ -29,7 +29,7 @@ const UserNav = () => {
 
           <div className="flex space-x-3 lg:space-x-9">
             <Link
-              href="/dashboard/quests"
+              href="/dashboard/user/quests"
               className="group flex w-[124px] items-center justify-center gap-[6px] rounded-[40px] px-2 py-3 text-secondary-100 duration-200 focus:bg-secondary-120 focus:text-white active:scale-95"
             >
               <Image
@@ -50,7 +50,7 @@ const UserNav = () => {
             </Link>
 
             <Link
-              href="/dashboard/progress"
+              href="/dashboard/user/progress"
               className="group flex w-[124px] items-center justify-center gap-[6px] rounded-[40px] px-2 py-3 text-secondary-100 duration-200 focus:bg-secondary-120 focus:text-white active:scale-95"
             >
               <Image

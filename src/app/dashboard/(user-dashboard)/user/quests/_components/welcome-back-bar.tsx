@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import fireColored from "../../../../../../public/dashboard/fire-colored.svg";
-import fireNeutral from "../../../../../../public/dashboard/fire-neutral.svg";
-import translate from "../../../../../../public/dashboard/translate.png";
+import fireColored from "../../../../../../../public/dashboard/fire-colored.svg";
+import fireNeutral from "../../../../../../../public/dashboard/fire-neutral.svg";
+import translate from "../../../../../../../public/dashboard/translate.png";
 
 export default function WelcomeBackBar() {
   const [day] = useState(0);

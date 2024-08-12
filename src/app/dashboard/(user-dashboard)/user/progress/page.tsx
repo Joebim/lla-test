@@ -407,7 +407,7 @@ const Progress = () => {
                           Words Learnt
                         </div>
                         <div>
-                          <Link href={`/dashboard/progress/${index}`}>
+                          <Link href={`/dashboard/user/progress/${index}`}>
                             <CustomButton variant="primary">View</CustomButton>
                           </Link>
                         </div>
