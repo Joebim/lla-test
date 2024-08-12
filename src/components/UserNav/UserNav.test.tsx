@@ -9,10 +9,10 @@ describe("userNav", () => {
     expect.assertions(7);
     render(<UserNav />);
     expect(screen.getByAltText("notification-icon")).toBeInTheDocument();
-    expect(screen.getByAltText("quest-icon-1")).toBeInTheDocument();
-    expect(screen.getByAltText("quest-icon-2")).toBeInTheDocument();
-    expect(screen.getByAltText("progress-icon-1")).toBeInTheDocument();
-    expect(screen.getByAltText("progress-icon-2")).toBeInTheDocument();
+    expect(screen.getByAltText("quest-icon-active")).toBeInTheDocument();
+    expect(screen.getByAltText("quest-icon-inactive")).toBeInTheDocument();
+    expect(screen.getByAltText("progress-icon-active")).toBeInTheDocument();
+    expect(screen.getByAltText("progress-icon-inactive")).toBeInTheDocument();
     expect(screen.getByText("Quests")).toBeInTheDocument();
     expect(screen.getByText("Progress")).toBeInTheDocument();
   });
