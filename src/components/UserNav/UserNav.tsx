@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import LanguageSelector from "../common/dropdowns/LanguageSelector";
 import UserNavDropdown from "../common/dropdowns/UserNavDropdown";
@@ -16,6 +17,10 @@ import Logo from "./logo-component";
 import styles from "./UserNav.module.css";
 
 const UserNav = () => {
+  const pathname = usePathname();
+
+  const isActive = (href: string) => pathname === href;
+
   return (
     <nav className="sticky top-0 z-50 h-12 w-full text-black md:h-[96px] md:p-0">
       <div
@@ -29,43 +34,59 @@ const UserNav = () => {
 
           <div className="flex space-x-3 lg:space-x-9">
             <Link
-              href="/dashboard/quests"
-              className="group flex w-[124px] items-center justify-center gap-[6px] rounded-[40px] px-2 py-3 text-secondary-100 duration-200 focus:bg-secondary-120 focus:text-white active:scale-95"
+              href="/dashboard/user/quests"
+              className={`group flex w-[124px] items-center justify-center gap-[6px] rounded-[40px] px-2 py-3 text-secondary-100 duration-200 active:scale-95 ${
+                isActive("/dashboard/user/quests")
+                  ? "bg-secondary-120 text-white"
+                  : ""
+              }`}
             >
               <Image
-                src="/navbar/quest-icon-light.svg"
-                alt="quest-icon-1"
+                src="/navbar/quest-icon.svg"
+                alt="quest-icon-active"
                 width={22}
                 height={22}
-                className="block group-focus:hidden"
+                className={`${
+                  isActive("/dashboard/user/quests") ? "block" : "hidden"
+                }`}
               />
               <Image
-                src="/navbar/quest-icon.svg"
-                alt="quest-icon-2"
+                src="/navbar/quest-icon-light.svg"
+                alt="quest-icon-inactive"
                 width={22}
                 height={22}
-                className="hidden group-focus:block"
+                className={`${
+                  isActive("/dashboard/user/quests") ? "hidden" : "block"
+                }`}
               />
               Quests
             </Link>
 
             <Link
-              href="/dashboard/progress"
-              className="group flex w-[124px] items-center justify-center gap-[6px] rounded-[40px] px-2 py-3 text-secondary-100 duration-200 focus:bg-secondary-120 focus:text-white active:scale-95"
+              href="/dashboard/user/progress"
+              className={`group flex w-[124px] items-center justify-center gap-[6px] rounded-[40px] px-2 py-3 text-secondary-100 duration-200 active:scale-95 ${
+                isActive("/dashboard/user/progress")
+                  ? "bg-secondary-120 text-white"
+                  : ""
+              }`}
             >
               <Image
-                src="/navbar/progress-icon-light.svg"
-                alt="progress-icon-1"
+                src="/navbar/progress-icon.svg"
+                alt="progress-icon-active"
                 width={22}
                 height={22}
-                className="block group-focus:hidden"
+                className={`${
+                  isActive("/dashboard/user/progress") ? "block" : "hidden"
+                }`}
               />
               <Image
-                src="/navbar/progress-icon.svg"
-                alt="progress-icon-2"
+                src="/navbar/progress-icon-light.svg"
+                alt="progress-icon-inactive"
                 width={22}
                 height={22}
-                className="hidden group-focus:block"
+                className={`${
+                  isActive("/dashboard/user/progress") ? "hidden" : "block"
+                }`}
               />
               Progress
             </Link>
