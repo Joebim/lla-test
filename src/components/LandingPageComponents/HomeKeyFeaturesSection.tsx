@@ -1,4 +1,11 @@
+"use client";
+
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const features = [
   {
@@ -28,6 +35,41 @@ const features = [
 ];
 
 const HomeKeyFeaturesSection = () => {
+  const sectionReferences = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    for (const [index, section] of sectionReferences.current.entries()) {
+      if (!section) continue;
+
+      gsap.fromTo(
+        section,
+        {
+          scale: 0.9,
+          opacity: 0.5,
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          scrollTrigger: {
+            trigger: section,
+            start: "top 70%",
+            end: "top 30%",
+            scrub: true,
+            onEnter: () => {
+              gsap.to(section, { scale: 1, opacity: 1, duration: 0.5 });
+            },
+            onLeaveBack: () => {
+              gsap.to(section, { scale: 0.9, opacity: 0.7, duration: 0.5 });
+            },
+            onLeave: () => {
+              gsap.to(section, { scale: 0.9, opacity: 0.7, duration: 0.5 });
+            },
+          },
+        },
+      );
+    }
+  }, []);
+
   return (
     <div className="flex w-full flex-col items-center justify-center gap-2 bg-white p-5 pt-14 md:p-10">
       <h4 className="py-3 font-axiformaMedium text-[16px] font-medium leading-[30px] text-primary-110 md:text-2xl">
@@ -37,6 +79,9 @@ const HomeKeyFeaturesSection = () => {
         {features.map((feature, index) => (
           <div
             key={index}
+            ref={(element) => {
+              sectionReferences.current[index] = element;
+            }}
             className="flex h-[400px] w-[100%] flex-col items-center justify-center border-[6px] border-[#FFFFFFCC] sm:h-[500px] md:w-full"
           >
             <div className="flex h-full w-full flex-col items-center justify-center border-[8px] border-secondary-90">

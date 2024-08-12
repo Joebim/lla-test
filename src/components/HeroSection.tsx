@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -59,12 +60,15 @@ const HeroSection: React.FC = () => {
         />
         <div className="absolute left-0 right-0 top-0 h-[60px] bg-gradient-to-b from-secondary-100 via-transparent-black-10 to-transparent opacity-85"></div>
 
-        <h1
+        <motion.h1
+          initial={{ scale: 0.5 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 3 }}
           ref={heroReference}
-          className={`relative z-10 w-[370px] max-w-[400px] text-center font-axiformaMedium text-4xl font-semibold leading-tight tracking-wide text-white sm:w-full sm:max-w-[630px] sm:text-4xl sm:leading-snug md:text-5xl md:leading-normal lg:text-[62px] lg:leading-[90px]`}
+          className={`relative z-10 w-[370px] max-w-[400px] px-8 text-center font-axiformaMedium text-3xl font-semibold leading-[48px] tracking-wider text-white sm:w-full sm:max-w-[630px] sm:text-4xl sm:leading-snug md:text-5xl md:leading-normal lg:px-0 lg:text-[62px] lg:leading-[90px]`}
         >
           Learn Languages The Fun Way
-        </h1>
+        </motion.h1>
 
         <div className="absolute bottom-0 flex w-[90%] flex-col items-center justify-center rounded-t-[36px] border border-[#FFFFFF20] bg-[#212121D9] sm:w-[80%] md:w-[70%] lg:w-[408px]">
           <div className="flex w-full flex-row items-center justify-center space-x-2 px-2 pb-3 pt-5 sm:space-x-3 sm:px-3 md:space-x-4 md:px-4 lg:space-x-5 lg:px-5">

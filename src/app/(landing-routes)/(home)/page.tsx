@@ -1,4 +1,5 @@
 import HeroSection from "~/components/HeroSection";
+import HomeBlog from "~/components/LandingPageComponents/HomeBlog";
 import HomeKeyFeaturesSection from "~/components/LandingPageComponents/HomeKeyFeaturesSection";
 import HomeSection2 from "~/components/LandingPageComponents/HomeSection2";
 import HomeSection3 from "~/components/LandingPageComponents/HomeSection3";
@@ -14,6 +15,7 @@ function page() {
       <HomeSection4 />
       <HomeKeyFeaturesSection />
       <ReadytoStartSection />
+      <HomeBlog />
     </div>
   );
 }
