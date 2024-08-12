@@ -42,6 +42,7 @@ jobs:
           script: |
             mkdir -p /tmp/php
             cd /tmp/php
+            ls .
             docker load < delve-fe-dev.tar
             rm -f delve-fe-dev.tar
             cd /var/www/html/delve_fe/dev
