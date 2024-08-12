@@ -4,13 +4,13 @@ import { AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
 
-import gamepad from "../../../../../../public/dashboard/gamepad.svg";
-import questImg1 from "../../../../../../public/dashboard/quest-img-1.png";
-import questImg2 from "../../../../../../public/dashboard/quest-img-2.png";
-import questImg3 from "../../../../../../public/dashboard/quest-img-3.png";
-import questImg4 from "../../../../../../public/dashboard/quest-img-4.png";
-import questImg5 from "../../../../../../public/dashboard/quest-img-5.png";
-import questImg6 from "../../../../../../public/dashboard/quest-img-6.png";
+import gamepad from "../../../../../../../public/dashboard/gamepad.svg";
+import questImg1 from "../../../../../../../public/dashboard/quest-img-1.png";
+import questImg2 from "../../../../../../../public/dashboard/quest-img-2.png";
+import questImg3 from "../../../../../../../public/dashboard/quest-img-3.png";
+import questImg4 from "../../../../../../../public/dashboard/quest-img-4.png";
+import questImg5 from "../../../../../../../public/dashboard/quest-img-5.png";
+import questImg6 from "../../../../../../../public/dashboard/quest-img-6.png";
 import QuestCard from "./quest-card";
 
 type tabProperties = {

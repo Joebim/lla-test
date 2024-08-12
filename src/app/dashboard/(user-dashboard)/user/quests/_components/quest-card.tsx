@@ -44,7 +44,7 @@ export default function QuestCard({ quest }: QuestCardProperties) {
           <div className="hidden w-full items-center justify-center group-hover:flex sm:w-auto sm:justify-end">
             {
               <Button
-                onClick={() => router.push("/dashboard/quests/1")}
+                onClick={() => router.push("/dashboard/user/quests/1")}
                 variant="primary"
                 className="group-hover:w-[120px] sm:group-hover:w-[90px]"
               >
