@@ -46,4 +46,4 @@ jobs:
             cd /var/www/html/delve_fe/dev
             git pull origin dev
             docker-compose -f docker-compose.yml down
-            docker-compose --project-name delve-fe-dev -f docker-compose.yml up -d
+            docker compose --project-name delve-fe-dev -f docker-compose.yml up -d --force-recreate
