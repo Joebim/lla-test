@@ -1,4 +1,4 @@
-name: DEV CICD
+name: DEV CI/CD
 
 on:
   push:
@@ -6,51 +6,45 @@ on:
       - dev
 
 jobs:
-  test-and-deploy:
+  build_and_deploy:
     runs-on: self-hosted
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+    
+        
+      - name: Build Docker Image
+        run: |
+          docker build --tag delve-fe:dev --file Dockerfile .
+          
+
+      - name: Save Docker Image
+        run: |
+          docker save delve-fe:dev > delve-fe-dev.tar
+          
+      - name: Transfer Docker Image to Server
+        uses: appleboy/scp-action@master
         with:
-          node-version: 18
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "delve-fe-dev.tar"
+          target: /tmp/php
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          dest: setup-pnpm
-          package_json_file: package.json
-          standalone: false
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Run Lint Fix
-        run: pnpm lint:fix
-
-      - name: Build
-        run: pnpm run build
-
-      - name: Run Tests
-        run: pnpm run test:ci -- --max-warnings 0
-
-      - name: Deploy to server
-        uses: appleboy/ssh-action@master
+      - name: Load and Deploy Docker Image on Server
+        uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            echo "About to Deploy"
+            mkdir -p /tmp/php
+            cd /tmp/php
+            docker load < delve-fe-dev.tar
+            rm -f delve-fe-dev.tar
             cd /var/www/html/delve_fe/dev
-            eval $(ssh-agent)
-            ssh-add ~/.ssh/id_ecdsa
-            git reset --hard origin/dev
-            git pull
-            pnpm install
-            rm -rf .next
-            pnpm run build
-            pm2 restart staging.delve.fun
+            git pull origin dev
+            docker-compose -f docker-compose.yml down
+            docker-compose --project-name delve-fe-dev -f docker-compose.yml up -d --force-recreate
