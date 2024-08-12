@@ -1,6 +1,8 @@
 import { ChevronDown, CircleHelp, LogOut, Settings } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 import {
   DropdownMenu,
@@ -11,44 +13,43 @@ import {
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 
-interface ComponentProperties {
-  username?: string;
-  profileImage?: string;
-  email?: string;
-}
+const handleLogout = async () => {
+  await signOut({
+    callbackUrl: "/",
+  });
+};
 
-const UserNavDropdown = ({
-  profileImage,
-  username,
-  email,
-}: ComponentProperties) => {
+const UserNavDropdown = () => {
+  const [imageError, setImageError] = useState(false);
+  const { data: session } = useSession();
+  const { user } = session ?? {};
+
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger className="outline-none">
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 overflow-hidden rounded-full">
-              {!profileImage && (
-                <Image
-                  src="/images/_Avatar Circle.svg"
-                  width={36}
-                  height={36}
-                  className="rounded-full"
-                  alt="user profile"
-                />
-              )}
-
-              {profileImage && (
-                <Image
-                  src={profileImage}
-                  width={36}
-                  height={36}
-                  className="rounded-full"
-                  alt="user profile"
-                />
+            <div className="relative h-9 w-9 overflow-hidden rounded-full">
+              {user ? (
+                <>
+                  <Image
+                    src={user?.image ?? ""}
+                    width={36}
+                    height={36}
+                    className="rounded-full"
+                    alt="user profile"
+                    onError={() => setImageError(true)}
+                  />
+                  <div
+                    className={`absolute left-0 top-0 flex h-9 w-9 items-center justify-center rounded-full bg-primary-30 text-xl font-semibold text-white ${imageError ? "z-10" : "-z-10"}`}
+                  >
+                    {user?.username?.charAt(0).toUpperCase() ?? "D"}
+                  </div>
+                </>
+              ) : (
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-20" />
               )}
             </div>
-
             <ChevronDown className="hidden text-secondary-120 md:block" />
           </div>
         </DropdownMenuTrigger>
@@ -58,15 +59,15 @@ const UserNavDropdown = ({
               className="text-sm leading-none"
               style={{ fontFamily: "Axiforma" }}
             >
-              {username && username}
-              {!username && "John Doe"}
+              {user && user.username}
+              {!user && "John Doe"}
             </h3>
             <div
               className="text-xs text-secondary-50"
               style={{ fontFamily: "Axiforma" }}
             >
-              {email && email}
-              {!email && "johndoe@gmail.com"}
+              {user && user.email}
+              {!user && "johndoe@example.com"}
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -100,8 +101,8 @@ const UserNavDropdown = ({
           </DropdownMenuItem>
           <DropdownMenuSeparator className="h-1 bg-primary-10" />
           <DropdownMenuItem className="w-full p-0">
-            <Link
-              href={"/signin"}
+            <button
+              onClick={handleLogout}
               className="flex items-center gap-3 p-2 text-critical-100 no-underline outline-none"
             >
               <LogOut size={16} />
@@ -111,7 +112,7 @@ const UserNavDropdown = ({
               >
                 Sign Out
               </div>
-            </Link>
+            </button>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
