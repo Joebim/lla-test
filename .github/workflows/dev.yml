@@ -29,10 +29,12 @@ jobs:
         run: |
           docker buildx create --use --name delvefe_dev
           docker buildx build \
-            --cache-from=type=local,src=/tmp/.buildx-cache \
-            --cache-to=type=local,dest=/tmp/.buildx-cache,mode=max \
-            --tag delve-fe:dev \
-            --file Dockerfile .
+          --cache-from=type=local,src=/tmp/.buildx-cache \
+          --cache-to=type=local,dest=/tmp/.buildx-cache,mode=max \
+          --tag delve-fe:dev \
+          --file Dockerfile \
+          --load
+
 
       - name: Save Docker Image
         run: |
