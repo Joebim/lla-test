@@ -1,6 +1,8 @@
 "use client";
 
 import { Eye, EyeOff } from "lucide-react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next-nprogress-bar";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -12,6 +14,11 @@ interface SigninFormData {
 }
 
 const SignInPage: React.FC = () => {
+  const router = useRouter();
+  const { status } = useSession();
+  if (status === "authenticated") {
+    router.push("/dashboard/user");
+  }
   const {
     register,
     handleSubmit,
@@ -191,7 +198,10 @@ const SignInPage: React.FC = () => {
           <hr />
         </div>
       </div>
-      <button className="mt-4 flex h-[56px] w-full items-center justify-center gap-2 rounded-[59px] bg-secondary-120 px-4 py-2 text-secondary-10 hover:bg-secondary-110 focus:outline-none focus:ring-2 focus:ring-opacity-50">
+      <button
+        className="mt-4 flex h-[56px] w-full items-center justify-center gap-2 rounded-[59px] bg-secondary-120 px-4 py-2 text-secondary-10 hover:bg-secondary-110 focus:outline-none focus:ring-2 focus:ring-opacity-50"
+        onClick={() => signIn("google", { callbackUrl: "/dashboard/user" })}
+      >
         <Image src="/signup/googleicon.png" alt="" width={20} height={20} />{" "}
         <span>Continue with Google</span>
       </button>
