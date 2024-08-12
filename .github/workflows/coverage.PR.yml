@@ -20,5 +20,5 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
       - name: "Report Coverage"
-        if: always()
+        if: false
         uses: davelosert/vitest-coverage-report-action@v2
