@@ -1,9 +1,11 @@
+/* eslint-disable no-console */
 "use client";
 
 import { Camera } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+import { getAdminProfile } from "~/app/api/adminDashboard/route";
 import CustomButton from "~/components/common/common-button/common-button";
 import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
 import CustomInput from "~/components/input/CustomInput";
@@ -53,7 +55,18 @@ const AdminProfile = () => {
       setTemporaryGender(gender);
     }
   }, [image, name, email, gender, isClient]);
-
+  useEffect(() => {
+    async function handleAdmin() {
+      try {
+        const response = await getAdminProfile();
+        console.log("responseData", response?.data);
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    }
+    handleAdmin();
+  }, []);
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
@@ -114,6 +127,7 @@ const AdminProfile = () => {
   if (!isClient) {
     return;
   }
+  // get adminProfiile
 
   return (
     <main data-testid="profile-settings" className="font-inter">

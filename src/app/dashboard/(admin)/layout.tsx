@@ -9,11 +9,11 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen w-full flex-col">
+    <div className="flex w-full flex-col">
       <AdminNav />
-      <div className="flex flex-1">
+      <div className="flex">
         <AdminSidebar />
-        <main className="flex-1 bg-white p-3">
+        <main className="w-full bg-white p-3">
           <Suspense>{children}</Suspense>
         </main>
       </div>
