@@ -25,13 +25,11 @@ const UserNavDropdown = () => {
   const { data: session, status } = useSession();
   const { user } = session ?? {};
   const router = useRouter();
-  // useEffect(() => {
-  //   if (status === "unauthenticated") {
-  //     router.push("/signin");
-  //   } else if (status === "authenticated" && user) {
-  //     if (!user.username) return; //router.push("/signup/profile");
-  //   } else router.push("/");
-  // }, [status, router, user]);
+  useEffect(() => {
+    if (status === "authenticated" && user) {
+      if (!user.username) return; //router.push("/signup/profile");
+    } else router.push("/");
+  }, [status, router, user]);
 
   return (
     <>

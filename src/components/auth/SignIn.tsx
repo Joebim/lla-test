@@ -44,7 +44,6 @@ const SignInPage: React.FC = () => {
   const onSubmit = async (values: SigninFormData) => {
     startTransition(async () => {
       const data = await loginUser(values);
-
       if (data.status === 200) {
         const response = await signIn("credentials", {
           email: values.email,
