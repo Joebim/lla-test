@@ -9,6 +9,7 @@ import ExampleComponent from "~/components/thoughts/PlayerThought";
 import Scene from "./_component/scene";
 import { Canvas } from "@react-three/fiber";
 import { Mic } from "lucide-react";
+import useSpeechToText from "~/hooks/useSpeechToText";
 
 const Avatars = dynamic(() => import("~/components/Avatars"), {
   ssr: false,
@@ -16,7 +17,16 @@ const Avatars = dynamic(() => import("~/components/Avatars"), {
 
 const Home: React.FC = () => {
   const [mounted, setMounted] = useState(false);
-
+  const [currentChat, setCurrentChat] = useState<string>('')
+  const { isRecording, startTranscription, stopTranscription } = useSpeechToText({ setCurrentChat })
+  
+  const toggleRecording = (event: React.FormEvent) => {
+    if (isRecording) {
+      stopTranscription(event)
+    } else {
+      startTranscription()
+    }
+  };
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -47,7 +57,7 @@ const Home: React.FC = () => {
           <div className="absolute bottom-0 left-0 pb-10 pl-[2%]">
             <ExampleComponent />
           </div>
-          <div className="absolute bg-secondary-80 border-white hover:bg-secondary-50 cursor-pointer mb-3 rounded-full p-6 bottom-0 left-1/2">
+          <div onClick={toggleRecording} className={`absolute ${isRecording ? 'bg-neutral-50' : 'border border-neutral-50'} z-[5] hover:bg-secondary-50 cursor-pointer mb-3 rounded-full p-6 bottom-0 left-1/2`}>
           <Mic size={30} aria-label="mic icon" className="text-white" />
           </div>
           <Suspense>
