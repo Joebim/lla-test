@@ -18,11 +18,11 @@ const backgrounds = [
     thumbnail: "/images/landing/HeroInitBgImg.png",
   },
   {
-    video: "/images/landing/backgroundVideo1.mp4",
+    video: "/images/landing/HeroBgAccident.jpeg",
     thumbnail: "/images/landing/HeroBgBedRoom.jpeg",
   },
   {
-    video: "/images/landing/backgroundVideo1.mp4",
+    video: "/images/landing/HeroBgAccident.jpeg",
     thumbnail: "/images/landing/HeroBgAccident.jpeg",
   },
 ];

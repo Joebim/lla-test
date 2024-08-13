@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-secondary-100 py-12 text-white">
       <div className="w-full">
-        <div className="flex w-full flex-wrap justify-center px-[5%] pb-16 lg:justify-between">
+        <div className="flex w-full flex-wrap items-center justify-center px-[5%] pb-16 lg:justify-between">
           <div className="mb-6 flex w-full flex-col items-center gap-4 md:mb-0 md:w-[30%] md:items-start">
             <LogoFooter />
             <p className="text-transparent-white-75 ml-0 text-sm font-normal md:text-xl">
@@ -122,7 +122,7 @@ const Footer: React.FC = () => {
                   <input
                     type="email"
                     placeholder="johndoe@gmail.com"
-                    className="w-full rounded-3xl px-4 py-5 focus:outline-none"
+                    className="w-full rounded-3xl px-4 py-5 text-secondary-120 focus:outline-none"
                   />
                   <CustomButton
                     variant="primary"
@@ -136,7 +136,7 @@ const Footer: React.FC = () => {
                 <input
                   type="email"
                   placeholder="johndoe@gmail.com"
-                  className="h-12 w-full rounded-[10px] border border-neutral-40 px-3 py-[18px] focus:outline-none"
+                  className="h-12 w-full rounded-[10px] border border-neutral-40 px-3 py-[18px] text-secondary-120 focus:outline-none"
                 />
                 <CustomButton
                   variant="primary"
