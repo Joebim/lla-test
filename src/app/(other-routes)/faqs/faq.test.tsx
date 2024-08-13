@@ -18,15 +18,21 @@ describe("fAQs Page", () => {
     // Check for the "Last updated:" text
     expect(screen.getByText("Last updated:")).toBeInTheDocument();
 
-    // Generate the expected date string dynamically
-    const expectedDate = new Date().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+    // Generate the expected date regex pattern dynamically
+    const today = new Date();
+    const expectedDatePattern = new RegExp(
+      today.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      "i",
+    );
 
     // Wait for the date to appear with the dynamically generated date
-    await screen.findByText(expectedDate);
+    await expect(
+      screen.findByText(expectedDatePattern),
+    ).resolves.toBeInTheDocument();
 
     // Check for the introduction section
     expect(screen.getByText("Introduction")).toBeInTheDocument();

@@ -1,20 +1,13 @@
 "use client";
 
-<<<<<<< HEAD
 import { useCallback, useEffect, useState } from "react";
 
-=======
-import { useEffect, useState } from "react";
-
-import { getFAQs } from "~/store/faq-store";
->>>>>>> 125b63ba5c1af2b5449c531fe419d4a0ecab425a
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "../../../components/ui/accordion";
-<<<<<<< HEAD
 
 interface Faq {
   id: string;
@@ -71,30 +64,6 @@ export function FaqAccordions({ setUpdatedAt }) {
 
   if (datas.length === 0)
     return <h1 className="font-bold">No FAQs available at the moment.</h1>;
-=======
-
-interface Properties {
-  id: string;
-  question: string;
-  answer: string;
-  category: string;
-}
-
-export function FaqAccordions() {
-  const [faqs, setFaqs] = useState<Properties[]>([]);
-
-  useEffect(() => {
-    const fetchFaqs = async () => {
-      const result = await getFAQs();
-      if (result && (result.status === 200 || result.status === 201)) {
-        setFaqs(result.data.data);
-      } else {
-        setFaqs([]);
-      }
-    };
-    fetchFaqs();
-  }, []);
->>>>>>> 125b63ba5c1af2b5449c531fe419d4a0ecab425a
 
   return (
     <Accordion
@@ -102,11 +71,7 @@ export function FaqAccordions() {
       collapsible
       className="grid w-full gap-6 py-8 sm:gap-8"
     >
-<<<<<<< HEAD
       {datas.map((faq, index) => (
-=======
-      {faqs.map((faq, index) => (
->>>>>>> 125b63ba5c1af2b5449c531fe419d4a0ecab425a
         <AccordionItem
           className="rounded-[8px] border px-4 outline-none"
           key={faq.id}

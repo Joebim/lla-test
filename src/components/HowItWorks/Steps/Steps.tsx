@@ -124,10 +124,16 @@ export default function StepTabs() {
                 />
               </div>
               <div className="p-4 md:w-1/2">
-                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border-2 border-white text-white lg:mb-9">
+                <div
+                  className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border-2 border-white text-white lg:mb-9"
+                  data-testid={`description-number-${activeTab}`}
+                >
                   {tabContent[activeTab].number}
                 </div>
-                <p className="mb-4 text-2xl leading-[35px] lg:text-[40px] lg:leading-[60px]">
+                <p
+                  className="mb-4 text-2xl leading-[35px] lg:text-[40px] lg:leading-[60px]"
+                  data-testid={`description-text-${activeTab}`}
+                >
                   {tabContent[activeTab].description}
                 </p>
               </div>
@@ -161,10 +167,16 @@ export default function StepTabs() {
                     />
                   </div>
                   <div className="p-4">
-                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border-2 border-white text-white">
+                    <div
+                      className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border-2 border-white text-white"
+                      data-testid={`description-number-${contents.number}`}
+                    >
                       {contents.number}
                     </div>
-                    <p className="mb-4 text-2xl leading-[35px] lg:text-[40px] lg:leading-[60px]">
+                    <p
+                      className="mb-4 text-2xl leading-[35px] lg:text-[40px] lg:leading-[60px]"
+                      data-testid={`description-text-${contents.number}`}
+                    >
                       {contents.description}
                     </p>
                   </div>

@@ -1,44 +1,47 @@
-// src/components/HowItWorks/Steps/Steps.test.tsx
-import { fireEvent, render, screen } from "@testing-library/react";
-
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import StepTabs from "./Steps";
 
-describe("stepTabs", () => {
+describe("StepTabs", () => {
   it("renders the StepTabs component", () => {
-    expect.assertions(6);
     render(<StepTabs />);
 
-    const profileTab = screen.getByText(/profile setup/i);
-    const difficultyTab = screen.getByText(/difficulty selection/i);
-    const questTab = screen.getByText(/quest selection/i);
-    const learningTab = screen.getByText(/learning begins/i);
+    // Check for tab buttons
+    const profileTab = screen.getByText(/Profile Setup/i);
+    const difficultyTab = screen.getByText(/Difficulty Selection/i);
+    const questTab = screen.getByText(/Quest Selection/i);
+    const learningTab = screen.getByText(/Learning Begins/i);
 
     expect(profileTab).toBeInTheDocument();
     expect(difficultyTab).toBeInTheDocument();
     expect(questTab).toBeInTheDocument();
     expect(learningTab).toBeInTheDocument();
 
-    // Check if the default content is rendered using data-testid
-    const descriptionPart1 = screen.getByTestId("profile-description-part1");
-    const descriptionPart2 = screen.getByText(/setting up your profile/i);
+    // Check initial content
+    const descriptionNumber = screen.getByTestId("description-number-profile");
+    const descriptionText = screen.getByTestId("description-text-profile");
 
-    expect(descriptionPart1).toBeInTheDocument();
-    expect(descriptionPart2).toBeInTheDocument();
+    expect(descriptionNumber).toHaveTextContent("01.");
+    expect(descriptionText).toHaveTextContent(
+      "Begin Your Learning Journey By Setting Up Your Profile And Picking Languages You Are Interested In"
+    );
   });
 
-  it("switches to the correct tab content", () => {
-    expect.assertions(1);
+  it("changes content when tabs are clicked", async () => {
     render(<StepTabs />);
 
-    const difficultyTab = screen.getByText(/difficulty selection/i);
+    // Click the 'Difficulty Selection' tab
+    const difficultyTab = screen.getByText(/Difficulty Selection/i);
     fireEvent.click(difficultyTab);
 
-    const questTab = screen.getByText(/quest selection/i);
-    fireEvent.click(questTab);
+    // Wait for the content to update
+    await waitFor(() => {
+      const descriptionNumber = screen.getByTestId("description-number-difficulty");
+      const descriptionText = screen.getByTestId("description-text-difficulty");
 
-    // Check if the content for the "Quest Selection" tab is rendered
-    const descriptionQuestPart2 = screen.getByText(/select a quest/i);
-
-    expect(descriptionQuestPart2).toBeInTheDocument();
+      expect(descriptionNumber).toHaveTextContent("02.");
+      expect(descriptionText).toHaveTextContent(
+        "Before You Play, Set Your Difficulty Level So You Get The Best Experience For You"
+      );
+    });
   });
 });
