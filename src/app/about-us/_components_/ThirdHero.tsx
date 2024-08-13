@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 import ContactInput from "./ContactInput";
 import Map from "./Map";
@@ -52,6 +52,16 @@ const ThirdHero = () => {
       setNotification("An error occurred. Please try again.");
     }
   };
+
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        setNotification(null);
+      }, 5000); // Clear notification after 5 seconds
+
+      return () => clearTimeout(timer); // Cleanup timeout if component unmounts
+    }
+  }, [notification]);
 
   return (
     <article className="mx-auto w-full max-w-[1734px] bg-secondary-120 px-[11px] py-[17px] lg:px-[40px] lg:py-[80px]">
