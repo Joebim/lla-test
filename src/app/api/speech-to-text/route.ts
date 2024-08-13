@@ -1,21 +1,22 @@
-import axios from "axios";
-import { NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
-export async function GET(result: NextApiResponse) {
+
+export async function GET() {
   try {
-    const response = await axios.post(
+    const response = await fetch(
       "https://api.assemblyai.com/v2/realtime/token",
-      { expires_in: 3600 },
       {
+        method: "POST",
         headers: {
           authorization: `${process.env.ASSEMBLYAI_API_KEY}`,
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ expires_in: 3600 }),
+        cache: "no-store",
       },
     );
-    const { data } = response;
+    const data = await response.json();
     const headers = new Headers();
     headers.set(
       "Cache-Control",
@@ -23,8 +24,9 @@ export async function GET(result: NextApiResponse) {
     );
     headers.set("Pragma", "no-cache");
     headers.set("Expires", "0");
+
     return NextResponse.json({ success: true, data }, { headers });
-  } catch (error) {
-    return NextResponse.json({ success: false, error: error });
+  } catch {
+    return NextResponse.json({ success: false });
   }
 }

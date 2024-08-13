@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 "use client";
 
 import { useRef, useState } from "react";
@@ -11,12 +12,14 @@ interface UseSpeechToTextReturn {
   startTranscription: () => void;
   stopTranscription: (event: React.FormEvent) => Promise<void>;
 }
+
 const useSpeechToText = ({
   setCurrentChat,
 }: UseSpeechToTextProperties): UseSpeechToTextReturn => {
-  const socket = useRef<WebSocket | null>(null);
-  const recorder = useRef<RecordRTC | null>(null);
+  const socket = useRef<WebSocket | undefined>();
+  const recorder = useRef<RecordRTC | undefined>();
   const [isRecording, setIsRecording] = useState<boolean>(false);
+
   const generateTranscript = async () => {
     try {
       const response = await fetch(
@@ -29,32 +32,42 @@ const useSpeechToText = ({
         return;
       }
       const token: string = result.data.token;
+
       socket.current = new WebSocket(
         `wss://api.assemblyai.com/v2/realtime/ws?sample_rate=16000&token=${token}`,
       );
+
       const texts: Record<number, string> = {};
-      socket.current.onmessage = (voicePrompt: MessageEvent) => {
-        let message = "";
-        const res = JSON.parse(voicePrompt.data);
-        texts[res.audio_start] = res.text;
-        const keys = Object.keys(texts)
-          .map(Number)
-          .sort((a, b) => a - b);
-        for (const key of keys) {
-          if (texts[key]) {
-            message += ` ${texts[key]}`;
+
+      socket.current.addEventListener(
+        "message",
+        (voicePrompt: MessageEvent) => {
+          let message = "";
+          const responseData = JSON.parse(voicePrompt.data);
+          texts[responseData.audio_start] = responseData.text;
+
+          const keys = Object.keys(texts)
+            .map(Number)
+            .sort((a, b) => a - b);
+
+          for (const key of keys) {
+            if (texts[key]) {
+              message += ` ${texts[key]}`;
+            }
           }
-        }
-        setCurrentChat(message);
-      };
-      socket.current.onerror = (event) => {
+          setCurrentChat(message);
+        },
+      );
+
+      socket.current.addEventListener("error", (event) => {
         console.error(event);
         socket.current?.close();
-      };
-      socket.current.addEventListener("close", (event) => {
-        console.log(event);
-        socket.current = null;
       });
+
+      socket.current.addEventListener("close", () => {
+        socket.current = undefined;
+      });
+
       socket.current.addEventListener("open", () => {
         navigator.mediaDevices
           .getUserMedia({ audio: true })
@@ -85,26 +98,31 @@ const useSpeechToText = ({
             });
             recorder.current.startRecording();
           })
+
           .catch((error) => console.error(error));
       });
+
       setIsRecording(true);
     } catch (error) {
       console.error(error);
     }
   };
+
   const endTranscription = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsRecording(false);
     socket.current?.send(JSON.stringify({ terminate_session: true }));
     socket.current?.close();
-    socket.current = null;
+    socket.current = undefined;
     recorder.current?.pauseRecording();
-    recorder.current = null;
+    recorder.current = undefined;
   };
+
   return {
     isRecording,
     startTranscription: generateTranscript,
     stopTranscription: endTranscription,
   };
 };
+
 export default useSpeechToText;
