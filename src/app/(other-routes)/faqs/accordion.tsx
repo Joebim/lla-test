@@ -32,8 +32,7 @@ export function FaqAccordions() {
       } else {
         setDatas([]);
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    } catch {
       setDatas([]);
     } finally {
       setLoading(false);
