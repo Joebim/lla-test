@@ -1,21 +1,16 @@
-import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
+import { auth } from "~/lib/auth";
 import { apiAuthPrefix, authRoutes, publicRoutes } from "~/lib/routes";
 
 // Define admin roles
 const adminRoles = new Set(["super_admin", "game_developer", "user_manager"]);
-const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET || "";
 const NEXT_PUBLIC_ROOT_DOMAIN = "staging.delve.fun";
 
 export default async function middleware(request: NextRequest) {
-  const session = await getToken({
-    req: request,
-    secret: NEXTAUTH_SECRET,
-    salt: "next-auth.session-token",
-  });
+  const session = await auth();
+  const isLoggedIn = session;
   const userRole = session?.user?.role || "guest";
-  const isLoggedIn = !!session;
   const { nextUrl } = request;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
@@ -38,7 +33,7 @@ export default async function middleware(request: NextRequest) {
   if (hostname == `dashboard.${NEXT_PUBLIC_ROOT_DOMAIN}`) {
     if (!isLoggedIn && !isAuthRoute) {
       return NextResponse.redirect(
-        new URL(`/login?callbackUrl=${nextUrl.pathname}`, nextUrl),
+        new URL(`/signin?callbackUrl=${nextUrl.pathname}`, nextUrl),
       );
     } else if (isLoggedIn && isAuthRoute) {
       return NextResponse.redirect(new URL("/", nextUrl));

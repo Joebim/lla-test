@@ -109,7 +109,7 @@ export default {
     },
   },
   pages: {
-    signIn: "/login",
+    signIn: "/signin",
     error: "/error",
   },
   secret: process.env.AUTH_SECRET,
