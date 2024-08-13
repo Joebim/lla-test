@@ -11,7 +11,6 @@ export default async function middleware(request: NextRequest) {
   const session = await auth();
   const isLoggedIn = session;
   const userRole = session?.user?.role || "guest";
-
   const { nextUrl } = request;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
@@ -34,7 +33,7 @@ export default async function middleware(request: NextRequest) {
   if (hostname == `dashboard.${NEXT_PUBLIC_ROOT_DOMAIN}`) {
     if (!isLoggedIn && !isAuthRoute) {
       return NextResponse.redirect(
-        new URL(`/login?callbackUrl=${nextUrl.pathname}`, nextUrl),
+        new URL(`/signin?callbackUrl=${nextUrl.pathname}`, nextUrl),
       );
     } else if (isLoggedIn && isAuthRoute) {
       return NextResponse.redirect(new URL("/", nextUrl));
