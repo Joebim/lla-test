@@ -9,9 +9,12 @@ const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET || "";
 const NEXT_PUBLIC_ROOT_DOMAIN = "staging.delve.fun";
 
 export default async function middleware(request: NextRequest) {
-  const token = await getToken({ req: request, secret: NEXTAUTH_SECRET });
-  const isLoggedIn = !!token;
-  const userRole = token?.user?.role || "guest";
+  const session = await getToken({
+    req: request,
+    secret: NEXTAUTH_SECRET,
+  });
+  const userRole = session?.user?.role || "guest";
+  const isLoggedIn = !!session;
   const { nextUrl } = request;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
@@ -42,15 +45,11 @@ export default async function middleware(request: NextRequest) {
 
     // Redirect based on user role
     if (isLoggedIn) {
-      if (adminRoles.has(userRole)) {
-        return NextResponse.rewrite(
-          new URL(`/dashboard/admin${path === "/" ? "/" : path}`, request.url),
-        );
-      } else {
-        return NextResponse.rewrite(
-          new URL(`/dashboard/user${path === "/" ? "/" : path}`, request.url),
-        );
-      }
+      return adminRoles.has(userRole) ? NextResponse.rewrite(
+        new URL(`/dashboard/admin${path === "/" ? "/" : path}`, request.url),
+      ) : NextResponse.rewrite(
+         new URL(`/dashboard/user${path === "/" ? "/" : path}`, request.url),
+      );
     }
   }
 
