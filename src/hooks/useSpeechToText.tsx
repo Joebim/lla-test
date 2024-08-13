@@ -23,7 +23,6 @@ const useSpeechToText = ({
         `/api/speech-to-text?timestamp=${Date.now()}`,
         { cache: "no-store" },
       );
-      console.log(response);
       const result = await response.json();
       if (result.error) {
         alert(result.error.message);
