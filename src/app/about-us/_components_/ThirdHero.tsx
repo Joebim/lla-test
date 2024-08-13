@@ -1,17 +1,56 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
-import CustomButton from "~/components/common/common-button/common-button";
 import ContactInput from "./ContactInput";
 import Map from "./Map";
 
 const ThirdHero = () => {
   const [isUserTyping, setIsUserTyping] = useState<boolean>(false);
+  const [formData, setFormData] = useState<{
+    name: string;
+    email: string;
+    message: string;
+  }>({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [notification, setNotification] = useState<string | null>(null);
 
-  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const value = event.target.value;
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = event.target;
+    setFormData((previous) => ({ ...previous, [name]: value }));
     setIsUserTyping(value.length > 0);
+  };
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(
+        "https://api.staging.delve.fun/api/v1/inquiries",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        },
+      );
+
+      if (response.ok) {
+        setNotification("Your message has been sent!");
+        setFormData({ name: "", email: "", message: "" }); // Clear form fields
+        setIsUserTyping(false); // Reset typing state
+      } else {
+        setNotification("Something went wrong. Please try again.");
+      }
+    } catch {
+      setNotification("An error occurred. Please try again.");
+    }
   };
 
   return (
@@ -20,7 +59,7 @@ const ThirdHero = () => {
         <div className="mx-auto flex w-full max-w-[1392px] flex-col gap-[23px] border-[16px] border-solid border-[#FFFFFFCC] p-[24px] lg:gap-[34px] lg:p-[48px]">
           <div className="text-center font-axiformaSemiBold font-semibold text-secondary-120">
             <h1 className="whitespace-nowrap text-[24px] leading-[36px] tracking-[0.02em] md:text-[48px] md:leading-[72px] lg:tracking-[0.06em]">
-              Get in <span className="text-primary-100">Touch</span>
+              Get in <span className="text-primary-110">Touch</span>
             </h1>
             <p className="text-[14px] leading-[20px] md:text-[16px] md:leading-[24px]">
               Whether you have a question, feedback, or need assistance, our
@@ -28,23 +67,37 @@ const ThirdHero = () => {
             </p>
           </div>
 
+          {/* Notification */}
+          {notification && (
+            <div className="mb-4 rounded-md bg-green-100 p-4 text-green-700">
+              {notification}
+            </div>
+          )}
+
           {/* Input */}
           <div className="flex w-full max-w-[1310px] gap-[80px]">
             {/* form */}
             <div className="w-full shrink-0 lg:w-[calc(50%-40px)]">
-              <form className="flex flex-col gap-[45px]">
+              <form
+                className="flex flex-col gap-[45px]"
+                onSubmit={handleSubmit}
+              >
                 <div className="flex flex-col gap-[24px]">
                   <ContactInput
                     label="Your Name"
                     type="text"
                     placeholder="John Doe"
                     name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                   />
                   <ContactInput
                     label="Your Email"
                     type="email"
                     placeholder="johndoe@gmail.com"
                     name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                   />
 
                   <div className="">
@@ -59,6 +112,7 @@ const ThirdHero = () => {
                         name="message"
                         id="message"
                         onChange={handleChange}
+                        value={formData.message}
                         required
                         placeholder="Let us know how we can help you"
                         className={`w-full resize-none bg-transparent text-[14px] leading-[20px] outline-none ${isUserTyping ? "h-full" : ""}`}
@@ -71,13 +125,12 @@ const ThirdHero = () => {
                     </div>
                   </div>
                 </div>
-                <CustomButton
-                  variant="primary"
+                <button
                   type="submit"
                   className="flex min-h-[48px] w-full items-center justify-center rounded-[59px] border-b border-solid border-primary-120 bg-primary-100 px-[24px] py-[10px] font-axiformaBold text-[16px] font-bold leading-[24px] text-white md:text-[20px] md:leading-[30px] lg:px-[32px]"
                 >
                   SEND
-                </CustomButton>
+                </button>
               </form>
               {/* contact type */}
             </div>
