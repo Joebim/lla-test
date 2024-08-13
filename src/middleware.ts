@@ -11,7 +11,7 @@ const NEXT_PUBLIC_ROOT_DOMAIN = "staging.delve.fun";
 export default async function middleware(request: NextRequest) {
   const session = await getToken({
     req: request,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: NEXTAUTH_SECRET,
   });
   const userRole = session?.user?.role || "guest";
   const isLoggedIn = !!session;
@@ -45,15 +45,11 @@ export default async function middleware(request: NextRequest) {
 
     // Redirect based on user role
     if (isLoggedIn) {
-      if (adminRoles.has(userRole)) {
-        return NextResponse.rewrite(
-          new URL(`/dashboard/admin${path === "/" ? "/" : path}`, request.url),
-        );
-      } else {
-        return NextResponse.rewrite(
-          new URL(`/dashboard/user${path === "/" ? "/" : path}`, request.url),
-        );
-      }
+      return adminRoles.has(userRole) ? NextResponse.rewrite(
+        new URL(`/dashboard/admin${path === "/" ? "/" : path}`, request.url),
+      ) : NextResponse.rewrite(
+         new URL(`/dashboard/user${path === "/" ? "/" : path}`, request.url),
+      );
     }
   }
 
