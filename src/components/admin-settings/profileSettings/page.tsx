@@ -1,18 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-console */
 "use client";
 
 import { Camera } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import {
-  getAdminProfile,
-  updateAdminProfile,
-} from "~/app/api/adminDashboard/route";
 import CustomButton from "~/components/common/common-button/common-button";
 import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
 import CustomInput from "~/components/input/CustomInput";
+import { useProfileStore } from "./useProfileStore";
 
 const handleFileInputClick = () => {
   const fileInput = document.querySelector(
@@ -32,10 +27,7 @@ const validateEmail = (email: string): boolean => {
 
 const AdminProfile = () => {
   //states
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [image, setImage] = useState("");
-  const [gender, setGender] = useState("");
+  const { image, name, email, gender, updateProfile } = useProfileStore();
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [temporaryGender, setTemporaryGender] = useState(gender);
   const [temporaryImage, setTemporaryImage] = useState(image);
@@ -49,40 +41,25 @@ const AdminProfile = () => {
   useEffect(() => {
     setIsClient(true);
   }, []);
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
 
   useEffect(() => {
-    async function fetchAdminProfile() {
-      try {
-        const response = await getAdminProfile();
-        console.log(response);
-        if (response?.data) {
-          setTemporaryImage(
-            response.data?.data.avatar_url || "/images/profile_avatar.svg",
-          );
-          setTemporaryName(response.data?.data?.username);
-          setTemporaryEmail(response.data?.data?.email);
-          setTemporaryGender(response.data?.data?.gender);
-          console.log(
-            temporaryName,
-            temporaryImage,
-            temporaryEmail,
-            temporaryGender,
-          );
-        }
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
+    if (isClient) {
+      setTemporaryImage(image);
+      setTemporaryName(name);
+      setTemporaryEmail(email);
+      setTemporaryGender(gender);
     }
-    fetchAdminProfile();
-  }, []);
+  }, [image, name, email, gender, isClient]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
       reader.addEventListener("load", (event: ProgressEvent<FileReader>) => {
         if (event.target && event.target.result) {
-          setImage(event.target.result as string);
+          setTemporaryImage(event.target.result as string);
         }
       });
       reader.readAsDataURL(event.target.files[0]);
@@ -95,31 +72,28 @@ const AdminProfile = () => {
       const reader = new FileReader();
       reader.addEventListener("load", (event: ProgressEvent<FileReader>) => {
         if (event.target && event.target.result) {
-          setImage(event.target.result as string);
+          setTemporaryImage(event.target.result as string);
         }
       });
       reader.readAsDataURL(event.dataTransfer.files[0]);
     }
   };
 
-  const handleSave = async () => {
-    if (!validateEmail(email)) {
+  //handles save button click event
+  const handleSave = () => {
+    if (!validateEmail(temporaryEmail)) {
       setError("Please enter a valid email address");
       return;
     }
-    try {
-      await updateAdminProfile({
-        image: image ?? temporaryImage,
-        username: name ?? temporaryName,
-        gender: gender ?? temporaryGender,
-        email: email ?? temporaryEmail,
-      });
-      setError("");
-      setIsEditing(false);
-      setIsSuccessModalOpen(true);
-    } catch (error) {
-      console.error("Failed to update profile", error);
-    }
+    updateProfile({
+      image: temporaryImage,
+      name: temporaryName,
+      email: temporaryEmail,
+      gender: temporaryGender,
+    });
+    setError("");
+    setIsEditing(false);
+    setIsSuccessModalOpen(true);
   };
 
   const handleCloseModal = () => {
@@ -129,6 +103,7 @@ const AdminProfile = () => {
     }
   };
 
+  //handles update profile button click
   const handleUpdateProfileClick = () => {
     setIsEditing(!isEditing);
     if (error) {
@@ -139,10 +114,11 @@ const AdminProfile = () => {
   if (!isClient) {
     return;
   }
+  // get adminProfiile
 
   return (
     <main data-testid="profile-settings" className="font-inter">
-      {/* upload image modal */}
+      {/* upload image modal ***********/}
       {isModalOpen && (
         <DashboardModal
           onClose={handleCloseModal}
@@ -185,7 +161,7 @@ const AdminProfile = () => {
         </DashboardModal>
       )}
 
-      {/* success modal */}
+      {/* success modal ***********/}
       {isSuccessModalOpen && (
         <DashboardModal
           onClose={handleCloseModal}
@@ -207,138 +183,147 @@ const AdminProfile = () => {
           </CustomButton>
         </DashboardModal>
       )}
+      <>
+        <section className="mt-[30px] w-full rounded-[15px] border-2 border-neutral-30 bg-white p-[20px] sm:p-[30px] md:p-[40px]">
+          <div className="block w-full items-center space-x-0 lg:flex lg:space-x-[70px]">
+            {/* profile image section ***********/}
+            <section className="profile-image">
+              {isEditing ? (
+                <div
+                  data-testid="profileImage"
+                  onClick={() => setIsModalOpen(true)}
+                  className="relative h-[180px] w-[180px] cursor-pointer sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]"
+                >
+                  <Image
+                    src={temporaryImage || "/images/profile_avatar.svg"}
+                    alt="Profile Image"
+                    width={100}
+                    height={100}
+                    className="h-full w-full object-cover object-center"
+                  />
+                  <Camera className="absolute left-[20px] top-[20px] text-neutral-110 sm:top-[30px] md:left-[30px] md:top-[50px]" />
+                </div>
+              ) : (
+                <div className="h-[180px] w-[180px] sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]">
+                  <Image
+                    src={image || "/images/profile_avatar.svg"}
+                    alt="Profile Image"
+                    width={100}
+                    height={100}
+                    className="h-full w-full object-cover object-center"
+                  />
+                </div>
+              )}
+            </section>
 
-      <section className="mt-[30px] w-full rounded-[15px] border-2 border-neutral-30 bg-white p-[20px] sm:p-[30px] md:p-[40px]">
-        <div className="block w-full items-center space-x-0 lg:flex lg:space-x-[70px]">
-          {/* profile image section */}
-          <section className="profile-image">
-            {isEditing ? (
-              <div
-                data-testid="profileImage"
-                onClick={() => setIsModalOpen(true)}
-                className="relative h-[180px] w-[180px] cursor-pointer sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]"
-              >
-                <Image
-                  src={temporaryImage || "/images/profile_avatar.svg"}
-                  alt="Profile Image"
-                  width={100}
-                  height={100}
-                  className="h-full w-full object-cover object-center"
-                />
-                <Camera className="absolute left-[20px] top-[20px] text-neutral-110 sm:top-[30px] md:left-[30px] md:top-[50px]" />
-              </div>
-            ) : (
-              <div className="h-[180px] w-[180px] sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]">
-                <Image
-                  src={image || "/images/profile_avatar.svg"}
-                  alt="Profile Image"
-                  width={100}
-                  height={100}
-                  className="h-full w-full object-cover object-center"
-                />
-              </div>
-            )}
-          </section>
-
-          {/* profile details section */}
-          <section className="mt-[30px] w-full lg:mt-0">
-            {isEditing ? (
-              <>
-                <section className="space-y-[15px] sm:space-y-[25px]">
-                  <div className="block items-center justify-between sm:flex">
-                    <label htmlFor="fullname" className="font-semibold">
-                      Name
-                    </label>
-                    <div>
-                      <CustomInput
-                        name="fullname"
-                        inputType="text"
-                        className="w-[100%]"
-                        placeholder="Name"
-                        value={temporaryName ? name : temporaryName}
-                        onChange={(event) => setName(event.target.value)}
-                      />
+            {/* profile details section ***********/}
+            <section className="mt-[30px] w-full lg:mt-0">
+              {isEditing ? (
+                <>
+                  <section className="space-y-[15px] sm:space-y-[25px]">
+                    <div className="block items-center justify-between sm:flex">
+                      <label htmlFor="fullname" className="font-semibold">
+                        Name
+                      </label>
+                      <div>
+                        <CustomInput
+                          name="fullname"
+                          inputType="text"
+                          className="w-[100%]"
+                          value={temporaryName}
+                          onChange={(event) =>
+                            setTemporaryName(event.target.value)
+                          }
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="block items-center justify-between sm:flex">
-                    <label htmlFor="email" className="font-semibold">
-                      Email
-                    </label>
-                    <div>
-                      <CustomInput
-                        name="email"
-                        inputType="email"
-                        className="w-[100%]"
-                        placeholder="Email"
-                        value={temporaryEmail ?? email}
-                        onChange={(event) => setEmail(event.target.value)}
-                      />
+                    <div className="block items-center justify-between sm:flex">
+                      <label htmlFor="email" className="font-semibold">
+                        Email
+                      </label>
+                      <div>
+                        <CustomInput
+                          name="email"
+                          inputType="email"
+                          value={temporaryEmail}
+                          className="w-[100%]"
+                          onChange={(event) =>
+                            setTemporaryEmail(event.target.value)
+                          }
+                        />
+                        {error && (
+                          <small className="text-critical-80">{error}</small>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center justify-between sm:flex">
-                    <label htmlFor="gender" className="font-semibold">
-                      Gender
-                    </label>
-                    <select
-                      id="gender"
-                      name="gender"
-                      value={temporaryGender ?? gender}
-                      onChange={(event) => setGender(event.target.value)}
-                      className="w-[100%] rounded border border-gray-300 p-2"
+                    <div className="block items-center justify-between sm:flex">
+                      <div>
+                        <label htmlFor="gender" className="font-semibold">
+                          Gender
+                        </label>
+                      </div>
+                      <div className="flex w-full sm:w-fit">
+                        <select
+                          className="w-full rounded-[5px] border border-secondary-30 py-[8px] outline-none sm:w-[250px]"
+                          value={temporaryGender}
+                          onChange={(event) =>
+                            updateProfile({ gender: event.target.value })
+                          }
+                        >
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+                    </div>
+                  </section>
+                  <div className="mt-[2rem] space-x-2 sm:mt-[4rem]">
+                    <CustomButton variant="primary" onClick={handleSave}>
+                      Save
+                    </CustomButton>
+                    <CustomButton
+                      variant="outline"
+                      className="border-2 border-primary-60 bg-transparent text-primary-60"
+                      onClick={handleUpdateProfileClick}
                     >
-                      <option value="">Select Gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                    </select>
+                      Cancel
+                    </CustomButton>
                   </div>
-                  <small className="text-red-600">{error}</small>
-                </section>
-                <section className="mt-[40px] flex w-full items-center justify-center space-x-5">
+                </>
+              ) : (
+                <div className="space-y-[30px]">
                   <CustomButton
-                    variant="secondary-two"
-                    onClick={() => setIsEditing(false)}
-                  >
-                    Cancel
-                  </CustomButton>
-                  <CustomButton variant="primary" onClick={handleSave}>
-                    Save
-                  </CustomButton>
-                </section>
-              </>
-            ) : (
-              <>
-                <div className="block items-center justify-between sm:flex">
-                  <label htmlFor="fullname" className="font-semibold">
-                    Name
-                  </label>
-                  <p className="text-neutral-130">{temporaryName}</p>
-                </div>
-                <div className="block items-center justify-between sm:flex">
-                  <label htmlFor="email" className="font-semibold">
-                    Email
-                  </label>
-                  <p className="text-neutral-130">{temporaryEmail}</p>
-                </div>
-                <div className="block items-center justify-between sm:flex">
-                  <label htmlFor="gender" className="font-semibold">
-                    Gender
-                  </label>
-                  <p className="text-neutral-130">{temporaryGender}</p>
-                </div>
-                <section className="mt-[40px] flex w-full items-center justify-center">
-                  <CustomButton
-                    variant="primary"
+                    variant="outline"
+                    className="hidden border-2 border-primary-60 bg-transparent text-primary-60 md:block"
                     onClick={handleUpdateProfileClick}
                   >
-                    Edit
+                    Edit your profile
                   </CustomButton>
-                </section>
-              </>
-            )}
-          </section>
-        </div>
-      </section>
+                  <div>
+                    <p className="text-[16px] font-semibold">Name</p>
+                    <p className="text-[14px]">{name}</p>
+                  </div>
+                  <div>
+                    <p className="text-[16px] font-semibold">Email</p>
+                    <p className="text-[14px]">{email}</p>
+                  </div>
+                  <div>
+                    <p className="text-[16px] font-semibold">Gender</p>
+                    <p className="text-[14px]">{gender}</p>
+                  </div>
+                  <CustomButton
+                    variant="outline"
+                    className="block border-2 border-b-primary-60 bg-transparent text-primary-60 md:hidden"
+                    onClick={handleUpdateProfileClick}
+                  >
+                    Edit your profile
+                  </CustomButton>
+                </div>
+              )}
+            </section>
+          </div>
+        </section>
+      </>
     </main>
   );
 };
