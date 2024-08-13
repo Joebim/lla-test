@@ -1,5 +1,5 @@
-import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+
 import { auth } from "~/lib/auth";
 import { apiAuthPrefix, authRoutes, publicRoutes } from "~/lib/routes";
 
