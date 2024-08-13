@@ -5,7 +5,7 @@
  */
 export const publicRoutes = [
   "/",
-  "how-it-works",
+  "/how-it-works",
   "/faqs",
   "/about-us",
   "/terms-of-use",
@@ -31,7 +31,10 @@ export const DEFAULT_LOGIN_REDIRECT = "/dashboard/user";
 export const clientRoutes = [
   "/dashboard",
   "/quests",
-  "messages",
+  "/messages",
   "/notifications",
   "/profile",
+  "/signup/profile",
+  "/dashboard/admin",
+  "/dashboard/user",
 ];

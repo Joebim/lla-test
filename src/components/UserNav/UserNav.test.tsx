@@ -1,7 +1,17 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { useRouter } from "next-nprogress-bar";
+import { describe, expect, it, Mock, vi } from "vitest";
 
 import UserNav from "./UserNav";
+
+// Mock the useRouter hook
+vi.mock("next-nprogress-bar", () => {
+  const originalModule = vi.importActual("next-nprogress-bar");
+  return {
+    ...originalModule,
+    useRouter: vi.fn(),
+  };
+});
 
 // Mock useSession hook
 vi.mock("next-auth/react", () => ({
@@ -18,6 +28,12 @@ vi.mock("next-auth/react", () => ({
 }));
 
 describe("userNav", () => {
+  beforeEach(() => {
+    (useRouter as Mock).mockReturnValue({
+      push: vi.fn(),
+    });
+  });
+
   it("renders the UserNav component", () => {
     expect.assertions(7);
     render(<UserNav />);
