@@ -4,7 +4,9 @@ interface PlayerThoughtProperties {
   thought: string;
 }
 
-const PlayerThought: React.FC<PlayerThoughtProperties> = ({ thought }) => {
+export const PlayerThought: React.FC<PlayerThoughtProperties> = ({
+  thought,
+}) => {
   return (
     <div
       className="relative top-[30px] flex h-[145px] w-[240px] items-center justify-center rounded-[10px] border-2 border-[#FE6A19] bg-black bg-opacity-30 p-6"
@@ -26,7 +28,6 @@ const PlayerThought: React.FC<PlayerThoughtProperties> = ({ thought }) => {
   );
 };
 
-// Example usage
 const ExampleComponent: React.FC = () => {
   return (
     <div>
