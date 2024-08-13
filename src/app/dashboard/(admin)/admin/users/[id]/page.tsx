@@ -107,7 +107,7 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
       {isModalOpen && (
         <DashboardModal
           onClose={handleCloseModal}
-          className="w-[450px] font-axiforma"
+          className="w-[420px] font-axiforma"
         >
           <div>
             <h3 className="mb-[15px] text-center text-[20px] font-bold">
@@ -129,7 +129,7 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
             <CustomButton
               variant="default"
               onClick={handleDeactivated}
-              className="w-full bg-critical-90 px-[30px] text-white"
+              className="w-full bg-critical-90 text-white"
             >
               Deactivate
             </CustomButton>

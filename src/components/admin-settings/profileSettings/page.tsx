@@ -44,7 +44,6 @@ const AdminProfile = () => {
   const [temporaryName, setTemporaryName] = useState(name);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isClient, setIsClient] = useState(false);
   const [error, setError] = useState("");
   const [isLoadingAdminDetails, setIsLoadingAdminDetails] = useState(true);
   useEffect(() => {
@@ -118,11 +117,8 @@ const AdminProfile = () => {
     }
   };
 
-  const handleCloseModal = () => {
-    if (isModalOpen || isSuccessModalOpen) {
-      setIsSuccessModalOpen(false);
-      setIsModalOpen(false);
-    }
+  const handleGenderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setTemporaryGender(event.target.value);
   };
 
   const handleUpdateProfileClick = () => {
@@ -139,16 +135,17 @@ const AdminProfile = () => {
   return (
     <main data-testid="profile-settings" className="font-inter">
       {/* upload image modal */}
+      {/* upload image modal */}
       {isModalOpen && (
         <DashboardModal
-          onClose={handleCloseModal}
+          onClose={() => setIsModalOpen(false)}
           className="flex w-full flex-col items-center justify-center space-y-[20px] md:w-[40rem]"
         >
           <section className="flex w-full flex-col items-center justify-center space-y-[20px] border-[3px] border-dashed py-[20px] md:w-[25rem]">
             <div
               className="drag-drop-area"
               onDrop={handleDrop}
-              onDragOver={handleDragOver}
+              onDragOver={(event) => event.preventDefault()}
             >
               <p>Drag and drop image to upload</p>
               <input
@@ -169,7 +166,9 @@ const AdminProfile = () => {
             <CustomButton
               variant="secondary-two"
               className="w-fit px-[15px]"
-              onClick={handleFileInputClick}
+              onClick={() =>
+                document.querySelector<HTMLInputElement>("#fileInput")?.click()
+              }
             >
               Select photo from device
             </CustomButton>
@@ -182,9 +181,10 @@ const AdminProfile = () => {
       )}
 
       {/* success modal */}
+      {/* success modal */}
       {isSuccessModalOpen && (
         <DashboardModal
-          onClose={handleCloseModal}
+          onClose={() => setIsSuccessModalOpen(false)}
           className="flex w-[25rem] flex-col items-center justify-center space-y-[20px]"
         >
           <div>
