@@ -1,6 +1,7 @@
 "use client";
 
 import { Eye, EyeOff } from "lucide-react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -171,7 +172,10 @@ const SignUpPage: React.FC = () => {
           <hr />
         </div>
       </div>
-      <button className="mt-4 flex h-[56px] w-full items-center justify-center gap-2 rounded-[59px] bg-secondary-120 px-4 py-2 text-secondary-10 hover:bg-secondary-110 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-opacity-50">
+      <button
+        className="mt-4 flex h-[56px] w-full items-center justify-center gap-2 rounded-[59px] bg-secondary-120 px-4 py-2 text-secondary-10 hover:bg-secondary-110 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-opacity-50"
+        onClick={() => signIn("google", { callbackUrl: "/dashboard/user" })}
+      >
         <Image src="/signup/googleicon.png" alt="" width={20} height={20} />{" "}
         <p>Continue with Google</p>
       </button>
