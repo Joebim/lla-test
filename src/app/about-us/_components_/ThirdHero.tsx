@@ -17,7 +17,7 @@ const ThirdHero = () => {
     email: "",
     message: "",
   });
-  const [notification, setNotification] = useState<string | null>(null);
+  const [notification, setNotification] = useState<string | null>();
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -57,7 +57,7 @@ const ThirdHero = () => {
   useEffect(() => {
     if (notification) {
       const timer = setTimeout(() => {
-        setNotification(null);
+        setNotification(undefined);
       }, 5000); // Clear notification after 5 seconds
 
       return () => clearTimeout(timer); // Cleanup timeout if component unmounts

@@ -16,7 +16,7 @@ export default function Blog() {
               alt="blog image"
               width={1000}
               height={400}
-              className="h-24 md:h-[477px] w-full border-4 border-[#21212140] object-cover"
+              className="h-24 w-full border-4 border-[#21212140] object-cover md:h-[477px]"
             />
           </div>
         </div>
