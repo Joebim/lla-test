@@ -72,9 +72,6 @@ const HomeKeyFeaturesSection = () => {
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-2 bg-white p-5 pt-14 md:p-10">
-      <h4 className="py-3 font-axiformaMedium text-[16px] font-medium leading-[30px] text-primary-110 md:text-2xl">
-        Discover Our Key Features
-      </h4>
       <div className="grid w-full grid-cols-1 place-content-center place-items-center items-center justify-center gap-3 gap-y-10 place-self-center border-[4px] border-secondary-20 bg-secondary-120 p-5 pt-5 md:grid-cols-2 md:p-10">
         {features.map((feature, _) => (
           <div

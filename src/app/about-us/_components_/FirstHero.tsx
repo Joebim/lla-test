@@ -59,13 +59,13 @@ const FirstHero = () => {
           </h1>
           <div
             ref={sectionReference}
-            className="flex w-full max-w-[1648px] flex-col gap-[40px] px-[20px] py-[24px] lg:flex-row lg:items-center lg:gap-[100px] lg:px-[80px]"
+            className="flex w-full max-w-[1648px] flex-col-reverse gap-[40px] px-[20px] py-[24px] lg:flex-col-reverse lg:items-center lg:gap-[60px] lg:px-[80px]"
           >
-            <div className="w-full lg:w-[601px]">
+            <div className="w-full">
               <motion.p
                 initial={{ x: -100, opacity: 0 }}
                 animate={controlsLeft}
-                className="text-center font-axiformaSemiBold text-[16px] font-semibold leading-[24px] tracking-[0.04em] text-transparent-black-75 md:text-[24px] md:leading-[36px] lg:text-start"
+                className="text-center font-axiformaSemiBold text-[16px] font-semibold leading-[24px] tracking-[0.04em] text-transparent-black-75 md:text-[24px] md:leading-[36px]"
               >
                 At Delve, <strong className="text-black">we </strong>
                 revolutionize language learning
@@ -88,7 +88,7 @@ const FirstHero = () => {
             <motion.div
               initial={{ x: 100, opacity: 0 }}
               animate={controlsRight}
-              className="w-full max-w-[808px]"
+              className="w-full"
             >
               <Image
                 src={aboutImg}

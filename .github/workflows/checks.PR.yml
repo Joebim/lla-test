@@ -5,7 +5,7 @@ on:
 
 jobs:
   test:
-    runs-on: self-hosted
+    runs-on: [self-hosted,langlearn_fe_runner_1]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,12 +21,13 @@ jobs:
       - name: "Test"
         run: pnpm run test:ci -- --max-warnings 0
       - name: "Upload Coverage"
+        if: false
         uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: coverage
   eslint:
-    runs-on: self-hosted
+    runs-on: [self-hosted,langlearn_fe_runner_2]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
