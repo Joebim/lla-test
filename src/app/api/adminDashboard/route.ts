@@ -94,18 +94,17 @@ export const getUsersByDate = async (
   }
 };
 
-// get admin profile
-export const getAdminProfile = async () => {
-  try {
-    const response = await axios.get(`${ADMIN_BASE_URL}/api/v1/admin-profile`, {
-      headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
-      },
-    });
+// export const getAdminProfile = async () => {
+//   try {
+//     const response = await axios.get(`${ADMIN_BASE_URL}/api/v1/admin-profile`, {
+//       headers: {
+//         Authorization: `Bearer ${getAuthToken()}`,
+//       },
+//     });
 
-    return response;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+//     return response;
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// };
