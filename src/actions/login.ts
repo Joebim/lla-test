@@ -18,7 +18,6 @@ export const loginUser = async (values: z.infer<typeof LoginSchema>) => {
   const payload = { email, password };
   try {
     const response = await axios.post(`${apiUrl}/api/v1/auth/login`, payload);
-
     return {
       status: response.status,
     };
