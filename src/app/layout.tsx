@@ -8,6 +8,7 @@ import "./globals.css";
 import GotoTop from "~/components/miscellaneous/goto-top";
 import Progress_bar from "~/components/progress-bar";
 import { Toaster } from "~/components/ui/toaster";
+import AuthProvider from "~/contexts/authContext";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -29,11 +30,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className}`}>
         <div className="mx-auto w-full font-axiforma">
-          <ToastProvider>
-            <Progress_bar />
-            {children}
-            <Toaster />
-          </ToastProvider>
+          <AuthProvider>
+            <ToastProvider>
+              <Progress_bar />
+              {children}
+              <Toaster />
+            </ToastProvider>
+          </AuthProvider>
         </div>
         <GotoTop />
       </body>

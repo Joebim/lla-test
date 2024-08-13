@@ -5,7 +5,7 @@ const Breadcrumb = () => {
     <div>
       <div className="flex gap-1 text-secondary-70">
         <Link
-          href="/dashboard/quests"
+          href="/dashboard/user/quests"
           className="duration-150 hover:underline active:scale-95"
         >
           Quests

@@ -59,7 +59,7 @@ const ProfileSettingsMenu = () => {
       >
         <Menu />
       </button>
-      <ul className="hidden h-fit w-full max-w-[240px] flex-col gap-[12px] rounded-[18px] border bg-[#FFFFFF] p-[12px] md:flex">
+      <ul className="hidden h-fit w-full min-w-[240px] flex-col gap-[12px] rounded-[18px] border bg-[#FFFFFF] p-[12px] md:flex">
         {links.map((link) => (
           <Link key={link.href} href={link.href}>
             <li
