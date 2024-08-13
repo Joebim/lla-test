@@ -1,12 +1,16 @@
 "use client";
 
 import { Eye, EyeOff } from "lucide-react";
-import { signIn, useSession } from "next-auth/react";
+import { getSession, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next-nprogress-bar";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+
+import { loginUser } from "~/actions/login";
+import { useToast } from "~/components/ui/use-toast";
+import LoadingSpinner from "../miscellaneous/loading-spinner";
 
 interface SigninFormData {
   email: string;
@@ -15,47 +19,54 @@ interface SigninFormData {
 
 const SignInPage: React.FC = () => {
   const router = useRouter();
-  const { status } = useSession();
+  const { data: session, status } = useSession();
+  const { user } = session ?? {};
+  const userRole = user?.role;
+  const adminRoles = new Set(["super_admin", "game_developer", "user_manager"]);
   if (status === "authenticated") {
-    router.push("/dashboard/user");
+    if (userRole && adminRoles.has(userRole)) router.push("/dashboard/admin");
+    else router.push("/dashboard/user");
   }
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    watch,
+    formState: { errors },
   } = useForm<SigninFormData>({
     mode: "onBlur",
     reValidateMode: "onChange",
   });
-
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const { toast } = useToast();
   const [isSignIn, setIsSignIn] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [passwordTyping, setPasswordTyping] = useState(false);
+  const [isLoading, startTransition] = useTransition();
+  const [googleLoading, setGoogleLoading] = useState(false);
 
-  const password = watch("password");
-  const email = watch("email");
+  const onSubmit = async (values: SigninFormData) => {
+    startTransition(async () => {
+      const data = await loginUser(values);
 
-  const passwordCriteria = {
-    length: password ? password.length : 0,
-    uppercase: password ? /[A-Z]/.test(password) : false,
-    lowercase: password ? /[a-z]/.test(password) : false,
-    number: password ? /\d/.test(password) : false,
-    specialChar: password ? /[!"#$%&()*,.:<>?@^{|}]/.test(password) : false,
-  };
-
-  const allCriteriaMet = Object.values(passwordCriteria).every(Boolean);
-  const isEmailValid = /^[\w%+.-]+@[\d.A-Za-z-]+\.[A-Za-z]{2,}$/.test(email);
-  const isFormValid = isEmailValid && passwordCriteria;
-
-  useEffect(() => {
-    setPasswordTyping(password?.length > 0 || false);
-  }, [password]);
-
-  const onSubmit = () => {
-    setSubmitSuccess(true);
-    window.location.href = "/setup-profile";
+      if (data.status === 200) {
+        const response = await signIn("credentials", {
+          email: values.email,
+          password: values.password,
+          redirect: false,
+        });
+        if (response && response.ok) {
+          const current_session = await getSession();
+          if (
+            current_session?.user?.role &&
+            adminRoles.has(current_session.user.role)
+          )
+            router.push("/dashboard/admin");
+          else router.push("/dashboard/user");
+        }
+      }
+      toast({
+        title: data.status === 200 ? "Login success" : "An error occurred",
+        description: data.status === 200 ? "Redirecting" : data.error,
+        variant: data.status === 200 ? "default" : "critical",
+      });
+    });
   };
 
   return (
@@ -63,13 +74,17 @@ const SignInPage: React.FC = () => {
       <div className="mb-4 flex justify-center rounded-[62px] border p-[4px]">
         <Link
           href="/signup"
-          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignIn ? "" : "bg-neutral-30"} transition-all duration-300`}
+          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${
+            isSignIn ? "" : "bg-neutral-30"
+          } transition-all duration-300`}
           onClick={() => setIsSignIn(false)}
         >
           Sign Up
         </Link>
         <button
-          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${isSignIn ? "bg-neutral-30" : ""} transition-all duration-300`}
+          className={`w-1/2 rounded-[61px] px-4 py-2 text-center ${
+            isSignIn ? "bg-neutral-30" : ""
+          } transition-all duration-300`}
           onClick={() => setIsSignIn(true)}
         >
           Sign In
@@ -86,13 +101,10 @@ const SignInPage: React.FC = () => {
           <input
             id="email"
             type="email"
+            disabled={isLoading}
             placeholder="johndoe@example.com"
             {...register("email", {
               required: "Email is required",
-              pattern: {
-                value: /^[\w%+.-]+@[\d.A-Za-z-]+\.[A-Za-z]{2,}$/,
-                message: "Invalid email address",
-              },
             })}
             className="h-[52px] w-full rounded-[10px] border px-4 py-2 text-base text-secondary-70 outline-none sm:text-[18px]"
           />
@@ -112,15 +124,11 @@ const SignInPage: React.FC = () => {
           <div className="relative w-full">
             <input
               id="password"
+              disabled={isLoading}
               type={showPassword ? "text" : "password"}
               placeholder="********"
               {...register("password", {
                 required: "Password is required",
-                pattern: {
-                  value:
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&()*,.:<>?@^{|}]).{8,}$/,
-                  message: "Password did not meet criteria",
-                },
               })}
               className="h-[52px] w-full rounded-[10px] border px-4 py-2 text-base text-secondary-70 outline-none sm:text-[18px]"
             />
@@ -138,37 +146,6 @@ const SignInPage: React.FC = () => {
               {errors.password.message}
             </p>
           )}
-          {passwordTyping && !allCriteriaMet && (
-            <ul className="mt-2 text-sm">
-              <li
-                className={`flex items-center ${passwordCriteria.length >= 8 ? "text-green-500" : "text-critical-120"}`}
-              >
-                {passwordCriteria.length >= 8 ? "✔" : "✘"} At least 8
-                characters
-              </li>
-              <li
-                className={`flex items-center ${passwordCriteria.uppercase ? "text-green-500" : "text-critical-120"}`}
-              >
-                {passwordCriteria.uppercase ? "✔" : "✘"} One uppercase letter
-              </li>
-              <li
-                className={`flex items-center ${passwordCriteria.lowercase ? "text-green-500" : "text-critical-120"}`}
-              >
-                {passwordCriteria.lowercase ? "✔" : "✘"} One lowercase letter
-              </li>
-              <li
-                className={`flex items-center ${passwordCriteria.number ? "text-green-500" : "text-critical-120"}`}
-              >
-                {passwordCriteria.number ? "✔" : "✘"} One number
-              </li>
-              <li
-                className={`flex items-center ${passwordCriteria.specialChar ? "text-green-500" : "text-critical-120"}`}
-              >
-                {passwordCriteria.specialChar ? "✔" : "✘"} One special
-                character
-              </li>
-            </ul>
-          )}
         </div>
         <div className="my-3 flex justify-end">
           <Link
@@ -180,14 +157,18 @@ const SignInPage: React.FC = () => {
         </div>
         <button
           type="submit"
-          className="h-[56px] w-full rounded-[59px] bg-primary-100 px-4 py-2 text-[#FFFF] hover:bg-primary-80 focus:outline-none focus:ring-2 focus:ring-primary-100 focus:ring-opacity-50"
-          disabled={!isFormValid || isSubmitting}
+          className="h-[56px] w-full rounded-[59px] bg-primary-100 px-4 py-2 text-[#FFFF] hover:bg-primary-80 focus:outline-none focus:ring-2 focus:ring-primary-100 focus:ring-opacity-50 disabled:bg-neutral-130"
+          disabled={isLoading}
         >
-          Sign In
+          {isLoading ? (
+            <span className="flex items-center justify-center gap-x-2">
+              <span className="animate-pulse">Logging in...</span>{" "}
+              <LoadingSpinner className="size-4 animate-spin sm:size-5" />
+            </span>
+          ) : (
+            <span>Sign In</span>
+          )}
         </button>
-        {submitSuccess && (
-          <p className="mt-1 text-sm text-green-500">Login Successful!</p>
-        )}
       </form>
       <div className="my-8 flex items-center justify-center">
         <div className="mr-6 w-1/2">
@@ -200,10 +181,17 @@ const SignInPage: React.FC = () => {
       </div>
       <button
         className="mt-4 flex h-[56px] w-full items-center justify-center gap-2 rounded-[59px] bg-secondary-120 px-4 py-2 text-secondary-10 hover:bg-secondary-110 focus:outline-none focus:ring-2 focus:ring-opacity-50"
-        onClick={() => signIn("google", { callbackUrl: "/dashboard/user" })}
+        onClick={() => {
+          setGoogleLoading(true);
+          signIn("google", { callbackUrl: "/dashboard/user" });
+        }}
+        disabled={googleLoading}
       >
         <Image src="/signup/googleicon.png" alt="" width={20} height={20} />{" "}
         <span>Continue with Google</span>
+        {googleLoading && (
+          <LoadingSpinner className="ml-1 size-4 animate-spin sm:size-5" />
+        )}
       </button>
     </div>
   );
