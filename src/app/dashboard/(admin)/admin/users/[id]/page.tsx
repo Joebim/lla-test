@@ -5,13 +5,14 @@ import { Award, Gamepad, Languages, Users } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import { GetSingleUser } from "~/app/api/admindashboard/route";
+import { deactivateUser, GetSingleUser } from "~/app/api/admindashboard/route";
 import CustomButton from "~/components/common/common-button/common-button";
 import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
 import UserDetailsCard from "~/components/userDetailCard";
 import UserMetricsCard from "~/components/userMetricsCard";
 import UserProfileChart from "~/components/userProfileChart";
 import UserProfileTable from "~/components/userProfileTable";
+import { userDetailsCardProperties } from "../../(overview)/adminDashboardTypes";
 
 const UserDetails = ({ params }: { params: { id: string } }) => {
   const [isModalOpen, setsModalOpen] = useState(false);
@@ -22,7 +23,7 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
   const [isReactivateSuccessModalOpen, setIsReactivateSuccessModalOpen] =
     useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [userDetails, setUserDetails] = useState([]);
+  const [userDetails, setUserDetails] = useState<userDetailsCardProperties>({});
   useEffect(() => {
     async function getUserDetails() {
       setIsLoading(true);
@@ -38,7 +39,7 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
       }
     }
     getUserDetails();
-  }, []);
+  }, [params?.id]);
   useEffect(() => {
     console.log(isLoading, userDetails);
   }, [isLoading]);
@@ -68,12 +69,23 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
       icon: <Users className="w-[20px]" />,
     },
   ];
-
-  const handleDeactivated = () => {
-    setsModalOpen(false);
-    setIsDeactivated(true);
-    setIsSuccessModalOpen(true);
+  const [error, setError] = useState("");
+  const handleDeactivated = async () => {
+    try {
+      if (params?.id !== undefined) {
+        await deactivateUser(params?.id);
+        setsModalOpen(false);
+        setIsDeactivated(true);
+        setIsSuccessModalOpen(true);
+      }
+    } catch (error) {
+      setError("Failed to deactivate user");
+      throw error;
+    }
   };
+  useEffect(() => {
+    console.log({ error });
+  }, [error]);
   const handleReactivated = () => {
     setIsReactivateModalOpen(false);
     setIsReactivateSuccessModalOpen(true);
@@ -251,7 +263,15 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
       </div>
       <section className="block items-center gap-[20px] lg:flex">
         <div className="lg:flex-1">
-          <UserDetailsCard className="w-full" />
+          <UserDetailsCard
+            username={userDetails?.username}
+            dob={userDetails?.dob}
+            gender={userDetails?.gender}
+            status={userDetails?.status}
+            email={userDetails?.email}
+            id={userDetails?.id}
+            className="w-full"
+          />
         </div>
         <div className="mt-[20px] grid grid-cols-1 gap-[10px] sm:grid-cols-2 lg:mt-0 lg:flex-1">
           {metricsSchema.map((item, index) => (

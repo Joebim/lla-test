@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export type PaginationRequest = {
   totalPages: number;
@@ -12,7 +12,7 @@ const admin_base_url: string =
 
 export const getAuthToken = () => {
   const token = sessionStorage.getItem("accessToken");
-
+  console.log({ token });
   if (!token) {
     throw new Error("No access token found. Please log in.");
   }
@@ -28,7 +28,7 @@ export const getAllUsers = async (PaginationRequest: PaginationRequest) => {
         perPage: PaginationRequest.perPage,
       },
       headers: {
-        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
+        Authorization: `Bearer ${getAuthToken()}`,
       },
     });
 
@@ -44,7 +44,7 @@ export const getUsersStats = async () => {
   try {
     const response = await axios.get(`${admin_base_url}/api/v1/statistics`, {
       headers: {
-        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
+        Authorization: `Bearer ${getAuthToken()}`,
       },
     });
     return response;
@@ -177,7 +177,7 @@ interface ProfileData {
 export const updateAdminProfile = async (profileData: ProfileData) => {
   try {
     console.log("Sending profile data:", profileData);
-    const response = await axios.post(
+    const response = await axios.patch(
       `${admin_base_url}/api/v1/admin-profile`,
       profileData,
       {

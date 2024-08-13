@@ -443,7 +443,7 @@ export default function Overview() {
                         <DropdownMenuItem
                           className="pr-8 text-center"
                           inset
-                          onClick={() => navigateToSingleUser}
+                          onClick={() => navigateToSingleUser(index)}
                         >
                           View
                         </DropdownMenuItem>
