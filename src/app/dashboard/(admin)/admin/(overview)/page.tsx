@@ -1,9 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-console */
 "use client";
 
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import {
+  getAllUsers,
+  getUserByStatus,
+  getUsersByDate,
+  getUsersStats,
+  PaginationRequest,
+} from "~/app/api/adminDashboard/route";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -12,55 +21,237 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { cn } from "~/lib/utils";
-import { overviewData, userData } from "./data";
-import { ChevronLeft, ChevronRight, ExpandMore, FilterIcon } from "./icons";
+import { Skeleton } from "~/components/ui/skeleton";
+import { OverviewData, StatisticItem, User } from "./adminDashboardTypes";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ElectricIcon,
+  ExpandMore,
+  FilterIcon,
+  GroupIcon,
+  PersonDisabledIcon,
+  PersonInactiveIcon,
+} from "./icons";
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+const formatDate2 = (dateString: Date | string) => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+const formatDate3 = (date: Date | string) => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 export default function Overview() {
-  const [data, setData] = useState(userData);
+  const [pagination, setPagination] = useState<PaginationRequest>({
+    totalPages: 0,
+    totalCount: 0,
+    page: 1,
+    perPage: 15,
+  });
 
-  const [currentPage, setCurrentPage] = useState(0);
+  const [users, setUsers] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const activeFilterHandler = () => {
-    const results = userData.filter((item) => item.isActive);
-    setData(results);
+  useEffect(() => {
+    setIsLoading(true);
+
+    async function fetchData() {
+      try {
+        const response = await getAllUsers(pagination);
+        setUsers(response?.data?.data || []);
+        setPagination((previous) => ({
+          ...previous,
+          totalPages: response?.data?.last_page || 0,
+          totalCount: response?.data?.total || 0,
+        }));
+        setIsLoading(false);
+      } catch {
+        setIsLoading(false);
+      }
+    }
+    fetchData();
+  }, [pagination?.page]);
+
+  const [overviewData, setOverViewData] = useState<OverviewData | undefined>();
+  const [isLoadingOverviewData, setIsLoadingOverviewData] = useState(true);
+
+  useEffect(() => {
+    setIsLoadingOverviewData(true);
+
+    async function fetchOverviewData() {
+      try {
+        const response = await getUsersStats();
+        setOverViewData(response?.data?.data || undefined);
+        setIsLoadingOverviewData(false);
+      } catch (error) {
+        console.error(error);
+
+        setIsLoadingOverviewData(false);
+      }
+    }
+    fetchOverviewData();
+  }, []);
+
+  const handlePageChange = (newPage: number) => {
+    setPagination((previous) => ({
+      ...previous,
+      page: newPage + 1,
+    }));
   };
 
-  const inActiveFilterHandler = () => {
-    const results = userData.filter((item) => !item.isActive);
-    setData(results);
+  const [status, setStatus] = useState<boolean | undefined>();
+
+  const handleStatusChange = (newStatus: boolean) => {
+    setStatus(newStatus);
   };
 
-  const total = data.length;
-  const limit = 6;
+  useEffect(() => {
+    async function handleFilter() {
+      setIsLoading(true);
+      try {
+        if (status !== undefined) {
+          const response = await getUserByStatus(status);
+          setUsers(response?.data?.data || []);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    handleFilter();
+  }, [setIsLoading, setUsers, status]);
+  const [fromDate, setFromDate] = useState<Date | string>("");
+  const onChangeFromDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFromDate(new Date(event.target.value));
+  };
+  const [toDate, setToDate] = useState<Date | string>("");
+  const onChangeToDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setToDate(new Date(event.target.value));
+  };
+  useEffect(() => {
+    async function handleDate() {
+      try {
+        if (fromDate && toDate) {
+          const formattedFromDate = formatDate3(fromDate);
+          const formattedToDate = formatDate3(toDate);
+          if (
+            formattedFromDate !== "NaN-NaN-NaN" &&
+            formattedToDate !== "NaN-NaN-NaN"
+          ) {
+            setIsLoading(true);
+            const response = await getUsersByDate(
+              formatDate3(fromDate),
+              formatDate3(toDate),
+            );
+            setUsers(response?.data?.data || []);
+            setIsLoading(false);
+          }
+        }
+      } catch (error) {
+        console.error(error);
+
+        throw error;
+      }
+    }
+    handleDate();
+  }, [setIsLoading, setUsers, fromDate, toDate]);
+
+  const total = users.length;
+  const limit = pagination.perPage;
 
   const pageCount = Math.floor(total / limit) + (total % limit === 0 ? 0 : 1);
 
-  const paginatedData = data.slice(
-    currentPage * limit,
-    (currentPage + 1) * limit,
-  );
+  const statisticsData: StatisticItem[] =
+    overviewData === undefined
+      ? []
+      : [
+          {
+            title: "Total Users",
+            amount:
+              overviewData.total_users.current_month -
+              overviewData.total_users.previous_month,
+            percentage: overviewData.total_users.percentage_difference,
+            icon: <GroupIcon />,
+          },
+          {
+            title: "Active Users",
+            amount:
+              overviewData.active_users_count.current_month -
+              overviewData.active_users_count.previous_month,
+            percentage: overviewData.active_users_count.percentage_difference,
+            icon: <ElectricIcon />,
+          },
+          {
+            title: "Inactive Users",
+            amount:
+              overviewData.inactive_users_count.current_month -
+              overviewData.inactive_users_count.previous_month,
+            percentage: overviewData.inactive_users_count.percentage_difference,
+            icon: <PersonInactiveIcon />,
+          },
+          {
+            title: "Disabled Users",
+            amount:
+              overviewData.disabled_users_count.current_month -
+              overviewData.disabled_users_count.previous_month,
+            percentage: overviewData.disabled_users_count.percentage_difference,
+            icon: <PersonDisabledIcon />,
+          },
+        ];
 
   return (
-    <div className="font-axiforma">
-      <header className="mb-[33px] grid grid-cols-2 gap-[24px] lg:grid-cols-4">
-        {overviewData.map((data, index) => (
-          <div
-            key={index}
-            className="rounded-[12px] border-[1px] border-neutral-40 p-[24px]"
-          >
-            <div className="mb-[24px] flex items-center justify-between gap-2">
-              <h2 className="text-[14px] font-bold text-neutral-100">
-                {data.title}
-              </h2>
-              <div className="shrink-0">{data.icon}</div>
-            </div>
-            <h1 className="text-secondary-140 font-axiformaExtraBold text-[24px] lg:text-[32px]">
-              {data.amount.toLocaleString()}
-            </h1>
-          </div>
-        ))}
+    <div className="w-full font-axiforma">
+      <header className="mb-[33px] grid w-full gap-2 sm:grid-cols-2 sm:gap-[24px] lg:grid-cols-4">
+        {isLoadingOverviewData ? (
+          <>
+            {" "}
+            <Skeleton className="h-[150px] w-full rounded-2xl bg-neutral-70" />
+            <Skeleton className="h-[150px] w-full rounded-2xl bg-neutral-70" />
+            <Skeleton className="h-[150px] w-full rounded-2xl bg-neutral-70" />
+            <Skeleton className="h-[150px] w-full rounded-2xl bg-neutral-70" />
+          </>
+        ) : (
+          <>
+            {Object.keys(overviewData || {}).length > 0 &&
+              statisticsData.map((data: StatisticItem, index: number) => (
+                <div
+                  key={index}
+                  className="w-full rounded-[12px] border-[1px] border-neutral-40 p-[24px]"
+                >
+                  <div className="mb-[24px] flex items-center justify-between gap-2">
+                    <h2 className="text-[14px] font-bold text-neutral-100">
+                      {data.title}
+                    </h2>
+                    <div className="shrink-0">{data.icon}</div>
+                  </div>
+                  <h1 className="text-secondary-140 font-axiformaExtraBold text-[24px] lg:text-[32px]">
+                    {data.amount.toLocaleString()}
+                  </h1>
+                  <p className="font-axiforma text-[12px] font-normal leading-[19.01px]">
+                    <span className="text-[#F8104]">{data.percentage}</span>{" "}
+                    from last month
+                  </p>
+                </div>
+              ))}
+          </>
+        )}
       </header>
+
       <div className="mb-[32px] flex justify-between gap-2">
         <div>
           <h1 className="mb-[10px] font-axiformaExtraBold text-[24px] text-[#525252]">
@@ -89,13 +280,13 @@ export default function Overview() {
                 By status
               </DropdownMenuLabel>
               <DropdownMenuItem
-                onClick={activeFilterHandler}
+                onClick={() => handleStatusChange(true)}
                 className="border-b-[1px] border-b-neutral-40 text-[#09090B]"
               >
                 Active users
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={inActiveFilterHandler}
+                onClick={() => handleStatusChange(false)}
                 className="border-b-[1px] border-b-neutral-40 text-[#09090B]"
               >
                 Inactive users
@@ -104,131 +295,153 @@ export default function Overview() {
                 By date
               </DropdownMenuLabel>
               <div className="flex items-center justify-between px-[8px] pb-[8px] text-[#09090B]">
-                <button className="flex items-center gap-[6px] text-[14px]">
-                  From
-                  <ExpandMore />
-                </button>
-                <button className="flex items-center gap-[6px] text-[14px]">
-                  To
-                  <ExpandMore />
-                </button>
+                <label className="flex items-center gap-[6px] text-[14px]">
+                  From: <span>{fromDate ? formatDate2(fromDate) : ""}</span>{" "}
+                  <br />
+                  <div className="relative">
+                    <input
+                      type="date"
+                      value={fromDate ? formatDate2(fromDate) : ""}
+                      onChange={onChangeFromDate}
+                      className="absolute left-0 top-0 h-full w-full cursor-pointer opacity-0"
+                    />
+                    <ExpandMore />
+                  </div>
+                </label>
+                <label className="flex items-center gap-[6px] text-[14px]">
+                  To: <span>{toDate ? formatDate2(toDate) : ""}</span> <br />
+                  <div className="relative">
+                    <input
+                      type="date"
+                      value={toDate ? formatDate2(toDate) : ""}
+                      onChange={onChangeToDate}
+                      className="absolute left-0 top-0 h-full w-full cursor-pointer opacity-0"
+                    />
+                    <ExpandMore />
+                  </div>
+                </label>
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
       {/* Table */}
-      <div className="w-full">
-        <div>
-          <div className="grid min-h-[58px] w-full grid-cols-[120px_1fr_240px_200px_100px] justify-between gap-2 rounded-t-[12px] px-[24px] py-[16px] odd:bg-neutral-10 even:bg-white 2xl:px-[56px]">
-            <h3>User ID</h3>
-            <h3>Name</h3>
-            <h3>Signup Date</h3>
-            <h3>Status</h3>
-            <h3>Action</h3>
-          </div>
-          {paginatedData.map((data, index) => (
-            <div
-              key={index}
-              className="grid min-h-[58px] w-full grid-cols-[120px_1fr_240px_200px_100px] items-center justify-between gap-2 px-[24px] py-[16px] odd:bg-neutral-10 even:bg-white 2xl:px-[56px]"
-            >
-              <h3 className="text-[#0A0A0A]">{data.uid}</h3>
-              <div className="flex gap-[8px]">
-                <figure>
-                  <Image
-                    src={data.image}
-                    alt="Avatar"
-                    width={45}
-                    height={45}
-                    className="w-[45px] shrink-0"
-                  />
-                </figure>
-                <div>
-                  <h1 className="font-medium text-[#0A0A0A]">{data.name}</h1>
-                  <p className="text-[14px] text-[#525252]">{data.email}</p>
-                </div>
-              </div>
-              <h3>{data.signupDate}</h3>
-              <div>
-                {data.isActive ? (
-                  <div className="flex items-center gap-[8px] text-[#0A0A0A]">
-                    <div className="h-[12px] w-[12px] rounded-full bg-[#6DC347]"></div>
-                    <p className="mt-1">Active</p>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-[8px] text-[#0A0A0A]">
-                    <div className="h-[12px] w-[12px] rounded-full bg-[#DC2626]"></div>
-                    <p className="mt-1">Inactive</p>
-                  </div>
-                )}
-              </div>
-              <div className="grid place-items-center self-center">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      className="text-neutral-dark-2 bg-transparent hover:bg-transparent focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                      size={"icon"}
-                    >
-                      <EllipsisVertical size={16} color="#09090b" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="center"
-                    className="min-w-0 rounded-[6px] bg-white"
-                  >
-                    <DropdownMenuLabel className="sr-only">
-                      Actions
-                    </DropdownMenuLabel>
-                    <DropdownMenuItem className="pr-8 text-center" inset>
-                      View
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+      {isLoading ? (
+        <div className="flex w-full flex-col gap-8">
+          {" "}
+          <Skeleton className="h-[40px] w-full rounded-2xl bg-neutral-70" />
+          <Skeleton className="h-[40px] w-full rounded-2xl bg-neutral-70" />
+          <Skeleton className="h-[40px] w-full rounded-2xl bg-neutral-70" />
+          <Skeleton className="h-[40px] w-full rounded-2xl bg-neutral-70" />
+          <Skeleton className="h-[40px] w-full rounded-2xl bg-neutral-70" />
+          <Skeleton className="h-[40px] w-full rounded-2xl bg-neutral-70" />
+          <Skeleton className="h-[40px] w-full rounded-2xl bg-neutral-70" />
+          <Skeleton className="h-[40px] w-full rounded-2xl bg-neutral-70" />
+        </div>
+      ) : (
+        <div className="w-full overflow-x-auto">
+          <div className="w-full overflow-x-auto">
+            <div className="grid min-h-[58px] w-full grid-cols-[120px_1fr_240px_200px_100px] justify-between gap-2 rounded-t-[12px] px-[24px] py-[16px] odd:bg-neutral-10 even:bg-white 2xl:px-[56px]">
+              <h3>User ID</h3>
+              <h3>Name</h3>
+              <h3>Signup Date</h3>
+              <h3>Status</h3>
+              <h3>Action</h3>
             </div>
-          ))}
-        </div>
-        {/* Pagination */}
-        <div className="flex items-center gap-[16px] pt-[20px]">
-          <Button
-            onClick={() =>
-              setCurrentPage((previous) =>
-                previous > 0 ? previous - 1 : previous,
-              )
-            }
-            className="flex items-center gap-[11px] font-semibold"
-          >
-            <ChevronLeft />
-            <div className="mt-[2px]">Previous</div>
-          </Button>
-          <div className="flex font-medium text-[#09090B]">
-            {Array.from({ length: pageCount }).map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentPage(index)}
-                className={cn(
-                  "grid h-[40px] w-[40px] place-items-center rounded-[6px] border-[1px] border-transparent",
-                  currentPage === index && "border-[#E4E4E7]",
-                )}
-              >
-                {index + 1}
-              </button>
-            ))}
+            {users.length > 0 ? (
+              users.map((data, index) => (
+                <div
+                  key={index}
+                  className="grid min-h-[58px] w-full grid-cols-[120px_1fr_240px_200px_100px] items-center justify-between gap-2 px-[24px] py-[16px] odd:bg-neutral-10 even:bg-white 2xl:px-[56px]"
+                >
+                  <h3 className="text-[#0A0A0A]">{data.id}</h3>
+                  <div className="flex gap-[8px]">
+                    <figure>
+                      <Image
+                        src={data.avatar_url || "/avatar/avatar-1.png"}
+                        alt="Avatar"
+                        width={45}
+                        height={45}
+                        className="w-[45px] shrink-0"
+                      />
+                    </figure>
+                    <div>
+                      <h1 className="font-medium text-[#0A0A0A]">
+                        {data.username}
+                      </h1>
+                      <p className="text-[14px] text-[#525252]">{data.email}</p>
+                    </div>
+                  </div>
+                  <h3>{formatDate(data.created_at)}</h3>
+                  <div>
+                    {data.status ? (
+                      <div className="flex items-center gap-[8px] text-[#0A0A0A]">
+                        <div className="h-[12px] w-[12px] rounded-full bg-[#6DC347]"></div>
+                        <p className="mt-1">Active</p>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-[8px] text-[#0A0A0A]">
+                        <div className="h-[12px] w-[12px] rounded-full bg-[#DC2626]"></div>
+                        <p className="mt-1">Inactive</p>
+                      </div>
+                    )}
+                  </div>
+                  <div className="grid place-items-center self-center">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          className="text-neutral-dark-2 bg-transparent hover:bg-transparent focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                          size={"icon"}
+                        >
+                          <EllipsisVertical size={16} color="#09090b" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="center"
+                        className="min-w-0 rounded-[6px] bg-white"
+                      >
+                        <DropdownMenuLabel className="sr-only">
+                          Actions
+                        </DropdownMenuLabel>
+                        <DropdownMenuItem className="pr-8 text-center" inset>
+                          View
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div>
+                <h1 className="mt-4 text-center text-base leading-[normal] sm:text-[2rem]">
+                  Unfortunately User within this range is not available
+                </h1>
+              </div>
+            )}
           </div>
-          <button className="cursor-pointer">...</button>
-          <Button
-            onClick={() =>
-              setCurrentPage((previous) =>
-                previous < pageCount - 1 ? previous + 1 : previous,
-              )
-            }
-            className="flex items-center gap-[11px] font-semibold"
-          >
-            <div className="mt-[2px]">Next</div>
-            <ChevronRight />
-          </Button>
+          {/* Pagination */}
+          <div className="mt-[24px] flex justify-end">
+            <Button
+              variant="outline"
+              onClick={() => handlePageChange(pagination.page - 2)}
+              disabled={pagination.page === 1}
+              className="mr-2"
+            >
+              <ChevronLeft />
+            </Button>
+            <span className="flex items-center px-4">
+              {pagination.page} of {pageCount}
+            </span>
+            <Button
+              variant="outline"
+              onClick={() => handlePageChange(pagination.page)}
+              disabled={pagination.page === pageCount}
+            >
+              <ChevronRight />
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
