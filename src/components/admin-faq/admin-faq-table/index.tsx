@@ -188,7 +188,7 @@ const AdminFAQTable = ({ className }: { className?: string }) => {
             + Add FAQ
           </CustomButton>
         </div>
-        <div className="overflow-x-auto">
+        <div className="h-full overflow-x-auto overflow-y-hidden">
           <Table className={clsx(className, "min-w-[900px] lg:w-full")}>
             <TableHeader className="bg-neutral-10">
               <TableRow className="rounded-tl-[14px] rounded-tr-[14px] border-none">

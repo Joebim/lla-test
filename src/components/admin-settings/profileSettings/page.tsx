@@ -75,6 +75,11 @@ const AdminProfile = () => {
     }
   };
 
+  // if (!isClient) {
+  //   return;
+  // }
+  // get adminProfiile
+
   return (
     <main data-testid="profile-settings" className="font-inter">
       {/* upload image modal */}

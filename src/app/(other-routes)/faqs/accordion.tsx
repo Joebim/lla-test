@@ -28,7 +28,6 @@ export function FaqAccordions() {
       } else {
         setFaqs([]);
       }
-      // setLoading(false);
     };
     fetchFaqs();
   }, []);

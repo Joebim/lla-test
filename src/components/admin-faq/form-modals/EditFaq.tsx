@@ -104,7 +104,7 @@ const EditFAQ = (properties: Properties) => {
           <SelectTrigger className="text-primary focus:ring-primary focus-visible:ring-primary focus:outline-none focus:ring-1 focus-visible:ring-1 focus-visible:ring-offset-0">
             <SelectValue placeholder="Select" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white">
             <SelectItem value="pricing">Pricing</SelectItem>
             <SelectItem value="policy">Policy</SelectItem>
             <SelectItem value="general">General</SelectItem>
@@ -129,9 +129,9 @@ const EditFAQ = (properties: Properties) => {
         <CustomButton
           variant="primary"
           className="w-full"
-          onClick={() => handleUpdateFaq}
+          onClick={handleUpdateFaq}
         >
-          Add Question
+          Save
         </CustomButton>
       </div>
     </>

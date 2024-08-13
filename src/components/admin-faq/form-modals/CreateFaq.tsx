@@ -58,7 +58,7 @@ const CreateFAQ = ({ callback, setCallback, onClose }: properties) => {
       toast({
         title: "Error",
         description: result?.error,
-        variant: "default",
+        variant: "critical",
       });
       setCallback(!callback);
     }
