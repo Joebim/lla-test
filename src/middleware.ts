@@ -12,6 +12,7 @@ export default async function middleware(request: NextRequest) {
   const session = await getToken({
     req: request,
     secret: NEXTAUTH_SECRET,
+    salt: "next-auth.session-token",
   });
   const userRole = session?.user?.role || "guest";
   const isLoggedIn = !!session;
@@ -45,11 +46,16 @@ export default async function middleware(request: NextRequest) {
 
     // Redirect based on user role
     if (isLoggedIn) {
-      return adminRoles.has(userRole) ? NextResponse.rewrite(
-        new URL(`/dashboard/admin${path === "/" ? "/" : path}`, request.url),
-      ) : NextResponse.rewrite(
-         new URL(`/dashboard/user${path === "/" ? "/" : path}`, request.url),
-      );
+      return adminRoles.has(userRole)
+        ? NextResponse.rewrite(
+            new URL(
+              `/dashboard/admin${path === "/" ? "/" : path}`,
+              request.url,
+            ),
+          )
+        : NextResponse.rewrite(
+            new URL(`/dashboard/user${path === "/" ? "/" : path}`, request.url),
+          );
     }
   }
 
@@ -58,5 +64,5 @@ export default async function middleware(request: NextRequest) {
 
 // Optionally, don't invoke Middleware on some paths
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: [String.raw`/((?!.+\.[\w]+$|_next).*)`, "/", "/(api|trpc)(.*)"],
 };
