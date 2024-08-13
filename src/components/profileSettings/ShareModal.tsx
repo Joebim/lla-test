@@ -60,6 +60,7 @@ const ShareModal: React.FC<{
 }> = ({ isOpen, onClose, handleCopy }) => {
   const [inviteLink, setInviteLink] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | undefined>();
   const [emblaReference, emblaApi] = useEmblaCarousel({ loop: false });
 
   const parameters = useSearchParams();
@@ -71,11 +72,12 @@ const ShareModal: React.FC<{
       fetch(`https://api.staging.delve.fun/api/v1/invite-link/${id}`)
         .then((response) => response.json())
         .then((data) => {
-          setInviteLink(data.referral_code); // Update based on API response
-          setLoading(false);
+          setInviteLink(data.referral_code);
         })
         .catch(() => {
-          setInviteLink("Error fetching link.");
+          setError("Error fetching link.");
+        })
+        .finally(() => {
           setLoading(false);
         });
     }
@@ -85,13 +87,13 @@ const ShareModal: React.FC<{
     (platform: string) => {
       const url = shareUrls[platform];
       try {
-        if (platform === "instagram") {
-          window.open("https://www.instagram.com/", "_blank");
-        } else {
-          window.open(`${url}${encodeURIComponent(inviteLink)}`, "_blank");
-        }
+        const shareUrl =
+          platform === "instagram"
+            ? "https://www.instagram.com/"
+            : `${url}${encodeURIComponent(inviteLink)}`;
+        window.open(shareUrl, "_blank");
       } catch {
-        // Handle errors silently
+        setError("An error occurred while trying to open the share link.");
       }
     },
     [inviteLink],
@@ -140,11 +142,11 @@ const ShareModal: React.FC<{
                       <div className="flex flex-col items-center justify-center">
                         <button
                           onClick={() => handleShare(platform)}
-                          aria-label={`Share on ${platform}`}
+                          aria-label={`Share on ${name}`}
                         >
                           <Image
                             src={src}
-                            alt={`Share icon for ${platform}`}
+                            alt={`Share icon for ${name}`}
                             width={100}
                             height={100}
                             className="object-contain sm:h-24 sm:w-24"
@@ -167,6 +169,11 @@ const ShareModal: React.FC<{
               </button>
             </div>
           </div>
+          {error && (
+            <div className="mb-4 rounded border border-red-300 bg-red-100 p-2 text-red-600">
+              {error}
+            </div>
+          )}
           <label className="font-axiforma text-xs text-gray-400">
             Share this link with your friends to invite them to join Delve.
           </label>
