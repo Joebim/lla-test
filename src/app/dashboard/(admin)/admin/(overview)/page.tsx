@@ -12,7 +12,7 @@ import {
   getUsersByDate,
   getUsersStats,
   PaginationRequest,
-} from "~/app/api/adminDashboard/route";
+} from "~/app/api/admindashboard/route";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,

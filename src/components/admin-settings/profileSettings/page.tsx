@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import {
   getAdminProfile,
   updateAdminProfile,
-} from "~/app/api/adminDashboard/route";
+} from "~/app/api/admindashboard/route";
 import CustomButton from "~/components/common/common-button/common-button";
 import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
 import CustomInput from "~/components/input/CustomInput";
