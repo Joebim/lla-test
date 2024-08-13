@@ -1,94 +1,132 @@
 import axios from "axios";
-import { create } from "zustand";
 
-interface FAQ {
-  id: string;
+import { auth } from "~/lib/auth";
+
+interface createProperties {
   question: string;
   answer: string;
+  category: string;
 }
 
-interface FAQStore {
-  faqs: FAQ[];
-  addSuccess: boolean;
-  fetchSuccess: boolean;
-  updateSuccess: boolean;
-  deleteSuccess: boolean;
-  isAdding: boolean;
-  isUpdating: boolean;
-  isDeleting: boolean;
-  isFetching: boolean;
-  fetchFAQs: () => Promise<void>;
-  deleteFAQ: (id: string) => Promise<void>;
-  addFAQ: (question: string, answer: string) => Promise<void>;
-  updateFAQ: (id: string, updatedFAQ: Omit<FAQ, "id">) => Promise<void>;
+interface UpdateProperties {
+  question: string;
+  answer: string;
+  category: string;
 }
 
-export const useFAQStore = create<FAQStore>((set) => ({
-  faqs: [],
-  fetchSuccess: false,
-  addSuccess: false,
-  updateSuccess: false,
-  deleteSuccess: false,
-  isAdding: false,
-  isUpdating: false,
-  isDeleting: false,
-  isFetching: false,
-  fetchFAQs: async () => {
-    set({ isFetching: true });
-    try {
-      const response = await axios.get(
-        "https://api.staging.delve.fun/api/v1/faqs",
-      );
-      set({ faqs: response.data.data, fetchSuccess: true, isFetching: false });
-    } catch {
-      set({ fetchSuccess: false });
-    }
-  },
+//fetch faqs
+const getFAQs = async () => {
+  try {
+    const response = await axios.get(
+      "https://api.staging.delve.fun/api/v1/faqs",
+    );
 
-  addFAQ: async (question, answer) => {
-    set({ isAdding: true });
-    try {
-      const response = await axios.post(
-        "https://api.staging.delve.fun/api/v1/faqs",
-        { question, answer },
-      );
-      set((state) => ({
-        faqs: [...state.faqs, response.data],
-        addSuccess: true,
-        isAdding: false,
-      }));
-    } catch {
-      set({ addSuccess: false });
-    }
-  },
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    return axios.isAxiosError(error) && error.response
+      ? {
+          error: error.response.data.message || "Unable to Fetch FAQS",
+          status: error.response.status,
+        }
+      : {
+          error: "An unexpected error occurred.",
+        };
+  }
+};
 
-  updateFAQ: async (id, updatedFAQ) => {
-    set({ isUpdating: true });
-    try {
-      const response = await axios.put(`/api/faqs/${id}`, updatedFAQ);
-      set((state) => ({
-        faqs: state.faqs.map((faq) => (faq.id === id ? response.data : faq)),
-        updateSuccess: true,
-        isUpdating: false,
-      }));
-    } catch {
-      set({ updateSuccess: false });
-    }
-  },
+// create faq
+const CreateFaqs = async (payload: createProperties) => {
+  try {
+    const session = await auth();
 
-  deleteFAQ: async (id) => {
-    set({ isDeleting: true });
-    try {
-      await axios.delete(
-        `https://staging.api-php.boilerplate.hng.tech/api/v1/faqs${id}`,
-      );
-      set((state) => ({
-        faqs: state.faqs.filter((faq) => faq.id !== id),
-        deleteSuccess: true,
-        isDeleting: false,
-      }));
-    } catch {
-      set({ deleteSuccess: false });
-    }
-  },
-}));
+    const response = await axios.post(
+      `https://api.staging.delve.fun/api/v1/faqs`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`,
+        },
+      },
+    );
+
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+    return axios.isAxiosError(error) && error.response
+      ? {
+          error: error.response.data.message || "Unable to Create FAQ",
+          status: error.response.status,
+        }
+      : {
+          error: "An unexpected error occurred.",
+        };
+  }
+};
+//delete faq
+const DeleteFaqs = async (id: string) => {
+  try {
+    const session = await auth();
+
+    const response = await axios.delete(
+      `https://api.staging.delve.fun/api/v1/faqs/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`,
+        },
+      },
+    );
+
+    return {
+      message: response.data.message,
+      status: response.status,
+    };
+  } catch (error) {
+    return axios.isAxiosError(error) && error.response
+      ? {
+          error: error.response.data.message || "Unable to Delete FAQ",
+          status: error.response.status,
+        }
+      : {
+          error: "An unexpected error occurred.",
+        };
+  }
+};
+//update faq
+const UpdateFaqs = async (payload: UpdateProperties, id: string) => {
+  try {
+    const session = await auth();
+
+    const response = await axios.put(
+      `https://api.staging.delve.fun/api/v1/faqs/${id}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`,
+        },
+      },
+    );
+
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    return axios.isAxiosError(error) && error.response
+      ? {
+          error: error.response.data.message || "Unable to Update FAQ",
+          status: error.response.status,
+        }
+      : {
+          error: "An unexpected error occurred.",
+        };
+  }
+};
+
+export { CreateFaqs, DeleteFaqs, UpdateFaqs, getFAQs };

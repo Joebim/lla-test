@@ -1,29 +1,69 @@
+"use client";
+
+import { useState } from "react";
+
 import CustomButton from "~/components/common/common-button/common-button";
 import CustomInput from "~/components/input/CustomInput";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import { useToast } from "~/components/ui/use-toast";
+import { CreateFaqs } from "~/store/faq-store";
 
 interface properties {
-  question: string;
-  answer: string;
-  error: string;
+  callback: boolean;
+  setCallback: (value: boolean) => void;
   onClose: () => void;
-  onAdd: () => void;
-  onQuestionChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void;
-  onAnswerChange: (
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-  ) => void;
 }
 
-const CreateFAQ = ({
-  question,
-  answer,
-  onQuestionChange,
-  onAnswerChange,
-  onAdd,
-  onClose,
-  error,
-}: properties) => {
+const CreateFAQ = ({ callback, setCallback, onClose }: properties) => {
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [category, setCategory] = useState("");
+  const { toast } = useToast();
+
+  const handleAddFAQ = async () => {
+    // validate input
+    if (answer === "" || question === "") {
+      toast({
+        title: "Error",
+        description: "Inputs cannot be empty",
+        variant: "critical",
+      });
+      return;
+    }
+
+    const payload = {
+      question,
+      answer,
+      category,
+    };
+
+    const result = await CreateFaqs(payload);
+
+    if (result?.status === 200 || result?.status === 201) {
+      setCallback(!callback);
+      toast({
+        title: "Success",
+        description: "Faq created successfully",
+        variant: "default",
+      });
+
+      onClose();
+    } else {
+      toast({
+        title: "Error",
+        description: result?.error,
+        variant: "default",
+      });
+      setCallback(!callback);
+    }
+  };
+
   return (
     <>
       <div className="flex w-full justify-end">
@@ -46,10 +86,25 @@ const CreateFAQ = ({
           inputType="text"
           name="question"
           value={question}
-          onChange={onQuestionChange}
+          onChange={(event) => setQuestion(event.target.value)}
           placeholder="Question"
           className="placeholder:text-[12px]"
         />
+      </div>
+      <div className="flex flex-col">
+        <label htmlFor="question" className="text-secondary-50">
+          Category
+        </label>
+        <Select onValueChange={(value) => setCategory(value)} value={category}>
+          <SelectTrigger className="text-primary rounded-[10px] focus:outline-none">
+            <SelectValue placeholder="Select" />
+          </SelectTrigger>
+          <SelectContent className="bg-white">
+            <SelectItem value="Pricing">Pricing</SelectItem>
+            <SelectItem value="Policy">Policy</SelectItem>
+            <SelectItem value="General">General</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div className="flex flex-col">
         <label htmlFor="answer" className="text-secondary-50">
@@ -60,14 +115,17 @@ const CreateFAQ = ({
           rows={6}
           name="answer"
           value={answer}
-          onChange={onAnswerChange}
+          onChange={(event) => setAnswer(event.target.value)}
           placeholder="write answer to question here"
           className="rounded-[8px] border-[2px] border-neutral-20 p-[8px] outline-none placeholder:text-[12px]"
         ></textarea>
-        <small className="mt-[5px] font-medium text-critical-80">{error}</small>
       </div>
       <div className="mt-[20px] border-t-[5px] border-t-neutral-10 pt-[20px]">
-        <CustomButton variant="primary" className="w-full" onClick={onAdd}>
+        <CustomButton
+          variant="primary"
+          className="w-full"
+          onClick={handleAddFAQ}
+        >
           Add Question
         </CustomButton>
       </div>

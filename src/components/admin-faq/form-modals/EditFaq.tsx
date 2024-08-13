@@ -1,35 +1,80 @@
+import { useEffect, useState } from "react";
+
 import CustomButton from "~/components/common/common-button/common-button";
 import CustomInput from "~/components/input/CustomInput";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import { useToast } from "~/components/ui/use-toast";
+import { UpdateFaqs } from "~/store/faq-store";
 
-interface properties {
-  question: string;
-  answer: string;
-  error: string;
+interface Properties {
   onClose: () => void;
-  onAdd: () => void;
-  onQuestionChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void;
-  onAnswerChange: (
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-  ) => void;
+  faqs: {
+    id: string;
+    question: string;
+    answer: string;
+    category: string;
+  };
+  callback: boolean;
+  setCallback: (callback: boolean) => void;
 }
 
-const EditFAQ = ({
-  question,
-  answer,
-  onQuestionChange,
-  onAnswerChange,
-  onAdd,
-  onClose,
-  error,
-}: properties) => {
+const EditFAQ = (properties: Properties) => {
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [category, setCategory] = useState("");
+
+  useEffect(() => {
+    setQuestion(properties?.faqs?.question || "");
+    setAnswer(properties?.faqs?.answer || "");
+    setCategory(properties?.faqs?.category || "");
+  }, [properties?.faqs]);
+  const { toast } = useToast();
+  const handleUpdateFaq = async () => {
+    if (answer === "" || question === "") {
+      toast({
+        title: "Error",
+        description: "Inputs cannot be empty",
+        variant: "critical",
+      });
+      return;
+    }
+
+    const payload = {
+      question,
+      answer,
+      category,
+    };
+
+    const result = await UpdateFaqs(payload, properties?.faqs?.id);
+    if (result?.status === 200 || result?.status === 201) {
+      properties?.setCallback(!properties?.callback);
+      toast({
+        title: "Success",
+        description: "FAQ updated successfully",
+        variant: "default",
+      });
+      properties?.onClose();
+    } else {
+      toast({
+        title: "Error",
+        description: result?.error,
+        variant: "critical",
+      });
+    }
+  };
+
   return (
     <>
       <div className="flex w-full justify-end">
         <CustomButton
           variant="default"
-          onClick={onClose}
+          onClick={properties.onClose}
           className="h-[30px] w-[30px] rounded-full bg-neutral-5"
         >
           x
@@ -46,10 +91,25 @@ const EditFAQ = ({
           inputType="text"
           name="question"
           value={question}
-          onChange={onQuestionChange}
+          onChange={(event) => setQuestion(event.target.value)}
           placeholder="Question"
           className="placeholder:text-[12px]"
         />
+      </div>
+      <div className="flex flex-col">
+        <label htmlFor="answer" className="text-secondary-50">
+          Category
+        </label>
+        <Select onValueChange={(value) => setCategory(value)} value={category}>
+          <SelectTrigger className="text-primary focus:ring-primary focus-visible:ring-primary focus:outline-none focus:ring-1 focus-visible:ring-1 focus-visible:ring-offset-0">
+            <SelectValue placeholder="Select" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="pricing">Pricing</SelectItem>
+            <SelectItem value="policy">Policy</SelectItem>
+            <SelectItem value="general">General</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div className="flex flex-col">
         <label htmlFor="answer" className="text-secondary-50">
@@ -60,14 +120,17 @@ const EditFAQ = ({
           rows={6}
           name="answer"
           value={answer}
-          onChange={onAnswerChange}
+          onChange={(event) => setAnswer(event.target.value)}
           placeholder="write answer to question here"
           className="rounded-[8px] border-[2px] border-neutral-20 p-[8px] outline-none placeholder:text-[12px]"
         ></textarea>
-        <small className="mt-[5px] font-medium text-critical-80">{error}</small>
       </div>
       <div className="mt-[20px] border-t-[5px] border-t-neutral-10 pt-[20px]">
-        <CustomButton variant="primary" className="w-full" onClick={onAdd}>
+        <CustomButton
+          variant="primary"
+          className="w-full"
+          onClick={() => handleUpdateFaq}
+        >
           Add Question
         </CustomButton>
       </div>

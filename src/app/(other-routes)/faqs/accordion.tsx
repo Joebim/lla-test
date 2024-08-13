@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { useFAQStore } from "~/store/faq-store";
+import { getFAQs } from "~/store/faq-store";
 import {
   Accordion,
   AccordionContent,
@@ -10,11 +10,27 @@ import {
   AccordionTrigger,
 } from "../../../components/ui/accordion";
 
+interface Properties {
+  id: string;
+  question: string;
+  answer: string;
+  category: string;
+}
+
 export function FaqAccordions() {
-  const { faqs, fetchFAQs } = useFAQStore();
+  const [faqs, setFaqs] = useState<Properties[]>([]);
 
   useEffect(() => {
-    fetchFAQs();
+    const fetchFaqs = async () => {
+      const result = await getFAQs();
+      if (result && (result.status === 200 || result.status === 201)) {
+        setFaqs(result.data.data);
+      } else {
+        setFaqs([]);
+      }
+      // setLoading(false);
+    };
+    fetchFaqs();
   }, []);
 
   return (
