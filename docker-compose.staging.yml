@@ -4,3 +4,5 @@ services:
       - NODE_ENV=staging
     ports:
       - "5105:3000"  
+    volumes:
+      - .env:/app/.env
