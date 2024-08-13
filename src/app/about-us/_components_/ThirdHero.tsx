@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 import ContactInput from "./ContactInput";
 import Map from "./Map";
+import CustomButton from "~/components/common/common-button/common-button";
 
 const ThirdHero = () => {
   const [isUserTyping, setIsUserTyping] = useState<boolean>(false);
@@ -125,7 +126,7 @@ const ThirdHero = () => {
                         value={formData.message}
                         required
                         placeholder="Let us know how we can help you"
-                        className={`w-full resize-none bg-transparent text-[14px] leading-[20px] outline-none ${isUserTyping ? "h-full" : ""}`}
+                        className={` px-[12px] font-axiforma text-[18px] capitalize leading-[28px] text-neutral-80 outline-none w-full resize-none bg-transparent  ${isUserTyping ? "h-full" : ""}`}
                       ></textarea>
                       {!isUserTyping && (
                         <p className="text-end text-[16px] leading-[24px]">
@@ -135,12 +136,13 @@ const ThirdHero = () => {
                     </div>
                   </div>
                 </div>
-                <button
+                <CustomButton
+                variant="primary"
                   type="submit"
                   className="flex min-h-[48px] w-full items-center justify-center rounded-[59px] border-b border-solid border-primary-120 bg-primary-100 px-[24px] py-[10px] font-axiformaBold text-[16px] font-bold leading-[24px] text-white md:text-[20px] md:leading-[30px] lg:px-[32px]"
                 >
                   SEND
-                </button>
+                </CustomButton>
               </form>
               {/* contact type */}
             </div>

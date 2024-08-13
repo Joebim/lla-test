@@ -24,7 +24,10 @@ const tabContent: Record<TabKey, TabContent> = {
     number: "01.",
     description: (
       <>
-        <span className="text-transparent-white-65" data-testid="profile-description-part1">
+        <span
+          className="text-transparent-white-65"
+          data-testid="profile-description-part1"
+        >
           Begin Your Learning Journey By{" "}
         </span>
         <span className="text-white">Setting Up Your Profile</span>
@@ -90,9 +93,9 @@ export default function StepTabs() {
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              className={`lg::py-[21px] rounded-[61px] px-[60px] py-3 text-secondary-60 ${
+              className={`lg::py-[21px] m-[5px] w-[307.25px] rounded-[61px] px-[30px] py-3 text-secondary-60 ${
                 activeTab === tab.id
-                  ? "border-neutral-10 bg-neutral-30 text-secondary-120"
+                  ? "border-neutral-10 bg-neutral-30 lg:font-bold lg:text-secondary-120"
                   : "bg-white"
               }`}
               onClick={() => setActiveTab(tab.id)}

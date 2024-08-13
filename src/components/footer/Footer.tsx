@@ -15,10 +15,10 @@ const Footer: React.FC = () => {
           <div className="flex flex-col justify-between gap-5 md:w-[60%] md:flex-row">
             <div className="mb-6 flex w-full justify-end md:mb-0 md:w-1/3">
               <div>
-                <h3 className="mb-2 text-base font-medium text-secondary-80 md:text-xl">
+                <h3 className="mb-2 text-center text-base font-medium text-secondary-80 md:text-left md:text-xl">
                   Product
                 </h3>
-                <ul>
+                <ul className="flex flex-col items-center justify-center text-center md:block md:text-left">
                   <li>
                     <a href="#" className="text-sm text-white md:text-xl">
                       Features
@@ -37,10 +37,10 @@ const Footer: React.FC = () => {
             </div>
             <div className="mb-6 flex w-full justify-start md:mb-0 md:w-1/3 md:justify-end">
               <div>
-                <h3 className="mb-2 text-base font-medium text-secondary-80 md:text-xl">
+                <h3 className="mb-2 text-center text-base font-medium text-secondary-80 md:text-left md:text-xl">
                   Company
                 </h3>
-                <ul>
+                <ul className="flex flex-col items-center justify-center text-center md:block md:text-left">
                   <li>
                     <a
                       href="/about-us"
@@ -72,10 +72,10 @@ const Footer: React.FC = () => {
             </div>
             <div className="mb-6 flex w-full justify-end md:mb-0 md:w-1/3">
               <div>
-                <h3 className="mb-2 text-base font-medium text-secondary-80 md:text-xl">
+                <h3 className="mb-2 text-center text-base font-medium text-secondary-80 md:text-left md:text-xl">
                   Legal
                 </h3>
-                <ul>
+                <ul className="flex flex-col items-center justify-center text-center md:block md:text-left">
                   <li>
                     <a
                       href="/terms-of-use"
