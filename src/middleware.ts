@@ -9,9 +9,12 @@ const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET || "";
 const NEXT_PUBLIC_ROOT_DOMAIN = "staging.delve.fun";
 
 export default async function middleware(request: NextRequest) {
-  const token = await getToken({ req: request, secret: NEXTAUTH_SECRET });
-  const isLoggedIn = !!token;
-  const userRole = token?.user?.role || "guest";
+  const session = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+  const userRole = session?.user?.role || "guest";
+  const isLoggedIn = !!session;
   const { nextUrl } = request;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
