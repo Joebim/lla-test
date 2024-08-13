@@ -1,8 +1,8 @@
+// src/components/HowItWorks/Steps/Steps.test.tsx
 import { fireEvent, render, screen } from "@testing-library/react";
-
 import StepTabs from "./Steps";
 
-describe("stepTabs", () => {
+describe("StepTabs", () => {
   it("renders the StepTabs component", () => {
     expect.assertions(6);
     render(<StepTabs />);
@@ -17,10 +17,8 @@ describe("stepTabs", () => {
     expect(questTab).toBeInTheDocument();
     expect(learningTab).toBeInTheDocument();
 
-    // Check if the default content is rendered
-    const descriptionPart1 = screen.getByText(
-      /begin your learning journey by/i,
-    );
+    // Check if the default content is rendered using data-testid
+    const descriptionPart1 = screen.getByTestId("profile-description-part1");
     const descriptionPart2 = screen.getByText(/setting up your profile/i);
 
     expect(descriptionPart1).toBeInTheDocument();

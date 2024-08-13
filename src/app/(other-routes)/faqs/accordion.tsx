@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
   Accordion,
@@ -13,13 +13,14 @@ interface Faq {
   id: string;
   question: string;
   answer: string;
+  updated_at: string;
 }
 
-export function FaqAccordions() {
+export function FaqAccordions({ setUpdatedAt }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [datas, setDatas] = useState<Faq[]>([]);
 
-  async function fetchListofUsers() {
+  const fetchListofUsers = useCallback(async () => {
     try {
       setLoading(true);
       const apiResponse = await fetch(
@@ -29,19 +30,34 @@ export function FaqAccordions() {
 
       if (result?.data) {
         setDatas(result.data);
+
+        // Find the most recent updated_at using forEach
+        let mostRecentUpdate = result.data[0];
+        for (const item of result.data) {
+          if (
+            new Date(item.updated_at) > new Date(mostRecentUpdate.updated_at)
+          ) {
+            mostRecentUpdate = item;
+          }
+        }
+
+        // Pass the last updated_at back to the FAQs component
+        setUpdatedAt(mostRecentUpdate.updated_at);
       } else {
         setDatas([]);
+        setUpdatedAt("");
       }
     } catch {
       setDatas([]);
+      setUpdatedAt("");
     } finally {
       setLoading(false);
     }
-  }
+  }, [setUpdatedAt]);
 
   useEffect(() => {
     fetchListofUsers();
-  }, []);
+  }, [fetchListofUsers]);
 
   if (loading)
     return <h1 className="font-bold">Loading FAQs! Please wait ...</h1>;
