@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 export type PaginationRequest = {
   totalPages: number;
