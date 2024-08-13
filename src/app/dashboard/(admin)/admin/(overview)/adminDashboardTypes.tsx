@@ -46,3 +46,5 @@ export type StatisticItem = {
   percentage: number;
   icon: JSX.Element;
 };
+
+// export type AdminUsersData = {};

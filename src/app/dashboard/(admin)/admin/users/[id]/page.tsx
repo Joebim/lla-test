@@ -1,9 +1,11 @@
+/* eslint-disable no-console */
 "use client";
 
 import { Award, Gamepad, Languages, Users } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { GetSingleUser } from "~/app/api/admindashboard/route";
 import CustomButton from "~/components/common/common-button/common-button";
 import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
 import UserDetailsCard from "~/components/userDetailCard";
@@ -11,7 +13,7 @@ import UserMetricsCard from "~/components/userMetricsCard";
 import UserProfileChart from "~/components/userProfileChart";
 import UserProfileTable from "~/components/userProfileTable";
 
-const UserDetails = () => {
+const UserDetails = ({ params }: { params: { id: string } }) => {
   const [isModalOpen, setsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isDeactivated, setIsDeactivated] = useState(false);
@@ -19,7 +21,27 @@ const UserDetails = () => {
   const [isReactivateModalOpen, setIsReactivateModalOpen] = useState(false);
   const [isReactivateSuccessModalOpen, setIsReactivateSuccessModalOpen] =
     useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [userDetails, setUserDetails] = useState([]);
+  useEffect(() => {
+    async function getUserDetails() {
+      setIsLoading(true);
+      try {
+        if (params?.id !== undefined) {
+          const response = await GetSingleUser(params?.id);
+          console.log({ response });
+          setUserDetails(response?.data);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getUserDetails();
+  }, []);
+  useEffect(() => {
+    console.log(isLoading, userDetails);
+  }, [isLoading]);
   const metricsSchema = [
     {
       title: "Languages of Interest",

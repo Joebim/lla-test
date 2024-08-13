@@ -4,7 +4,6 @@ import axios, { AxiosError } from "axios";
 export type PaginationRequest = {
   totalPages: number;
   totalCount: number;
-
   page: number;
   perPage: number;
 };
@@ -29,7 +28,7 @@ export const getAllUsers = async (PaginationRequest: PaginationRequest) => {
         perPage: PaginationRequest.perPage,
       },
       headers: {
-        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU0NTc2NywiZXhwIjoxNzIzNTQ5MzY3LCJuYmYiOjE3MjM1NDU3NjcsImp0aSI6IlczbnE0S3BPY2NlSDlRNzQiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.MhsomelL20SwZ5OpwWP2R3xShIFr6dxUlOstHy3WlmU`,
+        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
       },
     });
 
@@ -45,7 +44,7 @@ export const getUsersStats = async () => {
   try {
     const response = await axios.get(`${admin_base_url}/api/v1/statistics`, {
       headers: {
-        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU0NTc2NywiZXhwIjoxNzIzNTQ5MzY3LCJuYmYiOjE3MjM1NDU3NjcsImp0aSI6IlczbnE0S3BPY2NlSDlRNzQiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.MhsomelL20SwZ5OpwWP2R3xShIFr6dxUlOstHy3WlmU`,
+        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
       },
     });
     return response;
@@ -63,7 +62,7 @@ export const getUserByStatus = async (booleanValue: boolean | undefined) => {
       `${admin_base_url}/api/v1/admin/users?status=${booleanValue}`,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU0NTc2NywiZXhwIjoxNzIzNTQ5MzY3LCJuYmYiOjE3MjM1NDU3NjcsImp0aSI6IlczbnE0S3BPY2NlSDlRNzQiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.MhsomelL20SwZ5OpwWP2R3xShIFr6dxUlOstHy3WlmU`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
         },
       },
     );
@@ -85,7 +84,7 @@ export const getUsersByDate = async (
       `${admin_base_url}/api/v1/admin/users?created_at_from=${created_at_from}&created_at_to=${created_at_to}`,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU0NTc2NywiZXhwIjoxNzIzNTQ5MzY3LCJuYmYiOjE3MjM1NDU3NjcsImp0aSI6IlczbnE0S3BPY2NlSDlRNzQiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.MhsomelL20SwZ5OpwWP2R3xShIFr6dxUlOstHy3WlmU`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
         },
       },
     );
@@ -104,8 +103,9 @@ export const ExportUsers = async () => {
       `${admin_base_url}/api/v1/admin/users/export`,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU0NTc2NywiZXhwIjoxNzIzNTQ5MzY3LCJuYmYiOjE3MjM1NDU3NjcsImp0aSI6IlczbnE0S3BPY2NlSDlRNzQiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.MhsomelL20SwZ5OpwWP2R3xShIFr6dxUlOstHy3WlmU`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
         },
+        responseType: "blob",
       },
     );
 
@@ -116,13 +116,13 @@ export const ExportUsers = async () => {
   }
 };
 // Retrieve A specific user
-export const GetSingleUser = async (userId: string) => {
+export const GetSingleUser = async (userId: string | string[] | undefined) => {
   try {
     const response = await axios.get(
       `${admin_base_url}/api/v1/admin/users/${userId}`,
       {
         headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1ODg1MywiZXhwIjoxNzIzNTYyNDUzLCJuYmYiOjE3MjM1NTg4NTMsImp0aSI6InlWZHRQWlZnN2E3dXVWRUsiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.IQZx5jIx6IJG0fD8IT-dY2ywDLhR-y_2UxhLGkB1X8o`,
         },
       },
     );
@@ -133,6 +133,7 @@ export const GetSingleUser = async (userId: string) => {
     throw error;
   }
 };
+
 // deactivate User
 export const deactivateUser = async (userId: string) => {
   try {
@@ -140,7 +141,7 @@ export const deactivateUser = async (userId: string) => {
       `${admin_base_url}/api/v1/admin/users/${userId}/deactivate`,
       {
         headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
         },
       },
     );
@@ -156,7 +157,7 @@ export const getAdminProfile = async () => {
   try {
     const response = await axios.get(`${admin_base_url}/api/v1/admin-profile`, {
       headers: {
-        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzUzODkzMiwiZXhwIjoxNzIzNTQyNTMyLCJuYmYiOjE3MjM1Mzg5MzIsImp0aSI6ImxCdzdOOWU0V0l6NVdhY3QiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.oMXOfkiQrZOQfYoevbhNYiwlkM54G4vdiqDCzCnrttM`,
+        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
       },
     });
 
@@ -181,7 +182,7 @@ export const updateAdminProfile = async (profileData: ProfileData) => {
       profileData,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzUzODkzMiwiZXhwIjoxNzIzNTQyNTMyLCJuYmYiOjE3MjM1Mzg5MzIsImp0aSI6ImxCdzdOOWU0V0l6NVdhY3QiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.oMXOfkiQrZOQfYoevbhNYiwlkM54G4vdiqDCzCnrttM`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
           "Content-Type": "application/json",
         },
       },

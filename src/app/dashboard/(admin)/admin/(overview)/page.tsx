@@ -4,9 +4,11 @@
 
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import {
+  ExportUsers,
   getAllUsers,
   getUserByStatus,
   getUsersByDate,
@@ -57,6 +59,8 @@ const formatDate3 = (date: Date | string) => {
 };
 
 export default function Overview() {
+  const router = useRouter();
+
   const [pagination, setPagination] = useState<PaginationRequest>({
     totalPages: 0,
     totalCount: 0,
@@ -213,7 +217,30 @@ export default function Overview() {
             icon: <PersonDisabledIcon />,
           },
         ];
-
+  // Export Users As CSV
+  const [isLoadingCSV, setIsLoadingCSV] = useState(false);
+  async function Export() {
+    try {
+      setIsLoadingCSV(true);
+      const response = await ExportUsers();
+      const blob = new Blob([response.data], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "users.csv";
+      document.body.append(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+      setIsLoadingCSV(false);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+  const navigateToSingleUser = (index: number) => {
+    router.push(`/dashboard/admin/users/${users[index]?.id}`);
+  };
   return (
     <div className="w-full font-axiforma">
       <header className="mb-[33px] grid w-full gap-2 sm:grid-cols-2 sm:gap-[24px] lg:grid-cols-4">
@@ -260,9 +287,18 @@ export default function Overview() {
           <p className="text-[#525252]">Manage Users & Track Activity</p>
         </div>
         <div className="flex gap-[16px] self-center">
-          <button className="flex h-[44px] items-center gap-[14px] rounded-[4px] border-[1px] border-[#CBD5E1] px-[15px] py-[12.5px] hover:border-primary-100">
-            <span className="text-[14px]">Export</span>
-            <ExpandMore />
+          <button
+            onClick={Export}
+            className="flex h-[44px] items-center gap-[14px] rounded-[4px] border-[1px] border-[#CBD5E1] px-[15px] py-[12.5px] hover:border-primary-100"
+          >
+            {isLoadingCSV ? (
+              <span className="spinner">
+                <Skeleton className="animate-spin" />
+                Processing...
+              </span>
+            ) : (
+              <span className="text-[14px]">Export</span>
+            )}
           </button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -403,7 +439,12 @@ export default function Overview() {
                         <DropdownMenuLabel className="sr-only">
                           Actions
                         </DropdownMenuLabel>
-                        <DropdownMenuItem className="pr-8 text-center" inset>
+
+                        <DropdownMenuItem
+                          className="pr-8 text-center"
+                          inset
+                          onClick={() => navigateToSingleUser}
+                        >
                           View
                         </DropdownMenuItem>
                       </DropdownMenuContent>
