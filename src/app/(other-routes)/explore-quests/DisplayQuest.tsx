@@ -26,7 +26,7 @@ const DisplayQuest = ({
       style={{
         background: `url(${currentImage.src}) no-repeat center/cover`,
       }}
-      className="grid items-end pb-10 transition-all max-md:justify-center max-md:pt-40 md:min-h-[768px] md:px-10 lg:grid-cols-2"
+      className="transition-all grid items-end pb-10 max-md:justify-center max-md:pt-40 md:min-h-[768px] md:px-10 lg:grid-cols-2"
     >
       <SceneCard
         description="Lora lives in California and needs to get on the plane to Paris where she meets her boss for Fashion Week. Problem is, she just might miss that flight and get fired. How fast can you help her get to the airport?"

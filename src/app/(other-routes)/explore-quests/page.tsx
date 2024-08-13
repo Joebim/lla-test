@@ -43,7 +43,7 @@ const ExploreQuests = () => {
           questNo={questImages.length}
           setImgIndex={setImgIndex}
         />
-        <div className="hidden flex-wrap gap-2 pt-6 transition-all *:object-cover sm:flex lg:gap-4">
+        <div className="transition-all hidden flex-wrap gap-2 pt-6 *:object-cover sm:flex lg:gap-4">
           {questImages.map((image, index) => (
             <Image
               width={120}

@@ -17,7 +17,7 @@ export default function Blog() {
             key={index}
             className="block"
           >
-            <div className="cursor-pointer transition-transform hover:scale-105">
+            <div className="transition-transform cursor-pointer hover:scale-105">
               <div
                 className="mb-[32px] h-[264px] bg-cover"
                 style={{ backgroundImage: `url(${data.properties.blogImage})` }}

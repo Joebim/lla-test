@@ -37,7 +37,7 @@ export const Carousel: React.FC<CarouselProperties> = ({
   return (
     <div className={`relative w-full overflow-hidden ${className}`}>
       <div
-        className="flex transition-transform duration-1000 ease-in-out"
+        className="transition-transform flex duration-1000 ease-in-out"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {childrenArray.map((child, index) => (

@@ -142,7 +142,7 @@ const InviteAdminModal = ({
                       <div key={index}>
                         <hr />
                         <div
-                          className="cursor-pointer px-2 py-2 font-inter text-[1.125rem] font-normal leading-[1.5rem] text-secondary-40 transition-all hover:bg-neutral-40"
+                          className="transition-all cursor-pointer px-2 py-2 font-inter text-[1.125rem] font-normal leading-[1.5rem] text-secondary-40 hover:bg-neutral-40"
                           onClick={() => handleRoleSelect(dropDown)}
                         >
                           {dropDown}

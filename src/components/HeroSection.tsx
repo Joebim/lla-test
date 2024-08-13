@@ -47,7 +47,7 @@ const HeroSection: React.FC = () => {
 
   return (
     <section className="mx-auto flex h-screen w-full flex-col items-center justify-center p-4">
-      <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat transition-all duration-500 ease-in-out">
+      <div className="transition-all relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat duration-500 ease-in-out">
         <video
           ref={videoReference}
           className="absolute left-0 top-0 h-full w-full object-cover object-bottom"
@@ -71,7 +71,7 @@ const HeroSection: React.FC = () => {
             {backgrounds.map((bg, index) => (
               <div
                 key={index}
-                className={`aspect-square w-[18%] cursor-pointer rounded-2xl bg-cover bg-center transition-all duration-300 sm:w-[20%] md:w-[22%] lg:w-[90px] ${activeBgIndex === index ? "border-2 border-white" : "border border-transparent"}`}
+                className={`transition-all aspect-square w-[18%] cursor-pointer rounded-2xl bg-cover bg-center duration-300 sm:w-[20%] md:w-[22%] lg:w-[90px] ${activeBgIndex === index ? "border-2 border-white" : "border border-transparent"}`}
                 onClick={() => setActiveBgIndex(index)}
               >
                 <Image
