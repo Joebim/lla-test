@@ -10,12 +10,18 @@ const QuestHero = () => {
     >
       <div className="w-full bg-white px-4 py-16 sm:px-6 sm:py-12 md:px-8 md:py-16 lg:px-20 lg:py-16">
         <h2
-          data-testid="quest-hero-heading"
-          className="text-secondary-200 mb-8 pt-12 text-center text-3xl font-bold md:text-4xl lg:text-5xl"
+          data-testid="quest-hero-heading-desktop"
+          className="text-secondary-200 mb-8 hidden pt-12 text-center text-3xl font-bold md:block md:text-4xl lg:text-5xl"
         >
           Explore Language Quests
         </h2>
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+        <h2
+          data-testid="quest-hero-heading-mobile"
+          className="text-secondary-200 mb-8 block pt-12 text-center text-3xl font-bold md:hidden md:text-4xl lg:text-5xl"
+        >
+          Explore Quests
+        </h2>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
           {quests.map((quest) => (
             <QuestCard
               key={quest.id}

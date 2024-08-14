@@ -2,6 +2,7 @@
 
 import { ChangeEvent, useState } from "react";
 
+import CustomButton from "~/components/common/common-button/common-button";
 import ContactInput from "./ContactInput";
 import Map from "./Map";
 
@@ -19,7 +20,7 @@ const ThirdHero = () => {
         <div className="mx-auto flex w-full max-w-[1392px] flex-col gap-[23px] border-[16px] border-solid border-[#FFFFFFCC] p-[24px] lg:gap-[34px] lg:p-[48px]">
           <div className="text-center font-axiformaSemiBold font-semibold text-secondary-120">
             <h1 className="whitespace-nowrap text-[24px] leading-[36px] tracking-[0.02em] md:text-[48px] md:leading-[72px] lg:tracking-[0.06em]">
-              Get in <span className="text-primary-110">Touch</span>
+              Get in <span className="text-primary-100">Touch</span>
             </h1>
             <p className="text-[14px] leading-[20px] md:text-[16px] md:leading-[24px]">
               Whether you have a question, feedback, or need assistance, our
@@ -70,12 +71,13 @@ const ThirdHero = () => {
                     </div>
                   </div>
                 </div>
-                <button
+                <CustomButton
+                  variant="primary"
                   type="submit"
                   className="flex min-h-[48px] w-full items-center justify-center rounded-[59px] border-b border-solid border-primary-120 bg-primary-100 px-[24px] py-[10px] font-axiformaBold text-[16px] font-bold leading-[24px] text-white md:text-[20px] md:leading-[30px] lg:px-[32px]"
                 >
                   SEND
-                </button>
+                </CustomButton>
               </form>
               {/* contact type */}
             </div>
