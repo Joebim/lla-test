@@ -56,7 +56,8 @@ const AudioContainer = () => {
   const audioData = audioSettingsData?.data;
 
   useEffect(() => {
-    getAudioSettings();
+    const get = async () => getAudioSettings();
+    get();
   }, [getAudioSettings]);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);

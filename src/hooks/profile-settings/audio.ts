@@ -1,10 +1,8 @@
-"use server";
-
 import axios from "axios";
 import { create } from "zustand";
 import { persist, PersistStorage } from "zustand/middleware";
 
-import { auth } from "~/lib/auth";
+import { clientSession } from "~/lib/session";
 import { IAudioSettings, IAudioSettingsResponse } from "~/types/settings.model";
 
 export const apiClient = axios.create({
@@ -68,7 +66,7 @@ export const useAudioSettings = create<IUpdateAudioProperties>()(
     (set) => ({
       ...initialState,
       updateAudioSettings: async (audioSetting: IAudioSettings) => {
-        const session = await auth();
+        const session = await clientSession();
         set({ ...initialState, loading: true });
         try {
           const response = await apiClient.put(
@@ -107,14 +105,13 @@ export const useAudioSettings = create<IUpdateAudioProperties>()(
         }
       },
       getAudioSettings: async () => {
-        const token =
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzY0MzQ5NywiZXhwIjoxNzIzNjQ3MDk3LCJuYmYiOjE3MjM2NDM0OTcsImp0aSI6IlpYT3dqMmJOU291QmhpM1QiLCJzdWIiOiI5Y2MzOTEwYi05YjVhLTRlMDAtODhkYS0yZjQyMDQ4NzVmZDkiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.Vhkt-aam9suXoQ385HgNCbbuX8hXEm6p-Vz8h9_rMPg";
+        const session = await clientSession();
         set({ ...initialState, loading: true });
         try {
           const response = await apiClient.get(`/audio-settings`, {
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`,
+              "Authorization": `Bearer ${session?.access_token}`,
             },
           });
           set({
