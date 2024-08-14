@@ -3,13 +3,14 @@
 import dynamic from "next/dynamic";
 import { Suspense, useEffect, useState } from "react";
 
-import LevelDisplay from "~/components/level-display/LevelDisplay";
-import QuestLevelTimer from "~/components/quest-level-timer/QuestLevelTimer";
-import ExampleComponent, { PlayerThought } from "~/components/thoughts/PlayerThought";
-import Scene from "./_component/scene";
 import { Canvas } from "@react-three/fiber";
 import { Mic } from "lucide-react";
+import Image from "next/image";
+import LevelDisplay from "~/components/level-display/LevelDisplay";
+import QuestLevelTimer from "~/components/quest-level-timer/QuestLevelTimer";
+import { PlayerThought } from "~/components/thoughts/PlayerThought";
 import useSpeechToText from "~/hooks/useSpeechToText";
+import Scene from "./_component/scene";
 
 const Avatars = dynamic(() => import("~/components/Avatars"), {
   ssr: false,
@@ -34,26 +35,28 @@ const Home: React.FC = () => {
 
   return (
     <div
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100dvh",
-        backgroundImage: "url('/models/Level 12.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "bottom center",
-        backgroundRepeat: "no-repeat",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-      }}
+    className="w-full h-dvh flex flex-col"
+      // style={{
+      //   position: "relative",
+      //   width: "100%",
+      //   height: "100dvh",
+      //   backgroundImage: "url('/models/Level 12.png')",
+      //   backgroundSize: "contain",
+      //   backgroundPosition: "bottom center",
+      //   backgroundRepeat: "no-repeat",
+      //   display: "flex",
+      //   flexDirection: "column",
+      //   justifyContent: "space-between",
+      // }}
       data-testid="home-container"
     >
-      <div className="flex w-full flex-col justify-between gap-2 px-[2%] pt-5 lg:flex-row" data-testid="header">
+      <Image fill src={"/models/Level 12.png"} className="z-10" objectFit="center" alt="scene timestamp background"/>
+      <div className="flex w-full z-20 flex-col justify-between gap-2 px-[2%] pt-5 lg:flex-row" data-testid="header">
         <LevelDisplay data-testid="level-display" />
         <QuestLevelTimer initialTime={300} data-testid="quest-timer" />
       </div>
 
-      <div className="relative h-full w-full" data-testid="main-content">
+      <div className="relative h-full w-full z-30" data-testid="main-content">
         <div className="absolute bottom-0 left-0 pb-10 pl-[2%]" data-testid="example-component">
             <PlayerThought thought={currentChat} />
         </div>
