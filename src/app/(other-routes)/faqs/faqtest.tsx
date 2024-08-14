@@ -1,9 +1,12 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+
 import "@testing-library/jest-dom";
+
 import FAQs from "./page";
 
 describe("fAQs Page", () => {
   it("renders the FAQ page with header, date, and introduction", async () => {
+    expect.hasAssertions();
     // Render the component
     render(<FAQs />);
 
@@ -21,9 +24,7 @@ describe("fAQs Page", () => {
     });
 
     // Wait for the date to appear with the dynamically generated date
-    await waitFor(() =>
-      expect(screen.getByText(expectedDate)).toBeInTheDocument(),
-    );
+    await screen.findByText(expectedDate);
 
     // Check for the introduction section
     expect(screen.getByText("Introduction")).toBeInTheDocument();

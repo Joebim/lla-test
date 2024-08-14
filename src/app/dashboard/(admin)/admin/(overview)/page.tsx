@@ -3,7 +3,6 @@
 "use client";
 
 import { EllipsisVertical } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next-nprogress-bar";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -65,7 +64,6 @@ const formatDate3 = (date: Date | string) => {
 
 const Overview = () => {
   const router = useRouter();
-  const { data: session } = useSession();
   const [pagination, setPagination] = useState<PaginationRequest>({
     totalPages: 0,
     totalCount: 0,
@@ -81,7 +79,7 @@ const Overview = () => {
 
     async function fetchData() {
       try {
-        const response = await getAllUsers(pagination, session?.access_token);
+        const response = await getAllUsers(pagination);
         setUsers(response?.data?.data || []);
         setPagination((previous: PaginationRequest) => ({
           ...previous,
@@ -104,7 +102,7 @@ const Overview = () => {
 
     async function fetchOverviewData() {
       try {
-        const response = await getUsersStats(session?.access_token);
+        const response = await getUsersStats();
         setOverViewData(response?.data?.data || undefined);
         setIsLoadingOverviewData(false);
       } catch (error) {
@@ -134,7 +132,7 @@ const Overview = () => {
       setIsLoading(true);
       try {
         if (status !== undefined) {
-          const response = await getUserByStatus(status, session?.access_token);
+          const response = await getUserByStatus(status);
           setUsers(response?.data?.data || []);
           setIsLoading(false);
         }
@@ -166,7 +164,6 @@ const Overview = () => {
             const response = await getUsersByDate(
               formatDate3(fromDate),
               formatDate3(toDate),
-              session?.access_token,
             );
             setUsers(response?.data?.data || []);
             setIsLoading(false);
@@ -228,7 +225,7 @@ const Overview = () => {
   async function Export() {
     try {
       setIsLoadingCSV(true);
-      const response = await ExportUsers(session?.access_token);
+      const response = await ExportUsers();
       const blob = new Blob([response.data], { type: "text/csv" });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");

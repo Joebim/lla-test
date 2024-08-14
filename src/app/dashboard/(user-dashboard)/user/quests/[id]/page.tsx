@@ -1,9 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -15,7 +13,6 @@ import { QuestExitModal } from "../_components/quest-exit-modal";
 import { preview, userQuests } from "../../userDashboardTypes";
 
 const QuestPreview = ({ params }: { params: { id: string } }) => {
-  const { data: session } = useSession();
   console.log("id,", params?.id);
   const [gameStatus] = useState<string>("paused");
   const [questPreview, setQuestPreview] = useState<userQuests>();
@@ -26,10 +23,7 @@ const QuestPreview = ({ params }: { params: { id: string } }) => {
       setIsLoading(true);
       try {
         if (params?.id !== undefined) {
-          const response = await getPreviewQuest(
-            params?.id,
-            session?.access_token,
-          );
+          const response = await getPreviewQuest(params?.id);
           console.log({ response });
           setQuestPreview(response?.data?.data);
           setIsLoading(false);

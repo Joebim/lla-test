@@ -2,7 +2,6 @@
 "use client";
 
 import { Gamepad } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { getAllQuests } from "~/actions/userDashboardQuest.ts/route";
@@ -46,7 +45,6 @@ const UserDashboard = () => {
   const [questData, setQuestData] = useState<
     QuestsDummyDataProperties[] | undefined
   >();
-  const { data: session } = useSession();
   const { toast } = useToast();
 
   // GET dummy quest data
@@ -69,7 +67,7 @@ const UserDashboard = () => {
 
     async function fetchData() {
       try {
-        const response = await getAllQuests(session?.access_token);
+        const response = await getAllQuests();
         setQuests(response?.data?.data?.data || []);
         console.log({ response });
         // console.log(response?.data?.data?.data[0].vocabularies.length)
@@ -84,7 +82,7 @@ const UserDashboard = () => {
       }
     }
     fetchData();
-  }, [session?.access_token, toast]);
+  }, [toast]);
   // const changeVocabulariesToArray = (jsonString: string) => {
   //   const jsonObject = JSON.parse(jsonString);
   //   const keysArray = Object.keys(jsonObject);

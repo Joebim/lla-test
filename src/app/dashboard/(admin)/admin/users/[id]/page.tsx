@@ -1,9 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
 "use client";
 
 import { Award, Gamepad, Languages, Users } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -22,7 +20,6 @@ import UserProfileTable from "~/components/userProfileTable";
 import { userDetailsCardProperties } from "../../(overview)/adminDashboardTypes";
 
 const UserDetails = ({ params }: { params: { id: string } }) => {
-  const { data: session } = useSession();
   const [isModalOpen, setsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isDeactivated, setIsDeactivated] = useState(false);
@@ -37,10 +34,7 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
       setIsLoading(true);
       try {
         if (params?.id !== undefined) {
-          const response = await GetSingleUser(
-            params?.id,
-            session?.access_token,
-          );
+          const response = await GetSingleUser(params?.id);
           setUserDetails(response?.data);
           setIsLoading(false);
         }
@@ -83,7 +77,7 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
     setIsLoadingDeactivated(true);
     try {
       if (params?.id !== undefined) {
-        await deactivateUser(params?.id, session?.access_token);
+        await deactivateUser(params?.id);
 
         setIsLoadingDeactivated(false);
       }
@@ -103,7 +97,7 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
     setIsLoadingReactivateUser(true);
     try {
       if (params?.id !== undefined) {
-        await reactivateUser(params?.id, session?.access_token);
+        await reactivateUser(params?.id);
 
         setIsLoadingReactivateUser(false);
       }

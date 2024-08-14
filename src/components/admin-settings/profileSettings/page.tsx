@@ -2,7 +2,6 @@
 "use client";
 
 import { Camera } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -34,7 +33,6 @@ const validateImageFile = (file: File): boolean => {
 };
 
 const AdminProfile = () => {
-  const { data: session } = useSession();
   const { toast } = useToast();
 
   //states
@@ -76,7 +74,7 @@ const AdminProfile = () => {
     async function fetchAdminProfile() {
       setIsLoadingAdminDetails(true);
       try {
-        const response = await getAdminProfile(session?.access_token);
+        const response = await getAdminProfile();
         if (response?.data) {
           setTemporaryImage(
             response.data.data.avatar_url || "/images/profile_avatar.svg",
@@ -92,7 +90,7 @@ const AdminProfile = () => {
       }
     }
     fetchAdminProfile();
-  }, [session?.access_token]);
+  }, []);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -162,10 +160,7 @@ const AdminProfile = () => {
       if (gender ?? temporaryGender)
         profileData.gender = gender ?? temporaryGender;
 
-      const response = await updateAdminProfile(
-        profileData as ProfileData,
-        session?.access_token,
-      );
+      const response = await updateAdminProfile(profileData as ProfileData);
       console.log({ response });
       setError("");
       setIsEditing(false);
@@ -186,7 +181,7 @@ const AdminProfile = () => {
   async function fetchAdminProfile() {
     setIsLoadingAdminDetails(true);
     try {
-      const response = await getAdminProfile(session?.access_token);
+      const response = await getAdminProfile();
       if (response?.data) {
         setTemporaryImage(
           response.data.data.avatar_url || "/images/profile_avatar.svg",
