@@ -22,18 +22,21 @@ interface properties {
 
 const CreateFAQ = ({ callback, setCallback, onClose }: properties) => {
   const [question, setQuestion] = useState("");
+  const [loading, setLoading] = useState(false);
   const [answer, setAnswer] = useState("");
   const [category, setCategory] = useState("");
   const { toast } = useToast();
 
   const handleAddFAQ = async () => {
-    // validate input
+    setLoading(true);
+
     if (answer === "" || question === "") {
       toast({
         title: "Error",
         description: "Inputs cannot be empty",
         variant: "critical",
       });
+      setLoading(false);
       return;
     }
 
@@ -44,6 +47,8 @@ const CreateFAQ = ({ callback, setCallback, onClose }: properties) => {
     };
 
     const result = await CreateFaqs(payload);
+    // eslint-disable-next-line no-console
+    console.log(result);
 
     if (result?.status === 200 || result?.status === 201) {
       setCallback(!callback);
@@ -54,12 +59,14 @@ const CreateFAQ = ({ callback, setCallback, onClose }: properties) => {
       });
 
       onClose();
+      setLoading(false);
     } else {
       toast({
         title: "Error",
         description: result?.error,
         variant: "critical",
       });
+      setLoading(false);
       setCallback(!callback);
     }
   };
@@ -126,7 +133,7 @@ const CreateFAQ = ({ callback, setCallback, onClose }: properties) => {
           className="w-full"
           onClick={handleAddFAQ}
         >
-          Add Question
+          {loading ? "Adding..." : "Add Question"}
         </CustomButton>
       </div>
     </>

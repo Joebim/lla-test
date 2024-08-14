@@ -1,6 +1,7 @@
+"use server";
+
 import axios from "axios";
 
-import { ADMIN_BASE_URL } from "~/app/api/adminDashboard/route";
 import { auth } from "~/lib/auth";
 
 interface createProperties {
@@ -15,11 +16,12 @@ interface UpdateProperties {
   category: string;
 }
 
+const API_BASE_URL = process.env.API_URL;
+
 //fetch faqs
 const getFAQs = async () => {
   try {
-    const response = await axios.get(`${ADMIN_BASE_URL}/api/v1/faqs`);
-
+    const response = await axios.get(`${API_BASE_URL}/api/v1/faqs`);
     return {
       data: response.data,
       status: response.status,
@@ -38,19 +40,15 @@ const getFAQs = async () => {
 
 // create faq
 const CreateFaqs = async (payload: createProperties) => {
+  const session = await auth();
   try {
-    const session = await auth();
-
-    const response = await axios.post(
-      `${ADMIN_BASE_URL}/api/v1/faqs`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.access_token}`,
-        },
+    const response = await axios.post(`${API_BASE_URL}/api/v1/faqs`, payload, {
+      headers: {
+        Authorization: `Bearer ${session?.access_token}`,
       },
-    );
-
+    });
+    // eslint-disable-next-line no-console
+    console.log("response", response);
     return {
       data: response.data,
       status: response.status,
@@ -73,7 +71,7 @@ const DeleteFaqs = async (id: string) => {
   try {
     const session = await auth();
 
-    const response = await axios.delete(`${ADMIN_BASE_URL}/api/v1/faqs/${id}`, {
+    const response = await axios.delete(`${API_BASE_URL}/api/v1/faqs/${id}`, {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
@@ -99,7 +97,7 @@ const UpdateFaqs = async (payload: UpdateProperties, id: string) => {
     const session = await auth();
 
     const response = await axios.put(
-      `${ADMIN_BASE_URL}/api/v1/faqs/${id}`,
+      `${API_BASE_URL}/api/v1/faqs/${id}`,
       payload,
       {
         headers: {
