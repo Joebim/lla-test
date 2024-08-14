@@ -4,6 +4,8 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
+import SettingsCard from "~/components/profileSettings/settings-card";
+
 const languages = [
   { name: "English", flag: "/flags/english_flag.svg" },
   { name: "French", flag: "/flags/french_flag.svg" },
@@ -22,11 +24,8 @@ const NativeLanguage = () => {
   };
 
   return (
-    <div className="">
-      <div className="rounded-t-[20px] bg-primary-10 px-5 py-8 font-axiforma text-[18px] font-[500] text-black sm:text-2xl">
-        I speak...
-      </div>
-      <div className="h-auto justify-start gap-2 rounded-b-[20px] bg-white p-6 font-axiforma">
+    <SettingsCard title="I speak...">
+      <div className="h-auto justify-start gap-2 rounded-b-[20px] bg-white font-axiforma">
         <div className="flex items-start gap-2">
           {nativeLanguageFlag === "" ? (
             <div className="ml-0"></div>
@@ -87,7 +86,7 @@ const NativeLanguage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </SettingsCard>
   );
 };
 

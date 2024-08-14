@@ -1,11 +1,7 @@
 "use client";
 
-import { useState } from "react";
-
-import { FaqAccordions } from "./accordion";
-
 const FAQs = () => {
-  const [updatedAt, setUpdatedAt] = useState("");
+  // const [updatedAt, setUpdatedAt] = useState("");
 
   return (
     <>
@@ -15,13 +11,13 @@ const FAQs = () => {
         </h1>
         <p className="mx-auto inline-block rounded-[59px] border border-neutral-40 px-8 py-2.5 font-axiforma lg:py-3.5">
           <span className="text-secondary-80">Last updated:</span>{" "}
-          {updatedAt
+          {/* {updatedAt
             ? new Date(updatedAt).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
               })
-            : "Loading..."}
+            : "Loading..."} */}
         </p>
       </div>
       <div className="mx-auto max-w-3xl p-8 md:py-12 lg:py-12">
@@ -38,7 +34,7 @@ const FAQs = () => {
           </p>
         </div>
         {/* Pass the setUpdatedAt function as a prop to FaqAccordions */}
-        <FaqAccordions setUpdatedAt={setUpdatedAt} />
+        {/* <FaqAccordions setUpdatedAt={setUpdatedAt} /> */}
       </div>
     </>
   );
