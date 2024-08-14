@@ -1,5 +1,4 @@
 "use client";
-
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -101,7 +100,7 @@ type Language = {
   isDefault?: string;
 };
 
-const ProfilePage: React.FC= () => {
+const ProfilePage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [gender, setGender] = useState("");
   const [usernameError, setUsernameError] = useState("");
@@ -112,13 +111,11 @@ const ProfilePage: React.FC= () => {
   );
   const [languages, setLanguages] = useState<Language[]>([]);
   const router = useRouter();
-  const {data: session } = useSession()
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-       
-
         const response = await fetch(
           "https://api.staging.delve.fun/api/v1/languages",
           {
@@ -166,11 +163,12 @@ const ProfilePage: React.FC= () => {
           ),
         );
       } catch {
+        Error;
       }
     };
 
     fetchLanguages();
-  }, []);
+  }, [session?.access_token]);
 
   const handleButtonClick = (id: string) => {
     setSelectedLanguages((previousSelected) => {
@@ -212,8 +210,6 @@ const ProfilePage: React.FC= () => {
 
     if (isValid) {
       try {
-        const token = localStorage.getItem("token");
-
         const payload = {
           username,
           gender,
