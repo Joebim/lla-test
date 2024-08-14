@@ -93,9 +93,9 @@ export default function StepTabs() {
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              className={`lg::py-[21px] rounded-[61px] px-[60px] py-3 text-secondary-60 ${
+              className={`lg::py-[21px] m-[5px] w-[307.25px] rounded-[61px] px-[30px] py-3 text-secondary-60 ${
                 activeTab === tab.id
-                  ? "border-neutral-10 bg-neutral-30 text-secondary-120"
+                  ? "border-neutral-10 bg-neutral-30 lg:font-bold lg:text-secondary-120"
                   : "bg-white"
               }`}
               onClick={() => setActiveTab(tab.id)}
@@ -124,10 +124,16 @@ export default function StepTabs() {
                 />
               </div>
               <div className="p-4 md:w-1/2">
-                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border-2 border-white text-white lg:mb-9">
+                <div
+                  className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border-2 border-white text-white lg:mb-9"
+                  data-testid={`description-number-${activeTab}`}
+                >
                   {tabContent[activeTab].number}
                 </div>
-                <p className="mb-4 text-2xl leading-[35px] lg:text-[40px] lg:leading-[60px]">
+                <p
+                  className="mb-4 text-2xl leading-[35px] lg:text-[40px] lg:leading-[60px]"
+                  data-testid={`description-text-${activeTab}`}
+                >
                   {tabContent[activeTab].description}
                 </p>
               </div>
@@ -161,10 +167,16 @@ export default function StepTabs() {
                     />
                   </div>
                   <div className="p-4">
-                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border-2 border-white text-white">
+                    <div
+                      className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border-2 border-white text-white"
+                      data-testid={`description-number-${contents.number}`}
+                    >
                       {contents.number}
                     </div>
-                    <p className="mb-4 text-2xl leading-[35px] lg:text-[40px] lg:leading-[60px]">
+                    <p
+                      className="mb-4 text-2xl leading-[35px] lg:text-[40px] lg:leading-[60px]"
+                      data-testid={`description-text-${contents.number}`}
+                    >
                       {contents.description}
                     </p>
                   </div>

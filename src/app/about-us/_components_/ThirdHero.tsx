@@ -2,6 +2,7 @@
 
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
+import CustomButton from "~/components/common/common-button/common-button";
 import ContactInput from "./ContactInput";
 import Map from "./Map";
 
@@ -16,7 +17,7 @@ const ThirdHero = () => {
     email: "",
     message: "",
   });
-  const [notification, setNotification] = useState<string | null>(null);
+  const [notification, setNotification] = useState<string | null>();
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -56,7 +57,7 @@ const ThirdHero = () => {
   useEffect(() => {
     if (notification) {
       const timer = setTimeout(() => {
-        setNotification(null);
+        setNotification(undefined);
       }, 5000); // Clear notification after 5 seconds
 
       return () => clearTimeout(timer); // Cleanup timeout if component unmounts
@@ -125,7 +126,7 @@ const ThirdHero = () => {
                         value={formData.message}
                         required
                         placeholder="Let us know how we can help you"
-                        className={`w-full resize-none bg-transparent text-[14px] leading-[20px] outline-none ${isUserTyping ? "h-full" : ""}`}
+                        className={`w-full resize-none bg-transparent px-[12px] font-axiforma text-[18px] capitalize leading-[28px] text-neutral-80 outline-none ${isUserTyping ? "h-full" : ""}`}
                       ></textarea>
                       {!isUserTyping && (
                         <p className="text-end text-[16px] leading-[24px]">
@@ -135,12 +136,13 @@ const ThirdHero = () => {
                     </div>
                   </div>
                 </div>
-                <button
+                <CustomButton
+                  variant="primary"
                   type="submit"
                   className="flex min-h-[48px] w-full items-center justify-center rounded-[59px] border-b border-solid border-primary-120 bg-primary-100 px-[24px] py-[10px] font-axiformaBold text-[16px] font-bold leading-[24px] text-white md:text-[20px] md:leading-[30px] lg:px-[32px]"
                 >
                   SEND
-                </button>
+                </CustomButton>
               </form>
               {/* contact type */}
             </div>
