@@ -30,7 +30,7 @@ describe("FAQs Page", () => {
     expect(
       screen.getByText(
         "Welcome to our FAQ section! Here, we've compiled answers to some of the most common questions about our AI-powered language learning game. Whether you're just starting or looking for advanced features, we hope this page will help you get the most out of your language learning journey."
-      )
+      ),
     ).toBeInTheDocument();
   });
 });
