@@ -66,7 +66,7 @@ export const useAudioSettings = create<IUpdateAudioProperties>()(
       ...initialState,
       updateAudioSettings: async (audioSetting: IAudioSettings) => {
         const token =
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzYxOTA5OCwiZXhwIjoxNzIzNjIyNjk4LCJuYmYiOjE3MjM2MTkwOTgsImp0aSI6InAxN2d6WE9aeVN3cmJjenkiLCJzdWIiOiI5Y2MzMjI1ZS05NzQ3LTQxNDEtYjhmOS0wOGMwMjFlOWEzYTEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.q2-aqSzZ95poDzcpFSS_Llkvmh2KU26r-MAAJPZQNoA";
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzY0MzQ5NywiZXhwIjoxNzIzNjQ3MDk3LCJuYmYiOjE3MjM2NDM0OTcsImp0aSI6IlpYT3dqMmJOU291QmhpM1QiLCJzdWIiOiI5Y2MzOTEwYi05YjVhLTRlMDAtODhkYS0yZjQyMDQ4NzVmZDkiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.Vhkt-aam9suXoQ385HgNCbbuX8hXEm6p-Vz8h9_rMPg";
         set({ ...initialState, loading: true });
         try {
           const response = await apiClient.put(
@@ -106,7 +106,7 @@ export const useAudioSettings = create<IUpdateAudioProperties>()(
       },
       getAudioSettings: async () => {
         const token =
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU2NTU5MCwiZXhwIjoxNzIzNTY5MTkwLCJuYmYiOjE3MjM1NjU1OTAsImp0aSI6ImhhWEhzaEdBWnVQTXcya1EiLCJzdWIiOiI5Y2MxYzUwNC0wOThmLTQxMGQtOGE2YS0zOGQxNzU3MzBjMmUiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.C65RMgZH8dr_K2A_yTKrkDO_GexS4j3kDWuBgg1UYR8";
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzY0MzQ5NywiZXhwIjoxNzIzNjQ3MDk3LCJuYmYiOjE3MjM2NDM0OTcsImp0aSI6IlpYT3dqMmJOU291QmhpM1QiLCJzdWIiOiI5Y2MzOTEwYi05YjVhLTRlMDAtODhkYS0yZjQyMDQ4NzVmZDkiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.Vhkt-aam9suXoQ385HgNCbbuX8hXEm6p-Vz8h9_rMPg";
         set({ ...initialState, loading: true });
         try {
           const response = await apiClient.get(`/audio-settings`, {

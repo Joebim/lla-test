@@ -39,13 +39,18 @@ const AudioContainer = () => {
   const [audioSection, setAudioSection] = useState<
     IAudioSection[] | undefined
   >();
+  const [defaultAudioSelection, setDefaultAudioSelection] = useState<
+    IAudioSection[] | undefined
+  >();
   const [notiType, setNotiType] = useState<string | undefined>();
   const [edited, setEdited] = useState<boolean>(false);
   const {
     getAudioSettings,
     data: audioSettingsData,
     loading,
+    error,
     updateAudioSettings,
+    errorData,
   } = useAudioSettings();
 
   const audioData = audioSettingsData?.data;
@@ -86,56 +91,31 @@ const AudioContainer = () => {
         }
       }
 
-      try {
-        await updateAudioSettings(settings as IAudioSettings);
-        setIsDialogOpen(true);
-      } catch {
+      await updateAudioSettings(settings as IAudioSettings);
+
+      if (error) {
         toast({
-          description: "Something went wrong",
+          description: errorData?.error,
           variant: "critical",
         });
+      } else {
+        toast({
+          description: audioSettingsData?.message,
+          variant: "default",
+        });
+        setIsDialogOpen(true);
       }
     }
   };
 
   const handleDiscardChange = () => {
-    setAudioSection([
-      {
-        title: "Microphone Status",
-        items: [
-          { name: "Mic", index: 0, value: audioData?.mic_status, key: "mic" },
-        ],
-      },
-      {
-        title: "Audio Preferences",
-        items: [
-          {
-            name: "Music",
-            index: 1,
-            value: audioData?.music_status,
-            key: "music",
-          },
-          {
-            name: "Sound effects",
-            index: 2,
-            value: audioData?.sound_effect_status,
-            key: "sound-effects",
-          },
-          {
-            name: "Ambient sound",
-            index: 3,
-            value: audioData?.ambient_status,
-            key: "ambient-sound",
-          },
-        ],
-      },
-    ]);
+    setAudioSection(defaultAudioSelection);
     setNotiType(audioData?.notification_type);
     setEdited(false);
   };
 
   useEffect(() => {
-    setAudioSection([
+    const audio = [
       {
         title: "Microphone Status",
         items: [
@@ -165,16 +145,12 @@ const AudioContainer = () => {
           },
         ],
       },
-    ]);
+    ];
+    setAudioSection(audio);
+    setDefaultAudioSelection(audio);
+    setNotiType(audioData?.notification_type);
+    setEdited(false);
   }, [audioData]);
-
-  if (loading) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        Loading
-      </div>
-    );
-  }
 
   const toggleCheck = (key: string) => {
     setAudioSection((previous) =>
@@ -188,10 +164,22 @@ const AudioContainer = () => {
     setEdited(true);
   };
 
+  if (loading) {
+    return (
+      <div className="flex flex-col gap-y-2.5 pb-10">
+        <div className="h-12 w-full animate-pulse-2 rounded-[4px] bg-white"></div>
+        <div className="h-12 w-full animate-pulse-2 rounded-[4px] bg-white"></div>
+        <div className="h-12 w-full animate-pulse-2 rounded-[4px] bg-white"></div>
+        <div className="h-12 w-full animate-pulse-2 rounded-[4px] bg-white"></div>
+        <div className="h-12 w-full animate-pulse-2 rounded-[4px] bg-white"></div>
+      </div>
+    );
+  }
+
   return (
     <>
       <SettingsCard title="Audio">
-        <div className="flex flex-col gap-y-[10px] pb-10 md:gap-y-[40px]">
+        <div className="flex flex-col gap-y-2.5 pb-10 md:gap-y-10">
           {audioSection &&
             audioSection.map((section) => (
               <div key={section.title}>
@@ -208,7 +196,8 @@ const AudioContainer = () => {
                       <p className="text-[14px] md:text-[16px]">{item.name}</p>
                       <SwitchToggle
                         checked={item.value as boolean}
-                        onToggle={() => toggleCheck(item.key)}
+                        onToggle={toggleCheck}
+                        key={item.key}
                       />
                     </div>
                   ))}
@@ -221,16 +210,16 @@ const AudioContainer = () => {
             Notification Type
           </p>
           <div className="relative">
-            <Select>
+            <Select onValueChange={(value: string) => setNotiType(value)}>
               <SelectTrigger
                 className="w-full appearance-none rounded-[8px] border border-neutral-40 bg-transparent px-[8px] py-[14px] text-[14px] text-gray-700 focus:outline-none focus:ring-0 md:rounded-[10px] md:px-[12px] md:py-[18px] md:text-sm"
                 aria-label="Notification Type"
               >
-                <SelectValue placeholder="Weekly" />
+                <SelectValue placeholder={notiType} />
               </SelectTrigger>
               <SelectContent className="shadow rounded-[8px] bg-white">
                 <SelectGroup>
-                  {["Daily", "Weekly", "Other"].map((item, index) => {
+                  {["default", "alert", "email"].map((item, index) => {
                     return (
                       <SelectItem
                         key={index}

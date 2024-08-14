@@ -13,7 +13,7 @@ export default function SettingsLayout({
         <div className="flex w-full rounded-[0px] border border-neutral-40 bg-white px-6 py-7 sm:rounded-[10px]">
           <p className="text-xl font-medium sm:text-3xl">Account Settings</p>
         </div>
-        <div className="mt-4 flex w-full gap-[40px] sm:mt-[36px] md:flex-row">
+        <div className="mt-4 flex w-full gap-[40px] sm:mt-9">
           <ProfileSettingsMenu />
           <div className="flex w-full grow flex-col gap-[48px] rounded-[18px] max-md:mr-6">
             <Suspense>{children}</Suspense>
