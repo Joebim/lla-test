@@ -5,9 +5,11 @@ import {
   LogOut,
   Settings,
 } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next-nprogress-bar";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   DropdownMenu,
@@ -23,13 +25,26 @@ interface ComponentProperties {
   profileImage?: string;
   email?: string;
 }
-
+const handleLogout = async () => {
+  await signOut({
+    callbackUrl: "/",
+  });
+};
 const AdminNavDropdown = ({
   profileImage,
   username,
-  email,
+  // email,
 }: ComponentProperties) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const { user } = session ?? {};
+  const router = useRouter();
+  useEffect(() => {
+    if (status === "authenticated" && user) {
+      if (!user.username) return; //router.push("/signup/profile");
+    } else router.push("/");
+  }, [status, router, user]);
+
   return (
     <>
       <DropdownMenu onOpenChange={(open: boolean) => setIsOpen(open)}>
@@ -78,18 +93,22 @@ const AdminNavDropdown = ({
               "0px -2px 4px 0px rgba(211, 211, 211, 0.43), 0px 4px 4px 0px rgba(211, 211, 211, 0.33)",
           }}
         >
-          <DropdownMenuLabel className="flex items-start justify-between self-stretch bg-secondary-110 p-5">
-            <div className="flex flex-col items-start gap-1">
-              <h4 className="font-axiforma text-sm font-medium leading-none text-white">
-                {username && username}
-                {!username && "John Doe"}
-              </h4>
-              <h6 className="font-axiforma text-xs font-normal text-secondary-50">
-                {email && email}
-                {!email && "johndoe@gmail.com"}
-              </h6>
+          <DropdownMenuLabel className="flex flex-wrap items-start justify-start gap-3 bg-secondary-110 p-5">
+            <h3
+              className="text-sm leading-none"
+              style={{ fontFamily: "Axiforma" }}
+            >
+              {user && user.username}
+              {!user && "John Doe"}
+            </h3>
+            <div
+              className="text-xs text-secondary-50"
+              style={{ fontFamily: "Axiforma" }}
+            >
+              {user && user.email}
+              {!user && "johndoe@example.com"}
             </div>
-            <span className="flex items-center justify-center rounded-[20px] border border-white bg-white px-3 py-2.5 font-axiforma text-xs text-primary-110">
+            <span className="flex items-start justify-start rounded-[20px] border border-white bg-white px-3 py-2.5 font-axiforma text-xs text-primary-110">
               Super Admin
             </span>
           </DropdownMenuLabel>
@@ -124,13 +143,18 @@ const AdminNavDropdown = ({
           </DropdownMenuItem>
           <DropdownMenuSeparator className="h-1 bg-primary-10" />
           <DropdownMenuItem className="w-full p-0">
-            <Link
-              href={"/signin"}
-              className="flex items-center gap-3 px-5 py-3 text-critical-100 no-underline outline-none"
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 p-2 text-critical-100 no-underline outline-none"
             >
               <LogOut size={16} />
-              <div className="font-axiforma text-sm leading-5">Sign Out</div>
-            </Link>
+              <div
+                className="text-sm leading-5"
+                style={{ fontFamily: "Axiforma" }}
+              >
+                Sign Out
+              </div>
+            </button>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

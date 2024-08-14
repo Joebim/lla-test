@@ -47,15 +47,11 @@ const CreateFaqs = async (payload: createProperties) => {
         Authorization: `Bearer ${session?.access_token}`,
       },
     });
-    // eslint-disable-next-line no-console
-    console.log("response", response);
     return {
       data: response.data,
       status: response.status,
     };
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
     return axios.isAxiosError(error) && error.response
       ? {
           error: error.response.data.message || "Unable to Create FAQ",

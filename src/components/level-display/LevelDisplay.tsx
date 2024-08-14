@@ -12,7 +12,7 @@ const LevelDisplay: React.FC<LevelDisplayProperties> = ({
   const questImage = "/level-images/Bedroom scene 2.png";
 
   return (
-    <div className="flex min-h-[106px] w-full max-w-[350px] items-center rounded-[2rem_1rem_1rem_2rem] border-[0.5rem] border-[#FE6A19] bg-[#FEAC80] p-4 sm:p-5">
+    <div className="flex w-full max-w-[350px] items-center rounded-[3rem_1rem_1rem_3rem] border-[0.5rem] border-[#FE6A19] bg-[#FEAC80] p-2 sm:p-5">
       <div className="flex w-full items-center gap-2 sm:gap-4">
         {/* Left div */}
         <div className="aspect-square w-[20%] max-w-[70px] flex-shrink-0">

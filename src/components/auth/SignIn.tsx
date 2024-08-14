@@ -1,7 +1,7 @@
 "use client";
 
 import { Eye, EyeOff } from "lucide-react";
-import { getSession, signIn, useSession } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next-nprogress-bar";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,14 +19,7 @@ interface SigninFormData {
 
 const SignInPage: React.FC = () => {
   const router = useRouter();
-  const { data: session, status } = useSession();
-  const { user } = session ?? {};
-  const userRole = user?.role;
   const adminRoles = new Set(["super_admin", "game_developer", "user_manager"]);
-  if (status === "authenticated") {
-    if (userRole && adminRoles.has(userRole)) router.push("/dashboard/admin");
-    else router.push("/dashboard/user");
-  }
   const {
     register,
     handleSubmit,
@@ -44,7 +37,6 @@ const SignInPage: React.FC = () => {
   const onSubmit = async (values: SigninFormData) => {
     startTransition(async () => {
       const data = await loginUser(values);
-
       if (data.status === 200) {
         const response = await signIn("credentials", {
           email: values.email,

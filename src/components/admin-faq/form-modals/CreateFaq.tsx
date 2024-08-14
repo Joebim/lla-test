@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import CustomInput from "~/components/input/CustomInput";
+import LoadingSpinner from "~/components/miscellaneous/loading-spinner";
 import {
   Select,
   SelectContent,
@@ -47,8 +48,6 @@ const CreateFAQ = ({ callback, setCallback, onClose }: properties) => {
     };
 
     const result = await CreateFaqs(payload);
-    // eslint-disable-next-line no-console
-    console.log(result);
 
     if (result?.status === 200 || result?.status === 201) {
       setCallback(!callback);
@@ -133,7 +132,14 @@ const CreateFAQ = ({ callback, setCallback, onClose }: properties) => {
           className="w-full"
           onClick={handleAddFAQ}
         >
-          {loading ? "Adding..." : "Add Question"}
+          {loading ? (
+            <span className="flex items-center justify-center">
+              Adding...
+              <LoadingSpinner />
+            </span>
+          ) : (
+            "Add Question"
+          )}
         </CustomButton>
       </div>
     </>

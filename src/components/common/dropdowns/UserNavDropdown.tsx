@@ -26,11 +26,9 @@ const UserNavDropdown = () => {
   const { user } = session ?? {};
   const router = useRouter();
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login");
-    } else if (status === "authenticated" && user) {
-      if (!user.username) return; //router.push("/signup/profile");
-    } else router.push("/");
+    if (status === "authenticated" && user) {
+      return; // if (!user.username) return; //router.push("/signup/profile");
+    }
   }, [status, router, user]);
 
   return (

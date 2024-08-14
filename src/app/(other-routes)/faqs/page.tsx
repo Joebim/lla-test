@@ -1,6 +1,8 @@
-import { FaqAccordions } from "./accordion";
+"use client";
 
 const FAQs = () => {
+  // const [updatedAt, setUpdatedAt] = useState("");
+
   return (
     <>
       <div className="grid justify-items-center gap-y-6 pt-8 sm:gap-y-8 md:pt-12">
@@ -8,8 +10,14 @@ const FAQs = () => {
           FAQs
         </h1>
         <p className="mx-auto inline-block rounded-[59px] border border-neutral-40 px-8 py-2.5 font-axiforma lg:py-3.5">
-          <span className="text-secondary-80">Last updated:</span> 04 August,
-          2024
+          <span className="text-secondary-80">Last updated:</span>{" "}
+          {/* {updatedAt
+            ? new Date(updatedAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            : "Loading..."} */}
         </p>
       </div>
       <div className="mx-auto max-w-3xl p-8 md:py-12 lg:py-12">
@@ -25,7 +33,8 @@ const FAQs = () => {
             of your language learning journey.
           </p>
         </div>
-        <FaqAccordions />
+        {/* Pass the setUpdatedAt function as a prop to FaqAccordions */}
+        {/* <FaqAccordions setUpdatedAt={setUpdatedAt} /> */}
       </div>
     </>
   );
