@@ -2,7 +2,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import StepTabs from "./Steps";
 
-describe("StepTabs", () => {
+describe("stepTabs", () => {
   it("renders the StepTabs component", () => {
     expect.assertions(6);
     render(<StepTabs />);
