@@ -9,7 +9,7 @@ driver.maximize_window()
 
 def test_character_animation():
     # Open the Delve game
-    driver.get("URL_of_the_Delve_game")
+    driver.get("URL_of_the_game")
 
     # Navigate to the scene where character animations are involved
     scene_navigation_button = driver.find_element(By.ID, "navigate-to-scene")
