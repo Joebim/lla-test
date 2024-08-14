@@ -12,10 +12,6 @@ import { PlayerThought } from "~/components/thoughts/PlayerThought";
 import useSpeechToText from "~/hooks/useSpeechToText";
 import Scene from "./_component/scene";
 
-const Avatars = dynamic(() => import("~/components/Avatars"), {
-  ssr: false,
-});
-
 const Home: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const [currentChat, setCurrentChat] = useState<string>('');
