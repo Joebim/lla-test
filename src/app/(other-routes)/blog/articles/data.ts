@@ -61,6 +61,7 @@ interface subDescriptions {
 interface blogArticlesDataProperties {
   id?: number;
   date: string;
+  author: string;
   type?: string;
   blogImage: string;
   readDuration: number;
@@ -92,6 +93,7 @@ const blogArticlesData: blogArticle[] = [
     slug: "secret-to-learning-language-in-2-weeks",
     properties: {
       date: "August 6, 2024",
+      author: "Christian Wang",
       blogImage: "/blog/blog-img-3.png",
       hasFirstDesc: false,
       hasTwoFirstLine: false,
@@ -136,6 +138,7 @@ const blogArticlesData: blogArticle[] = [
     slug: "benefits-of-ai-in-language-learning",
     properties: {
       date: "August 6, 2024",
+      author: "Christian Wang",
       blogImage: "/blog/blog-img-2.png",
       readDuration: 6,
       hasFirstDesc: true,
@@ -190,6 +193,7 @@ const blogArticlesData: blogArticle[] = [
     slug: "truth-about-foreign-language-learning-apps",
     properties: {
       date: "August 6, 2024",
+      author: "Christian Wang",
       blogImage: "/blog/blog-img-4.png",
       readDuration: 6,
       hasFirstDesc: false,
@@ -243,6 +247,7 @@ const blogArticlesData: blogArticle[] = [
     slug: "useful-spanish-phrases-to-learn",
     properties: {
       date: "August 6, 2024",
+      author: "Christian Wang",
       blogImage: "/blog/blog-img-1.png",
       readDuration: 6,
       hasFirstDesc: false,

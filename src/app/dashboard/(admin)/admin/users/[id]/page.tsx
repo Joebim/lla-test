@@ -1,17 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-console */
 "use client";
 
 import { Award, Gamepad, Languages, Users } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { deactivateUser, GetSingleUser } from "~/app/api/admindashboard/route";
 import CustomButton from "~/components/common/common-button/common-button";
 import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
+import { Skeleton } from "~/components/ui/skeleton";
 import UserDetailsCard from "~/components/userDetailCard";
 import UserMetricsCard from "~/components/userMetricsCard";
 import UserProfileChart from "~/components/userProfileChart";
 import UserProfileTable from "~/components/userProfileTable";
+import { userDetailsCardProperties } from "../../(overview)/adminDashboardTypes";
 
-const UserDetails = () => {
+const UserDetails = ({ params }: { params: { id: string } }) => {
+  const { data: session } = useSession();
   const [isModalOpen, setsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isDeactivated, setIsDeactivated] = useState(false);
@@ -19,6 +26,26 @@ const UserDetails = () => {
   const [isReactivateModalOpen, setIsReactivateModalOpen] = useState(false);
   const [isReactivateSuccessModalOpen, setIsReactivateSuccessModalOpen] =
     useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userDetails, setUserDetails] = useState<userDetailsCardProperties>({});
+  useEffect(() => {
+    async function getUserDetails() {
+      setIsLoading(true);
+      try {
+        if (params?.id !== undefined) {
+          const response = await GetSingleUser(
+            params?.id,
+            session?.access_token,
+          );
+          setUserDetails(response?.data);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getUserDetails();
+  }, [params?.id]);
 
   const metricsSchema = [
     {
@@ -46,12 +73,27 @@ const UserDetails = () => {
       icon: <Users className="w-[20px]" />,
     },
   ];
+  const [error, setError] = useState("");
+  const [isLoadingDeactivated, setIsLoadingDeactivated] = useState(false);
+  const handleDeactivated = async () => {
+    setIsLoadingDeactivated(true);
+    try {
+      if (params?.id !== undefined) {
+        await deactivateUser(params?.id, session?.access_token);
 
-  const handleDeactivated = () => {
-    setsModalOpen(false);
-    setIsDeactivated(true);
-    setIsSuccessModalOpen(true);
+        setIsLoadingDeactivated(false);
+      }
+      setsModalOpen(false);
+      setIsDeactivated(true);
+      setIsSuccessModalOpen(true);
+    } catch (error) {
+      setError("Failed to deactivate user");
+      throw error;
+    }
   };
+  useEffect(() => {
+    console.log({ error });
+  }, [error]);
   const handleReactivated = () => {
     setIsReactivateModalOpen(false);
     setIsReactivateSuccessModalOpen(true);
@@ -73,7 +115,7 @@ const UserDetails = () => {
       {isModalOpen && (
         <DashboardModal
           onClose={handleCloseModal}
-          className="w-[450px] font-axiforma"
+          className="w-[420px] font-axiforma"
         >
           <div>
             <h3 className="mb-[15px] text-center text-[20px] font-bold">
@@ -95,9 +137,13 @@ const UserDetails = () => {
             <CustomButton
               variant="default"
               onClick={handleDeactivated}
-              className="w-full bg-critical-90 px-[30px] text-white"
+              className="w-full bg-critical-90 text-white"
             >
-              Deactivate
+              {isLoadingDeactivated ? (
+                <span className="">processing</span>
+              ) : (
+                "Deactivate"
+              )}
             </CustomButton>
           </div>
         </DashboardModal>
@@ -229,9 +275,27 @@ const UserDetails = () => {
       </div>
       <section className="block items-center gap-[20px] lg:flex">
         <div className="lg:flex-1">
-          <UserDetailsCard className="w-full" />
+          {isLoading ? (
+            <div>
+              <Skeleton className="h-[60px] max-w-[60px] rounded-full bg-neutral-70" />
+              <Skeleton className="mt-6 h-[40px] w-full rounded-2xl bg-neutral-70" />
+              <Skeleton className="mt-3 h-[40px] w-full rounded-2xl bg-neutral-70" />
+              <Skeleton className="mt-3 h-[40px] w-full rounded-2xl bg-neutral-70" />
+              <Skeleton className="mt-3 h-[40px] w-full rounded-2xl bg-neutral-70" />
+            </div>
+          ) : (
+            <UserDetailsCard
+              username={userDetails?.username}
+              dob={userDetails?.dob}
+              gender={userDetails?.gender}
+              status={userDetails?.status}
+              email={userDetails?.email}
+              id={userDetails?.id}
+              className="w-full"
+            />
+          )}
         </div>
-        <div className="mt-[20px] grid grid-cols-1 gap-[10px] sm:grid-cols-2 lg:mt-0 lg:flex-1">
+        <div className="mt-[20px] grid h-full grid-cols-1 gap-[10px] sm:grid-cols-2 lg:mt-0 lg:flex-1">
           {metricsSchema.map((item, index) => (
             <UserMetricsCard
               key={index}

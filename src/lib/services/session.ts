@@ -54,7 +54,7 @@ export async function verifySession() {
   const cookie = getCookie("session", { cookies });
   const session = await joseDecrypt(cookie!);
   if (!session?.email) {
-    return redirect("/login");
+    return redirect("/signin");
   }
   return {
     isAuth: true,
@@ -65,7 +65,7 @@ export async function verifySession() {
 export async function updateSession() {
   const session = getCookie("session", { cookies });
   const payload = (await joseDecrypt(session)) as SessionPayload;
-  if (!session || !payload) return redirect("/login");
+  if (!session || !payload) return redirect("/signin");
 
   const expires = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000); // 1 days
 

@@ -4,30 +4,33 @@ import axios, { AxiosError } from "axios";
 export type PaginationRequest = {
   totalPages: number;
   totalCount: number;
-
   page: number;
   perPage: number;
 };
-export const ADMIN_BASE_URL = "https://api.staging.delve.fun";
-export const getAuthToken = () => {
-  const token = sessionStorage.getItem("accessToken");
+const admin_base_url: string =
+  process.env.API_URL || "https://api.staging.delve.fun";
 
-  if (!token) {
-    throw new Error("No access token found. Please log in.");
+export const getAuthToken = async () => {
+  try {
+    // return session?.access_token;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
-
-  return token;
 };
 
-export const getAllUsers = async (PaginationRequest: PaginationRequest) => {
+export const getAllUsers = async (
+  PaginationRequest: PaginationRequest,
+  token: string | undefined,
+) => {
   try {
-    const response = await axios.get(`${ADMIN_BASE_URL}/api/v1/admin/users`, {
+    const response = await axios.get(`${admin_base_url}/api/v1/admin/users`, {
       params: {
         page: PaginationRequest.page,
         perPage: PaginationRequest.perPage,
       },
       headers: {
-        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU0NTc2NywiZXhwIjoxNzIzNTQ5MzY3LCJuYmYiOjE3MjM1NDU3NjcsImp0aSI6IlczbnE0S3BPY2NlSDlRNzQiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.MhsomelL20SwZ5OpwWP2R3xShIFr6dxUlOstHy3WlmU`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -39,11 +42,11 @@ export const getAllUsers = async (PaginationRequest: PaginationRequest) => {
 };
 
 //  Get all userStats
-export const getUsersStats = async () => {
+export const getUsersStats = async (token: string | undefined) => {
   try {
-    const response = await axios.get(`${ADMIN_BASE_URL}/api/v1/statistics`, {
+    const response = await axios.get(`${admin_base_url}/api/v1/statistics`, {
       headers: {
-        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU0NTc2NywiZXhwIjoxNzIzNTQ5MzY3LCJuYmYiOjE3MjM1NDU3NjcsImp0aSI6IlczbnE0S3BPY2NlSDlRNzQiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.MhsomelL20SwZ5OpwWP2R3xShIFr6dxUlOstHy3WlmU`,
+        Authorization: `Bearer ${token}`,
       },
     });
     return response;
@@ -55,13 +58,16 @@ export const getUsersStats = async () => {
 };
 
 // get user by status
-export const getUserByStatus = async (booleanValue: boolean | undefined) => {
+export const getUserByStatus = async (
+  booleanValue: boolean | undefined,
+  token: string | undefined,
+) => {
   try {
     const response = await axios.get(
-      `${ADMIN_BASE_URL}/api/v1/admin/users?status=${booleanValue}`,
+      `${admin_base_url}/api/v1/admin/users?status=${booleanValue}`,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU0NTc2NywiZXhwIjoxNzIzNTQ5MzY3LCJuYmYiOjE3MjM1NDU3NjcsImp0aSI6IlczbnE0S3BPY2NlSDlRNzQiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.MhsomelL20SwZ5OpwWP2R3xShIFr6dxUlOstHy3WlmU`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -77,13 +83,14 @@ export const getUserByStatus = async (booleanValue: boolean | undefined) => {
 export const getUsersByDate = async (
   created_at_from: Date | string,
   created_at_to: Date | string,
+  token: string | undefined,
 ) => {
   try {
     const response = await axios.get(
-      `${ADMIN_BASE_URL}/api/v1/admin/users?created_at_from=${created_at_from}&created_at_to=${created_at_to}`,
+      `${admin_base_url}/api/v1/admin/users?created_at_from=${created_at_from}&created_at_to=${created_at_to}`,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU0NTc2NywiZXhwIjoxNzIzNTQ5MzY3LCJuYmYiOjE3MjM1NDU3NjcsImp0aSI6IlczbnE0S3BPY2NlSDlRNzQiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.MhsomelL20SwZ5OpwWP2R3xShIFr6dxUlOstHy3WlmU`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -96,14 +103,15 @@ export const getUsersByDate = async (
 
 // export users to csv
 
-export const ExportUsers = async () => {
+export const ExportUsers = async (token: string | undefined) => {
   try {
     const response = await axios.get(
-      `${ADMIN_BASE_URL}/api/v1/admin/users/export`,
+      `${admin_base_url}/api/v1/admin/users/export`,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU0NTc2NywiZXhwIjoxNzIzNTQ5MzY3LCJuYmYiOjE3MjM1NDU3NjcsImp0aSI6IlczbnE0S3BPY2NlSDlRNzQiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.MhsomelL20SwZ5OpwWP2R3xShIFr6dxUlOstHy3WlmU`,
+          Authorization: `Bearer ${token}`,
         },
+        responseType: "blob",
       },
     );
 
@@ -114,13 +122,16 @@ export const ExportUsers = async () => {
   }
 };
 // Retrieve A specific user
-export const GetSingleUser = async (userId: string) => {
+export const GetSingleUser = async (
+  userId: string | string[] | undefined,
+  token: string | undefined,
+) => {
   try {
     const response = await axios.get(
-      `${ADMIN_BASE_URL}/api/v1/admin/users/${userId}`,
+      `${admin_base_url}/api/v1/admin/users/${userId}`,
       {
         headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -131,30 +142,36 @@ export const GetSingleUser = async (userId: string) => {
     throw error;
   }
 };
+
 // deactivate User
-export const deactivateUser = async (userId: string) => {
+export const deactivateUser = async (
+  userId: string,
+  token: string | undefined,
+) => {
   try {
     const response = await axios.patch(
-      `${ADMIN_BASE_URL}/api/v1/admin/users/${userId}/deactivate`,
+      `${admin_base_url}/api/v1/admin/users/${userId}/deactivate`,
+      {},
       {
         headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
 
     return response;
   } catch (error) {
-    console.error(error);
+    console.error("Error deactivating user:");
     throw error;
   }
 };
+
 // get admin profile
-export const getAdminProfile = async () => {
+export const getAdminProfile = async (token: string | undefined) => {
   try {
-    const response = await axios.get(`${ADMIN_BASE_URL}/api/v1/admin-profile`, {
+    const response = await axios.get(`${admin_base_url}/api/v1/admin-profile`, {
       headers: {
-        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzUzODkzMiwiZXhwIjoxNzIzNTQyNTMyLCJuYmYiOjE3MjM1Mzg5MzIsImp0aSI6ImxCdzdOOWU0V0l6NVdhY3QiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.oMXOfkiQrZOQfYoevbhNYiwlkM54G4vdiqDCzCnrttM`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -171,20 +188,22 @@ interface ProfileData {
   gender: string;
 }
 
-export const updateAdminProfile = async (profileData: ProfileData) => {
+export const updateAdminProfile = async (
+  profileData: ProfileData,
+  token: string | undefined,
+) => {
   try {
-    console.log("Sending profile data:", profileData);
     const response = await axios.post(
-      `${ADMIN_BASE_URL}/api/v1/admin-profile`,
+      `${admin_base_url}/api/v1/admin-profile`,
       profileData,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzUzODkzMiwiZXhwIjoxNzIzNTQyNTMyLCJuYmYiOjE3MjM1Mzg5MzIsImp0aSI6ImxCdzdOOWU0V0l6NVdhY3QiLCJzdWIiOiI5Y2JmMzRmMS01ODM4LTRkMDgtYTc2ZC1lNjdhOTI3MjFkZjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.oMXOfkiQrZOQfYoevbhNYiwlkM54G4vdiqDCzCnrttM`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       },
     );
-    console.log("Profile updated successfully:", response.data);
+
     return response.data?.data;
   } catch (error) {
     console.error(

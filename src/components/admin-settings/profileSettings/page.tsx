@@ -1,28 +1,26 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
 "use client";
 
 import { Camera } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import {
   getAdminProfile,
   updateAdminProfile,
-} from "~/app/api/adminDashboard/route";
+} from "~/app/api/admindashboard/route";
 import CustomButton from "~/components/common/common-button/common-button";
 import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
 import CustomInput from "~/components/input/CustomInput";
+import { Skeleton } from "~/components/ui/skeleton";
+import { useToast } from "~/components/ui/use-toast";
 
-const handleFileInputClick = () => {
-  const fileInput = document.querySelector(
-    "#fileInput",
-  ) as HTMLInputElement | null;
-  fileInput?.click();
-};
-
-const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-  event.preventDefault();
+type ProfileData = {
+  image: string;
+  username: string;
+  email: string;
+  gender: string;
 };
 
 const validateEmail = (email: string): boolean => {
@@ -30,12 +28,21 @@ const validateEmail = (email: string): boolean => {
   return emailRegex.test(email);
 };
 
+const validateImageFile = (file: File): boolean => {
+  const allowedFormats = ["image/jpeg", "image/png"];
+  return allowedFormats.includes(file.type);
+};
+
 const AdminProfile = () => {
+  const { data: session } = useSession();
+  const { toast } = useToast();
+
   //states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [image, setImage] = useState("");
   const [gender, setGender] = useState("");
+  const [image, setImage] = useState("");
+
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [temporaryGender, setTemporaryGender] = useState(gender);
   const [temporaryImage, setTemporaryImage] = useState(image);
@@ -43,31 +50,41 @@ const AdminProfile = () => {
   const [temporaryName, setTemporaryName] = useState(name);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isClient, setIsClient] = useState(false);
   const [error, setError] = useState("");
+  const [isLoadingAdminDetails, setIsLoadingAdminDetails] = useState(true);
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorName, setErrorName] = useState("");
+  const [errorGender, setErrorGender] = useState("");
+  function ValidateForm() {
+    if (!email && !temporaryEmail) {
+      setErrorEmail("enter a valid email");
+      return false;
+    }
+    if (!name && !temporaryName) {
+      setErrorName("enter name");
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+      return false;
+    }
+    if (!gender && !temporaryGender) {
+      setErrorGender("pick a gender");
 
+      return false;
+    }
+    return true;
+  }
   useEffect(() => {
     async function fetchAdminProfile() {
+      setIsLoadingAdminDetails(true);
       try {
-        const response = await getAdminProfile();
-        console.log(response);
+        const response = await getAdminProfile(session?.access_token);
         if (response?.data) {
           setTemporaryImage(
-            response.data?.data.avatar_url || "/images/profile_avatar.svg",
+            response.data.data.avatar_url || "/images/profile_avatar.svg",
           );
-          setTemporaryName(response.data?.data?.username);
-          setTemporaryEmail(response.data?.data?.email);
-          setTemporaryGender(response.data?.data?.gender);
-          console.log(
-            temporaryName,
-            temporaryImage,
-            temporaryEmail,
-            temporaryGender,
-          );
+          setTemporaryName(response.data.data.username);
+          setTemporaryEmail(response.data.data.email);
+          setTemporaryGender(response.data.data.gender);
+          setIsLoadingAdminDetails(false);
         }
       } catch (error) {
         console.error(error);
@@ -75,58 +92,89 @@ const AdminProfile = () => {
       }
     }
     fetchAdminProfile();
-  }, []);
+  }, [session?.access_token]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      if (validateImageFile(file)) {
+        setError("");
+      } else {
+        setError("Only JPG, JPEG, and PNG formats are allowed.");
+        return;
+      }
+      setError("");
+
       const reader = new FileReader();
       reader.addEventListener("load", (event: ProgressEvent<FileReader>) => {
         if (event.target && event.target.result) {
+          // Update the image state directly to reflect the change immediately
           setImage(event.target.result as string);
+          setTemporaryImage(event.target.result as string); // If you're using a temporary image state for preview
         }
       });
-      reader.readAsDataURL(event.target.files[0]);
+      reader.readAsDataURL(file);
     }
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      const file = event.dataTransfer.files[0];
+      if (validateImageFile(file)) {
+        setError("");
+      } else {
+        setError("Only JPG, JPEG, and PNG formats are allowed.");
+        return;
+      }
+      setError("");
+
       const reader = new FileReader();
       reader.addEventListener("load", (event: ProgressEvent<FileReader>) => {
         if (event.target && event.target.result) {
+          // Update the image state directly to reflect the change immediately
           setImage(event.target.result as string);
+          setTemporaryImage(event.target.result as string); // If you're using a temporary image state for preview
         }
       });
-      reader.readAsDataURL(event.dataTransfer.files[0]);
+      reader.readAsDataURL(file);
     }
   };
-
+  const [updateLoading, setUpdateLoading] = useState(false);
   const handleSave = async () => {
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address");
+    console.log("clicked");
+    if (!validateEmail(email || temporaryEmail)) {
+      setErrorEmail("Please enter a valid email address");
       return;
     }
+    if (!ValidateForm()) {
+      return;
+    }
+    console.log("reach");
+
+    setUpdateLoading(true);
     try {
-      await updateAdminProfile({
-        image: image ?? temporaryImage,
-        username: name ?? temporaryName,
-        gender: gender ?? temporaryGender,
-        email: email ?? temporaryEmail,
-      });
+      const profileData = {} as Partial<ProfileData>;
+
+      if (image ?? temporaryImage) profileData.image = image ?? temporaryImage;
+      if (name ?? temporaryName) profileData.username = name ?? temporaryName;
+      if (email ?? temporaryEmail) profileData.email = email ?? temporaryEmail;
+      if (gender ?? temporaryGender)
+        profileData.gender = gender ?? temporaryGender;
+
+      const response = await updateAdminProfile(
+        profileData as ProfileData,
+        session?.access_token,
+      );
+      console.log({ response });
       setError("");
       setIsEditing(false);
       setIsSuccessModalOpen(true);
+      setUpdateLoading(false);
     } catch (error) {
       console.error("Failed to update profile", error);
     }
-  };
-
-  const handleCloseModal = () => {
-    if (isModalOpen || isSuccessModalOpen) {
-      setIsSuccessModalOpen(false);
-      setIsModalOpen(false);
-    }
+    // }
   };
 
   const handleUpdateProfileClick = () => {
@@ -135,24 +183,49 @@ const AdminProfile = () => {
       setError("");
     }
   };
+  async function fetchAdminProfile() {
+    setIsLoadingAdminDetails(true);
+    try {
+      const response = await getAdminProfile(session?.access_token);
+      if (response?.data) {
+        setTemporaryImage(
+          response.data.data.avatar_url || "/images/profile_avatar.svg",
+        );
+        setTemporaryName(response.data.data.username);
+        setTemporaryEmail(response.data.data.email);
+        setTemporaryGender(response.data.data.gender);
+        setIsLoadingAdminDetails(false);
+      }
+      setIsLoadingAdminDetails(false);
+    } catch (error) {
+      setIsLoadingAdminDetails(false);
 
-  if (!isClient) {
-    return;
+      toast({
+        title: "Error",
+        description: "Error while saving",
+        variant: "critical",
+      });
+      throw error;
+    }
   }
-
+  const viewProfile = () => {
+    setIsSuccessModalOpen(false);
+    fetchAdminProfile();
+  };
   return (
     <main data-testid="profile-settings" className="font-inter">
       {/* upload image modal */}
+      {/* upload image modal */}
       {isModalOpen && (
         <DashboardModal
-          onClose={handleCloseModal}
+          onClose={() => setIsModalOpen(false)}
           className="flex w-full flex-col items-center justify-center space-y-[20px] md:w-[40rem]"
         >
           <section className="flex w-full flex-col items-center justify-center space-y-[20px] border-[3px] border-dashed py-[20px] md:w-[25rem]">
             <div
               className="drag-drop-area"
               onDrop={handleDrop}
-              onDragOver={handleDragOver}
+              onDragOver={(event) => event.preventDefault()}
             >
               <p>Drag and drop image to upload</p>
               <input
@@ -173,7 +246,9 @@ const AdminProfile = () => {
             <CustomButton
               variant="secondary-two"
               className="w-fit px-[15px]"
-              onClick={handleFileInputClick}
+              onClick={() =>
+                document.querySelector<HTMLInputElement>("#fileInput")?.click()
+              }
             >
               Select photo from device
             </CustomButton>
@@ -186,9 +261,10 @@ const AdminProfile = () => {
       )}
 
       {/* success modal */}
+      {/* success modal */}
       {isSuccessModalOpen && (
         <DashboardModal
-          onClose={handleCloseModal}
+          onClose={() => setIsSuccessModalOpen(false)}
           className="flex w-[25rem] flex-col items-center justify-center space-y-[20px]"
         >
           <div>
@@ -201,7 +277,7 @@ const AdminProfile = () => {
           <CustomButton
             variant="primary"
             className="w-full"
-            onClick={() => setIsSuccessModalOpen(false)}
+            onClick={viewProfile}
           >
             View Profile
           </CustomButton>
@@ -209,34 +285,46 @@ const AdminProfile = () => {
       )}
 
       <section className="mt-[30px] w-full rounded-[15px] border-2 border-neutral-30 bg-white p-[20px] sm:p-[30px] md:p-[40px]">
-        <div className="block w-full items-center space-x-0 lg:flex lg:space-x-[70px]">
+        <div className="block w-full items-center space-x-0 xl:flex xl:space-x-[70px]">
           {/* profile image section */}
+          {}
           <section className="profile-image">
             {isEditing ? (
-              <div
-                data-testid="profileImage"
-                onClick={() => setIsModalOpen(true)}
-                className="relative h-[180px] w-[180px] cursor-pointer sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]"
-              >
-                <Image
-                  src={temporaryImage || "/images/profile_avatar.svg"}
-                  alt="Profile Image"
-                  width={100}
-                  height={100}
-                  className="h-full w-full object-cover object-center"
-                />
-                <Camera className="absolute left-[20px] top-[20px] text-neutral-110 sm:top-[30px] md:left-[30px] md:top-[50px]" />
-              </div>
+              <>
+                <div
+                  data-testid="profileImage"
+                  onClick={() => setIsModalOpen(true)}
+                  className="relative h-[180px] w-[180px] cursor-pointer sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]"
+                >
+                  <Image
+                    src={
+                      image || temporaryImage || "/images/profile_avatar.svg"
+                    } // Use the image state for rendering
+                    alt="Profile Image"
+                    width={100}
+                    height={100}
+                    className="h-full w-full object-cover object-center"
+                  />
+                  <Camera className="absolute left-[20px] top-[20px] text-neutral-110 sm:top-[30px] md:left-[30px] md:top-[50px]" />
+                </div>
+                <p className="text-[0.875rem] text-red-400">{error}</p>
+              </>
             ) : (
-              <div className="h-[180px] w-[180px] sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]">
-                <Image
-                  src={image || "/images/profile_avatar.svg"}
-                  alt="Profile Image"
-                  width={100}
-                  height={100}
-                  className="h-full w-full object-cover object-center"
-                />
-              </div>
+              <>
+                {isLoadingAdminDetails ? (
+                  <Skeleton className="h-[180px] w-[180px] bg-neutral-40 sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]" />
+                ) : (
+                  <div className="h-[180px] w-[180px] sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]">
+                    <Image
+                      src={image || "/images/profile_avatar.svg"} // Use the image state for rendering
+                      alt="Profile Image"
+                      width={100}
+                      height={100}
+                      className="h-full w-full object-cover object-center"
+                    />
+                  </div>
+                )}
+              </>
             )}
           </section>
 
@@ -244,8 +332,8 @@ const AdminProfile = () => {
           <section className="mt-[30px] w-full lg:mt-0">
             {isEditing ? (
               <>
-                <section className="space-y-[15px] sm:space-y-[25px]">
-                  <div className="block items-center justify-between sm:flex">
+                <section className="space-y-[15px] xl:space-y-[25px]">
+                  <div className="block items-center justify-between sm:grid sm:grid-cols-2">
                     <label htmlFor="fullname" className="font-semibold">
                       Name
                     </label>
@@ -255,12 +343,15 @@ const AdminProfile = () => {
                         inputType="text"
                         className="w-[100%]"
                         placeholder="Name"
-                        value={temporaryName ? name : temporaryName}
+                        value={temporaryName ?? name}
                         onChange={(event) => setName(event.target.value)}
                       />
+                      <small className="text-[0.75rem] text-red-600">
+                        {errorName}
+                      </small>
                     </div>
                   </div>
-                  <div className="block items-center justify-between sm:flex">
+                  <div className="block items-center justify-between sm:grid sm:grid-cols-2">
                     <label htmlFor="email" className="font-semibold">
                       Email
                     </label>
@@ -272,27 +363,34 @@ const AdminProfile = () => {
                         placeholder="Email"
                         value={temporaryEmail ?? email}
                         onChange={(event) => setEmail(event.target.value)}
-                      />
+                      />{" "}
+                      <small className="text-[0.75rem] text-red-600">
+                        {errorEmail}
+                      </small>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between sm:flex">
+                  <div className="block items-center justify-between gap-4 sm:grid sm:grid-cols-2 xl:gap-2">
                     <label htmlFor="gender" className="font-semibold">
                       Gender
                     </label>
-                    <select
-                      id="gender"
-                      name="gender"
-                      value={temporaryGender ?? gender}
-                      onChange={(event) => setGender(event.target.value)}
-                      className="w-[100%] rounded border border-gray-300 p-2"
-                    >
-                      <option value="">Select Gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                    </select>
+                    <div className="w-full">
+                      <select
+                        id="gender"
+                        name="gender"
+                        value={temporaryGender ?? gender}
+                        onChange={(event) => setGender(event.target.value)}
+                        className="w-[100%] rounded border border-gray-300 p-2"
+                      >
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                      </select>
+                      <small className="text-[0.75rem] text-red-600">
+                        {errorGender}
+                      </small>
+                    </div>
                   </div>
-                  <small className="text-red-600">{error}</small>
                 </section>
                 <section className="mt-[40px] flex w-full items-center justify-center space-x-5">
                   <CustomButton
@@ -302,38 +400,55 @@ const AdminProfile = () => {
                     Cancel
                   </CustomButton>
                   <CustomButton variant="primary" onClick={handleSave}>
-                    Save
+                    {updateLoading ? "Saving" : "Save"}
                   </CustomButton>
                 </section>
               </>
             ) : (
               <>
-                <div className="block items-center justify-between sm:flex">
-                  <label htmlFor="fullname" className="font-semibold">
-                    Name
-                  </label>
-                  <p className="text-neutral-130">{temporaryName}</p>
-                </div>
-                <div className="block items-center justify-between sm:flex">
-                  <label htmlFor="email" className="font-semibold">
-                    Email
-                  </label>
-                  <p className="text-neutral-130">{temporaryEmail}</p>
-                </div>
-                <div className="block items-center justify-between sm:flex">
-                  <label htmlFor="gender" className="font-semibold">
-                    Gender
-                  </label>
-                  <p className="text-neutral-130">{temporaryGender}</p>
-                </div>
-                <section className="mt-[40px] flex w-full items-center justify-center">
-                  <CustomButton
-                    variant="primary"
-                    onClick={handleUpdateProfileClick}
-                  >
-                    Edit
-                  </CustomButton>
-                </section>
+                {isLoadingAdminDetails ? (
+                  <>
+                    <Skeleton className="h-[40px] w-[180px] bg-neutral-40 sm:h-[40px] sm:w-[300px] lg:h-[40px] lg:w-[400px]" />
+                    <Skeleton className="mt-8 h-[40px] w-[180px] bg-neutral-40 sm:h-[40px] sm:w-[300px] lg:h-[40px] lg:w-[400px]" />
+                    <Skeleton className="mt-8 h-[40px] w-[180px] bg-neutral-40 sm:h-[40px] sm:w-[300px] lg:h-[40px] lg:w-[400px]" />
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <div className="block items-center justify-between sm:flex">
+                      <label htmlFor="fullname" className="font-semibold">
+                        Name
+                      </label>
+                      <p className="text-neutral-130">
+                        {temporaryName ?? "N/A"}
+                      </p>
+                    </div>
+                    <div className="block items-center justify-between sm:flex">
+                      <label htmlFor="email" className="font-semibold">
+                        Email
+                      </label>
+                      <p className="text-neutral-130">
+                        {temporaryEmail ?? "N/A"}
+                      </p>
+                    </div>
+                    <div className="block items-center justify-between sm:flex">
+                      <label htmlFor="gender" className="font-semibold">
+                        Gender
+                      </label>
+                      <p className="text-neutral-130">
+                        {temporaryGender ?? "N/A"}
+                      </p>
+                    </div>
+                    <section className="mt-[40px] flex w-full items-center justify-center">
+                      <CustomButton
+                        variant="primary"
+                        onClick={handleUpdateProfileClick}
+                      >
+                        Edit
+                      </CustomButton>
+                    </section>
+                  </>
+                )}
               </>
             )}
           </section>

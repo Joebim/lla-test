@@ -3,16 +3,19 @@
 "use client";
 
 import { EllipsisVertical } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next-nprogress-bar";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import {
+  ExportUsers,
   getAllUsers,
   getUserByStatus,
   getUsersByDate,
   getUsersStats,
   PaginationRequest,
-} from "~/app/api/adminDashboard/route";
+} from "~/app/api/admindashboard/route";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -57,6 +60,8 @@ const formatDate3 = (date: Date | string) => {
 };
 
 export default function Overview() {
+  const router = useRouter();
+  const { data: session } = useSession();
   const [pagination, setPagination] = useState<PaginationRequest>({
     totalPages: 0,
     totalCount: 0,
@@ -72,7 +77,7 @@ export default function Overview() {
 
     async function fetchData() {
       try {
-        const response = await getAllUsers(pagination);
+        const response = await getAllUsers(pagination, session?.access_token);
         setUsers(response?.data?.data || []);
         setPagination((previous) => ({
           ...previous,
@@ -95,7 +100,7 @@ export default function Overview() {
 
     async function fetchOverviewData() {
       try {
-        const response = await getUsersStats();
+        const response = await getUsersStats(session?.access_token);
         setOverViewData(response?.data?.data || undefined);
         setIsLoadingOverviewData(false);
       } catch (error) {
@@ -125,7 +130,7 @@ export default function Overview() {
       setIsLoading(true);
       try {
         if (status !== undefined) {
-          const response = await getUserByStatus(status);
+          const response = await getUserByStatus(status, session?.access_token);
           setUsers(response?.data?.data || []);
           setIsLoading(false);
         }
@@ -157,6 +162,7 @@ export default function Overview() {
             const response = await getUsersByDate(
               formatDate3(fromDate),
               formatDate3(toDate),
+              session?.access_token,
             );
             setUsers(response?.data?.data || []);
             setIsLoading(false);
@@ -213,6 +219,27 @@ export default function Overview() {
             icon: <PersonDisabledIcon />,
           },
         ];
+  // Export Users As CSV
+  const [isLoadingCSV, setIsLoadingCSV] = useState(false);
+  async function Export() {
+    try {
+      setIsLoadingCSV(true);
+      const response = await ExportUsers(session?.access_token);
+      const blob = new Blob([response.data], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "users.csv";
+      document.body.append(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+      setIsLoadingCSV(false);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 
   return (
     <div className="w-full font-axiforma">
@@ -260,9 +287,18 @@ export default function Overview() {
           <p className="text-[#525252]">Manage Users & Track Activity</p>
         </div>
         <div className="flex gap-[16px] self-center">
-          <button className="flex h-[44px] items-center gap-[14px] rounded-[4px] border-[1px] border-[#CBD5E1] px-[15px] py-[12.5px] hover:border-primary-100">
-            <span className="text-[14px]">Export</span>
-            <ExpandMore />
+          <button
+            onClick={Export}
+            className="flex h-[44px] items-center gap-[14px] rounded-[4px] border-[1px] border-[#CBD5E1] px-[15px] py-[12.5px] hover:border-primary-100"
+          >
+            {isLoadingCSV ? (
+              <span className="spinner">
+                <Skeleton className="animate-spin" />
+                Processing...
+              </span>
+            ) : (
+              <span className="text-[14px]">Export</span>
+            )}
           </button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -403,7 +439,14 @@ export default function Overview() {
                         <DropdownMenuLabel className="sr-only">
                           Actions
                         </DropdownMenuLabel>
-                        <DropdownMenuItem className="pr-8 text-center" inset>
+
+                        <DropdownMenuItem
+                          className="pr-8 text-center"
+                          inset
+                          onClick={() => {
+                            router.push(`/dashboard/admin/users/${data?.id}`);
+                          }}
+                        >
                           View
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -420,23 +463,38 @@ export default function Overview() {
             )}
           </div>
           {/* Pagination */}
-          <div className="mt-[24px] flex justify-end">
+          <div className="mt-[24px] flex justify-start">
             <Button
               variant="outline"
-              onClick={() => handlePageChange(pagination.page - 2)}
+              onClick={() => handlePageChange(pagination.page - 1)}
               disabled={pagination.page === 1}
-              className="mr-2"
+              className="mr-2 flex items-center gap-2"
             >
               <ChevronLeft />
+              Previous
             </Button>
-            <span className="flex items-center px-4">
-              {pagination.page} of {pageCount}
-            </span>
+
+            {Array.from({ length: pagination?.totalPages }).map((_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => handlePageChange(index + 1)}
+                className={`mx-1 px-3 py-3 ${
+                  pagination?.page === index + 1
+                    ? "border-[##E4E4E7]"
+                    : "bg-gray-200"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+
             <Button
               variant="outline"
               onClick={() => handlePageChange(pagination.page)}
               disabled={pagination.page === pageCount}
+              className="flex items-center gap-3"
             >
+              Next
               <ChevronRight />
             </Button>
           </div>

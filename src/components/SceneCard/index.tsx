@@ -31,6 +31,7 @@ const SceneCard = ({ levels, wordNos, description }: cardProperties) => {
           )}
         </div>
         <CustomButton
+          href="/signup"
           variant="primary"
           className="w-full py-6 font-axiformaSemiBold text-lg"
         >
