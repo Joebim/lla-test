@@ -14,6 +14,7 @@ import CustomButton from "~/components/common/common-button/common-button";
 import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
 import CustomInput from "~/components/input/CustomInput";
 import { Skeleton } from "~/components/ui/skeleton";
+import { useToast } from "~/components/ui/use-toast";
 
 type ProfileData = {
   image: string;
@@ -34,6 +35,8 @@ const validateImageFile = (file: File): boolean => {
 
 const AdminProfile = () => {
   const { data: session } = useSession();
+  const { toast } = useToast();
+
   //states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -94,10 +97,13 @@ const AdminProfile = () => {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      if (!validateImageFile(file)) {
+      if (validateImageFile(file)) {
+        setError("");
+      } else {
         setError("Only JPG, JPEG, and PNG formats are allowed.");
         return;
       }
+      setError("");
 
       const reader = new FileReader();
       reader.addEventListener("load", (event: ProgressEvent<FileReader>) => {
@@ -115,10 +121,13 @@ const AdminProfile = () => {
     event.preventDefault();
     if (event.dataTransfer.files && event.dataTransfer.files[0]) {
       const file = event.dataTransfer.files[0];
-      if (!validateImageFile(file)) {
+      if (validateImageFile(file)) {
+        setError("");
+      } else {
         setError("Only JPG, JPEG, and PNG formats are allowed.");
         return;
       }
+      setError("");
 
       const reader = new FileReader();
       reader.addEventListener("load", (event: ProgressEvent<FileReader>) => {
@@ -131,36 +140,41 @@ const AdminProfile = () => {
       reader.readAsDataURL(file);
     }
   };
-
+  const [updateLoading, setUpdateLoading] = useState(false);
   const handleSave = async () => {
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address");
+    console.log("clicked");
+    if (!validateEmail(email || temporaryEmail)) {
+      setErrorEmail("Please enter a valid email address");
       return;
     }
-    if (ValidateForm()) {
-      try {
-        const profileData = {} as Partial<ProfileData>;
-
-        if (image ?? temporaryImage)
-          profileData.image = image ?? temporaryImage;
-        if (name ?? temporaryName) profileData.username = name ?? temporaryName;
-        if (email ?? temporaryEmail)
-          profileData.email = email ?? temporaryEmail;
-        if (gender ?? temporaryGender)
-          profileData.gender = gender ?? temporaryGender;
-
-        await updateAdminProfile(
-          profileData as ProfileData,
-          session?.access_token,
-        );
-
-        setError("");
-        setIsEditing(false);
-        setIsSuccessModalOpen(true);
-      } catch (error) {
-        console.error("Failed to update profile", error);
-      }
+    if (!ValidateForm()) {
+      return;
     }
+    console.log("reach");
+
+    setUpdateLoading(true);
+    try {
+      const profileData = {} as Partial<ProfileData>;
+
+      if (image ?? temporaryImage) profileData.image = image ?? temporaryImage;
+      if (name ?? temporaryName) profileData.username = name ?? temporaryName;
+      if (email ?? temporaryEmail) profileData.email = email ?? temporaryEmail;
+      if (gender ?? temporaryGender)
+        profileData.gender = gender ?? temporaryGender;
+
+      const response = await updateAdminProfile(
+        profileData as ProfileData,
+        session?.access_token,
+      );
+      console.log({ response });
+      setError("");
+      setIsEditing(false);
+      setIsSuccessModalOpen(true);
+      setUpdateLoading(false);
+    } catch (error) {
+      console.error("Failed to update profile", error);
+    }
+    // }
   };
 
   const handleUpdateProfileClick = () => {
@@ -182,8 +196,15 @@ const AdminProfile = () => {
         setTemporaryGender(response.data.data.gender);
         setIsLoadingAdminDetails(false);
       }
+      setIsLoadingAdminDetails(false);
     } catch (error) {
-      console.error(error);
+      setIsLoadingAdminDetails(false);
+
+      toast({
+        title: "Error",
+        description: "Error while saving",
+        variant: "critical",
+      });
       throw error;
     }
   }
@@ -264,25 +285,30 @@ const AdminProfile = () => {
       )}
 
       <section className="mt-[30px] w-full rounded-[15px] border-2 border-neutral-30 bg-white p-[20px] sm:p-[30px] md:p-[40px]">
-        <div className="block w-full items-center space-x-0 lg:space-x-[70px] xl:flex">
+        <div className="block w-full items-center space-x-0 xl:flex xl:space-x-[70px]">
           {/* profile image section */}
           {}
           <section className="profile-image">
             {isEditing ? (
-              <div
-                data-testid="profileImage"
-                onClick={() => setIsModalOpen(true)}
-                className="relative h-[180px] w-[180px] cursor-pointer sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]"
-              >
-                <Image
-                  src={image || temporaryImage || "/images/profile_avatar.svg"} // Use the image state for rendering
-                  alt="Profile Image"
-                  width={100}
-                  height={100}
-                  className="h-full w-full object-cover object-center"
-                />
-                <Camera className="absolute left-[20px] top-[20px] text-neutral-110 sm:top-[30px] md:left-[30px] md:top-[50px]" />
-              </div>
+              <>
+                <div
+                  data-testid="profileImage"
+                  onClick={() => setIsModalOpen(true)}
+                  className="relative h-[180px] w-[180px] cursor-pointer sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]"
+                >
+                  <Image
+                    src={
+                      image || temporaryImage || "/images/profile_avatar.svg"
+                    } // Use the image state for rendering
+                    alt="Profile Image"
+                    width={100}
+                    height={100}
+                    className="h-full w-full object-cover object-center"
+                  />
+                  <Camera className="absolute left-[20px] top-[20px] text-neutral-110 sm:top-[30px] md:left-[30px] md:top-[50px]" />
+                </div>
+                <p className="text-[0.875rem] text-red-400">{error}</p>
+              </>
             ) : (
               <>
                 {isLoadingAdminDetails ? (
@@ -306,8 +332,8 @@ const AdminProfile = () => {
           <section className="mt-[30px] w-full lg:mt-0">
             {isEditing ? (
               <>
-                <section className="space-y-[15px] sm:space-y-[25px]">
-                  <div className="block items-center justify-between sm:flex">
+                <section className="space-y-[15px] xl:space-y-[25px]">
+                  <div className="block items-center justify-between sm:grid sm:grid-cols-2">
                     <label htmlFor="fullname" className="font-semibold">
                       Name
                     </label>
@@ -325,7 +351,7 @@ const AdminProfile = () => {
                       </small>
                     </div>
                   </div>
-                  <div className="block items-center justify-between sm:flex">
+                  <div className="block items-center justify-between sm:grid sm:grid-cols-2">
                     <label htmlFor="email" className="font-semibold">
                       Email
                     </label>
@@ -343,11 +369,11 @@ const AdminProfile = () => {
                       </small>
                     </div>
                   </div>
-                  <div className="block items-center justify-between sm:flex">
+                  <div className="block items-center justify-between gap-4 sm:grid sm:grid-cols-2 xl:gap-2">
                     <label htmlFor="gender" className="font-semibold">
                       Gender
                     </label>
-                    <div>
+                    <div className="w-full">
                       <select
                         id="gender"
                         name="gender"
@@ -374,7 +400,7 @@ const AdminProfile = () => {
                     Cancel
                   </CustomButton>
                   <CustomButton variant="primary" onClick={handleSave}>
-                    Save
+                    {updateLoading ? "Saving" : "Save"}
                   </CustomButton>
                 </section>
               </>

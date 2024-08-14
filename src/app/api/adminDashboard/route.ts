@@ -203,6 +203,7 @@ export const updateAdminProfile = async (
         },
       },
     );
+
     return response.data?.data;
   } catch (error) {
     console.error(
