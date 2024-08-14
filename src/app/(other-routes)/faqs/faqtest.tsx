@@ -35,4 +35,3 @@ describe("fAQs Page", () => {
     ).toBeInTheDocument();
   });
 });
-
