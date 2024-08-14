@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import SwitchToggle from "~/components/common/switch";
 import InviteLink from "~/components/profileSettings/InviteLink";
 import SettingsCard from "~/components/profileSettings/settings-card";
-import ToggleSwitch from "~/components/toggle/ToggleSwitch";
 import {
   Dialog,
   DialogClose,
@@ -20,72 +20,201 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { useToast } from "~/components/ui/use-toast";
+import { useAudioSettings } from "~/hooks/profile-settings/audio";
+import { IAudioSettings } from "~/types/settings.model";
+
+interface IAudioSection {
+  title: string;
+  items: {
+    name: string;
+    index: number;
+    value: boolean | undefined;
+    key: string;
+  }[];
+}
 
 const AudioContainer = () => {
-  const [toggleStates, setToggleStates] = useState(
-    Array.from({ length: 6 }).fill(false),
-  );
+  const { toast } = useToast();
+  const [audioSection, setAudioSection] = useState<
+    IAudioSection[] | undefined
+  >();
+  const [notiType, setNotiType] = useState<string | undefined>();
+  const [edited, setEdited] = useState<boolean>(false);
+  const {
+    getAudioSettings,
+    data: audioSettingsData,
+    loading,
+    updateAudioSettings,
+  } = useAudioSettings();
+
+  const audioData = audioSettingsData?.data;
+
+  useEffect(() => {
+    getAudioSettings();
+  }, [getAudioSettings]);
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const inviteLink = "https://www.delveapp.com/invite?referralCode=12345ABCDE";
 
-  const handleInteraction = (index: number) => {
-    setToggleStates((previousStates) =>
-      previousStates.map((state, index_) =>
-        index_ === index ? !state : state,
-      ),
-    );
-  };
+  const handleSaveClick = async () => {
+    if (audioSection && notiType) {
+      const settings: Partial<IAudioSettings> = {
+        notification_type: notiType,
+      };
+      for (const group of audioSection) {
+        for (const item of group.items) {
+          switch (item.name) {
+            case "Mic": {
+              settings.mic_status = item.value;
+              break;
+            }
+            case "Music": {
+              settings.music_status = item.value;
+              break;
+            }
+            case "Sound effects": {
+              settings.sound_effect_status = item.value;
+              break;
+            }
+            case "Ambient sound": {
+              settings.ambient_status = item.value;
+              break;
+            }
+          }
+        }
+      }
 
-  const handleSaveClick = () => {
-    setIsDialogOpen(true);
+      try {
+        await updateAudioSettings(settings as IAudioSettings);
+        setIsDialogOpen(true);
+      } catch {
+        toast({
+          description: "Something went wrong",
+          variant: "critical",
+        });
+      }
+    }
   };
 
   const handleDiscardChange = () => {
-    setToggleStates(Array.from({ length: 6 }).fill(false));
+    setAudioSection([
+      {
+        title: "Microphone Status",
+        items: [
+          { name: "Mic", index: 0, value: audioData?.mic_status, key: "mic" },
+        ],
+      },
+      {
+        title: "Audio Preferences",
+        items: [
+          {
+            name: "Music",
+            index: 1,
+            value: audioData?.music_status,
+            key: "music",
+          },
+          {
+            name: "Sound effects",
+            index: 2,
+            value: audioData?.sound_effect_status,
+            key: "sound-effects",
+          },
+          {
+            name: "Ambient sound",
+            index: 3,
+            value: audioData?.ambient_status,
+            key: "ambient-sound",
+          },
+        ],
+      },
+    ]);
+    setNotiType(audioData?.notification_type);
+    setEdited(false);
   };
 
-  const audioSections = [
-    {
-      title: "Microphone Status",
-      items: [{ name: "Mic", index: 0 }],
-    },
-    {
-      title: "Audio Preferences",
-      items: [
-        { name: "Music", index: 1 },
-        { name: "Sound effects", index: 2 },
-        { name: "Ambient sound", index: 3 },
-      ],
-    },
-  ];
+  useEffect(() => {
+    setAudioSection([
+      {
+        title: "Microphone Status",
+        items: [
+          { name: "Mic", index: 0, value: audioData?.mic_status, key: "mic" },
+        ],
+      },
+      {
+        title: "Audio Preferences",
+        items: [
+          {
+            name: "Music",
+            index: 1,
+            value: audioData?.music_status,
+            key: "music",
+          },
+          {
+            name: "Sound effects",
+            index: 2,
+            value: audioData?.sound_effect_status,
+            key: "sound-effects",
+          },
+          {
+            name: "Ambient sound",
+            index: 3,
+            value: audioData?.ambient_status,
+            key: "ambient-sound",
+          },
+        ],
+      },
+    ]);
+  }, [audioData]);
+
+  if (loading) {
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        Loading
+      </div>
+    );
+  }
+
+  const toggleCheck = (key: string) => {
+    setAudioSection((previous) =>
+      previous?.map((item) => ({
+        ...item,
+        items: item.items.map((item) =>
+          item.key === key ? { ...item, value: !item.value } : item,
+        ),
+      })),
+    );
+    setEdited(true);
+  };
 
   return (
     <>
       <SettingsCard title="Audio">
         <div className="flex flex-col gap-y-[10px] pb-10 md:gap-y-[40px]">
-          {audioSections.map((section) => (
-            <div key={section.title}>
-              <p className="text-[14px] text-secondary-70 md:text-[16px]">
-                {section.title}
-              </p>
-              <div className="mt-[12px] flex cursor-pointer flex-col gap-y-4">
-                {section.items.map((item) => (
-                  <div
-                    key={item.index}
-                    className="flex items-center justify-between rounded-[8px] border border-neutral-40 px-[8px] py-[14px] md:rounded-[10px] md:px-[12px] md:py-[18px]"
-                    onClick={() => handleInteraction(item.index)}
-                  >
-                    <p className="text-[14px] md:text-[16px]">{item.name}</p>
-                    <ToggleSwitch
-                      isChanged={toggleStates[item.index] as boolean}
-                      handleInteraction={() => handleInteraction(item.index)}
-                    />
-                  </div>
-                ))}
+          {audioSection &&
+            audioSection.map((section) => (
+              <div key={section.title}>
+                <p className="text-[14px] text-secondary-70 md:text-[16px]">
+                  {section.title}
+                </p>
+                <div className="mt-[12px] flex cursor-pointer flex-col gap-y-4">
+                  {section.items.map((item) => (
+                    <div
+                      key={item.index}
+                      className="flex items-center justify-between rounded-[8px] border border-neutral-40 px-[8px] py-[14px] md:rounded-[10px] md:px-[12px] md:py-[18px]"
+                      onClick={() => toggleCheck(item.key)}
+                    >
+                      <p className="text-[14px] md:text-[16px]">{item.name}</p>
+                      <SwitchToggle
+                        checked={item.value as boolean}
+                        onToggle={() => toggleCheck(item.key)}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
         <div className="flex flex-col gap-y-[10px] pb-10 md:gap-y-[12px]">
           <p className="text-[12px] text-secondary-70 md:text-[14px]">
@@ -119,22 +248,16 @@ const AudioContainer = () => {
         </div>
         <div className="flex w-full flex-col items-center gap-x-[16px] gap-y-[10px] whitespace-nowrap max-[450px]:flex-col-reverse min-[450px]:flex-row md:gap-x-[24px] md:gap-y-0">
           <button
-            className={`w-full rounded-[40px] px-[18px] py-[8px] text-sm min-[450px]:w-auto md:rounded-[59px] md:px-[32px] md:py-[10px] md:text-base ${
-              toggleStates.includes(true)
-                ? "bg-neutral-10 text-secondary-120"
-                : "bg-neutral-20 text-secondary-30"
-            }`}
+            className={`w-full rounded-[40px] bg-neutral-10 px-[18px] py-[8px] text-sm text-secondary-120 disabled:bg-neutral-20 disabled:text-secondary-30 min-[450px]:w-auto md:rounded-[59px] md:px-[32px] md:py-[10px] md:text-base`}
             onClick={handleDiscardChange}
+            disabled={!edited}
           >
             Discard Changes
           </button>
           <button
             onClick={handleSaveClick}
-            className={`w-full whitespace-nowrap rounded-[40px] px-[18px] py-[8px] text-sm min-[450px]:w-auto md:rounded-[59px] md:px-[32px] md:py-[10px] md:text-base ${
-              toggleStates.includes(true)
-                ? "bg-primary-100 text-[#FFFFFF]"
-                : "bg-primary-40 text-transparent-white-50"
-            }`}
+            className={`w-full whitespace-nowrap rounded-[40px] bg-primary-100 px-[18px] py-[8px] text-sm text-white disabled:bg-primary-40 disabled:text-transparent-white-50 min-[450px]:w-auto md:rounded-[59px] md:px-[32px] md:py-[10px] md:text-base`}
+            disabled={!edited}
           >
             Save Changes
           </button>
