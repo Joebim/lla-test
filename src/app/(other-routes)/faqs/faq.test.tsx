@@ -21,9 +21,7 @@ describe("FAQs Page", () => {
     });
 
     // Wait for the date to appear with the dynamically generated date
-    await waitFor(() =>
-      expect(screen.getByText(expectedDate)).toBeInTheDocument()
-    );
+    await screen.findByText(expectedDate);
 
     // Check for the introduction section
     expect(screen.getByText("Introduction")).toBeInTheDocument();
