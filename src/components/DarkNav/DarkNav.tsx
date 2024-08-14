@@ -105,7 +105,7 @@ const DarkNav = () => {
         ) : (
           <div
             className={cn(
-              "shadow-md md:shadow transition-all mx-auto mt-4 hidden max-w-[97%] flex-row items-center rounded-full px-20 py-4 md:flex md:justify-between md:ring-primary-20",
+              "shadow-md md:shadow mx-auto mt-4 hidden max-w-[97%] flex-row items-center rounded-full px-20 py-4 transition-all md:flex md:justify-between md:ring-primary-20",
               isHeroInView
                 ? "translate-y-0 bg-neutral-950/0 backdrop-blur-none duration-500"
                 : "-translate-y-3 bg-neutral-950/80 backdrop-blur-2xl duration-1000",
@@ -139,7 +139,7 @@ const DarkNav = () => {
 
             <div className="flex space-x-6">
               <>
-                <TransitionLink href="/explore-quests" variant="secondary-two">
+                <TransitionLink href="/signin" variant="secondary-two">
                   Delve In
                 </TransitionLink>
               </>

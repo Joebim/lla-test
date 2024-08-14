@@ -30,7 +30,7 @@ const Accordion: React.FC<AccordionProperties> = ({
       >
         <div className="flex flex-row items-center gap-3">
           <span
-            className={`transition-transform mr-2 transform rounded-full border p-1 duration-300 ${
+            className={`mr-2 transform rounded-full border p-1 transition-transform duration-300 ${
               isOpen ? "rotate-180" : ""
             }`}
           >
@@ -46,7 +46,7 @@ const Accordion: React.FC<AccordionProperties> = ({
         </div>
         {/* {alwaysActive && <span className="text-blue-500">Always Active</span>} */}
         <div
-          className={`transition-all overflow-hidden duration-500 ease-in-out ${
+          className={`overflow-hidden transition-all duration-500 ease-in-out ${
             isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
           }`}
         >
