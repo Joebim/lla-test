@@ -331,7 +331,7 @@ export const MutateMediaLibrary = ({
                         fill
                         layout="fill"
                         objectFit="cover"
-                        className="transition-all rounded-[10px] border-[3px] border-transparent group-hover:border-[#888]"
+                        className="rounded-[10px] border-[3px] border-transparent transition-all group-hover:border-[#888]"
                       />
                     </div>
                     <CustomInput className="w-fit rounded-[10px] focus:outline-offset-0 focus-visible:outline-offset-0" />

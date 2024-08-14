@@ -32,7 +32,7 @@ const LearningGoalModal = () => {
         <CustomButton variant="primary-two">Learning Goals</CustomButton>
       </DialogTrigger>
       <DialogOverlay className="fixed inset-0" />
-      <DialogContent className="transition-all max-w-sm gap-2 bg-neutral-10 p-0 outline-none sm:max-w-[702px] sm:rounded-3xl">
+      <DialogContent className="max-w-sm gap-2 bg-neutral-10 p-0 outline-none transition-all sm:max-w-[702px] sm:rounded-3xl">
         <DialogTitle className="hidden">Set Learning Goal</DialogTitle>
 
         <div className="flex w-full max-w-[719px] flex-col items-center justify-center gap-2 rounded-[18px] border-[1.8px] border-[#E27C40] bg-black p-6 sm:p-10 md:p-12 lg:p-16">

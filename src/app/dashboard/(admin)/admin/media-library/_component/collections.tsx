@@ -59,7 +59,7 @@ const Collections = ({ collections, dataType }: Properties) => {
                         fill
                         layout="fill"
                         objectFit="cover"
-                        className="transition-all rounded-[10px] border-[3px] border-transparent group-hover:border-[#888]"
+                        className="rounded-[10px] border-[3px] border-transparent transition-all group-hover:border-[#888]"
                       />
                     </div>
                   </div>

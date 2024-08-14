@@ -4,7 +4,7 @@ const WordCounter = ({ word, length }: { word?: string; length: number }) => {
   return (
     <div
       className={cn(
-        "transition-opacity flex h-[14px] w-full items-center justify-end gap-x-1 text-xs duration-500 sm:h-[18px] sm:text-sm lg:text-base",
+        "flex h-[14px] w-full items-center justify-end gap-x-1 text-xs transition-opacity duration-500 sm:h-[18px] sm:text-sm lg:text-base",
         word!.length > 0 ? "opacity-80" : "pointer-events-none opacity-0",
       )}
     >

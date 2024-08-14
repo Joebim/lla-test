@@ -77,7 +77,7 @@ const Sidebar: FC<Iproperties> = ({ sideNavitems = sideItems }) => {
                   : currentPath === item.id
                     ? "bg-Primary/90 rounded-[12px] text-white"
                     : "text-neutral-dark-2 bg-transparent hover:bg-gray-200"
-              } transition-all flex h-[52px] w-[233px] items-center justify-center gap-2.5 px-2.5 py-3 text-sm duration-300 ease-in md:h-auto md:w-auto md:justify-start md:rounded-xl`}
+              } flex h-[52px] w-[233px] items-center justify-center gap-2.5 px-2.5 py-3 text-sm transition-all duration-300 ease-in md:h-auto md:w-auto md:justify-start md:rounded-xl`}
             >
               <Image
                 src={item.icon}

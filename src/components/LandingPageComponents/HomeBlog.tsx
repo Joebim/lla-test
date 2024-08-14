@@ -14,7 +14,7 @@ const HomeBlog = () => {
           <Link href="/blog">
             <CustomButton
               variant="primary"
-              className="transition-colors rounded-full bg-white px-4 text-secondary-120 hover:bg-primary-100 hover:text-white"
+              className="rounded-full bg-white px-4 text-secondary-120 transition-colors hover:bg-primary-100 hover:text-white"
             >
               Keep Reading
             </CustomButton>
@@ -27,7 +27,7 @@ const HomeBlog = () => {
               key={index}
               className="block"
             >
-              <div className="transition-transform cursor-pointer p-4 hover:scale-105">
+              <div className="cursor-pointer p-4 transition-transform hover:scale-105">
                 <div
                   className="mb-[20px] h-[200px] rounded-md border border-gray-300 bg-cover"
                   style={{
