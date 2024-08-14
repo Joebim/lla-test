@@ -139,7 +139,7 @@ const DarkNav = () => {
 
             <div className="flex space-x-6">
               <>
-                <TransitionLink href="/signin" variant="secondary-two">
+                <TransitionLink href="/explore-quests" variant="secondary-two">
                   Delve In
                 </TransitionLink>
               </>
