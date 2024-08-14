@@ -41,7 +41,7 @@ export async function middleware(request: NextRequest) {
 
     if (request.nextUrl.pathname.startsWith("/dashboard/admin")) {
       return adminRoles.has(userRole)
-        ? NextResponse.redirect(new URL("/dashboard/admin", request.url))
+        ? NextResponse.next()
         : NextResponse.redirect(new URL("/dashboard/user", request.url));
     }
   }
