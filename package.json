@@ -72,7 +72,6 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.167.1",
-    "three-stdlib": "^2.32.0",
     "uuid": "^10.0.0",
     "zod": "^3.23.8",
     "zustand": "^4.5.4"
@@ -115,5 +114,10 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.5.4",
     "vitest": "^1.6.0"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "recordrtc@5.6.2": "patches/recordrtc@5.6.2.patch"
+    }
   }
 }
