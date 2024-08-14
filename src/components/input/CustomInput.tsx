@@ -12,6 +12,7 @@ type Properties = {
   inputType?: string;
   name?: string;
   value?: string;
+  isDisabled?: boolean;
   className?: string;
 };
 
@@ -23,6 +24,7 @@ const CustomInput: React.FC<Properties> = ({
   label,
   inputType = "text",
   name,
+  isDisabled,
   value,
   className,
 }) => {
@@ -37,6 +39,10 @@ const CustomInput: React.FC<Properties> = ({
       onChange(e);
     }
   };
+
+  if (isDisabled) {
+    className = "opacity-35 cursor-not-allowed";
+  }
 
   return (
     <div className="flex w-full flex-col items-start">
@@ -60,6 +66,7 @@ const CustomInput: React.FC<Properties> = ({
           />
         ) : (
           <input
+            disabled={isDisabled}
             name={name}
             type={inputType}
             value={inputValue}
