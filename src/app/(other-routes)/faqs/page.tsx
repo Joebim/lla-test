@@ -1,9 +1,5 @@
 "use client";
 
-// import { useState } from "react";
-
-// import { FaqAccordions } from "./accordion";
-
 const FAQs = () => {
   // const [updatedAt, setUpdatedAt] = useState("");
 

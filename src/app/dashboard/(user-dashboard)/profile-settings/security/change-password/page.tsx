@@ -1,8 +1,10 @@
+/* eslint-disable vitest/no-conditional-tests */
 "use client";
 
 import { Eye, EyeOff } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
+import SettingsCard from "~/components/profileSettings/settings-card";
 import { useToast } from "~/components/ui/use-toast";
 
 function getStrengthColor(passwordStrength: string): string {
@@ -83,18 +85,12 @@ const ChangePasswordPage = () => {
   const handleSubmit = useCallback(
     (event: React.FormEvent) => {
       event.preventDefault();
-      // Add your password change logic here
-      // For this example, we'll assume the change is always successful
-
-      // Simulating an API call with a timeout
       setTimeout(() => {
-        // Show success toast
         toast({
           description: "Password Changed successfully",
           variant: "default",
         });
 
-        // Reset form
         handleDiscard();
       }, 1000);
     },
@@ -122,7 +118,6 @@ const ChangePasswordPage = () => {
 
     if (strongRegex.test(password)) {
       return password.length > 6 ? "Very Strong" : "Strong";
-      // eslint-disable-next-line vitest/no-conditional-tests
     } else if (mediumRegex.test(password)) {
       return "Medium";
     } else {
@@ -139,13 +134,9 @@ const ChangePasswordPage = () => {
   }, [newPassword, checkPasswordStrength]);
 
   return (
-    <div className="bg h-[650px] rounded-[18px] border bg-[#FFFFFF] pb-[24px]">
-      <div className="rounded-t-[18px] bg-primary-10 px-[20px] py-[32px]">
-        <p className="text-[22px]">Change Your Password</p>
-      </div>
-      <div className="flex flex-col gap-y-[12px] p-[24px]">
+    <SettingsCard title="Change your password">
+      <div className="flex flex-col gap-y-[12px]">
         <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-          {/* Current Password Input */}
           <div>
             <label htmlFor="currentPassword" className="text-secondary-70">
               Current Password
@@ -172,8 +163,6 @@ const ChangePasswordPage = () => {
               </button>
             </div>
           </div>
-
-          {/* New Password Input */}
           <div>
             <label htmlFor="newPassword" className="text-secondary-70">
               New Password
@@ -226,8 +215,6 @@ const ChangePasswordPage = () => {
               </p>
             )}
           </div>
-
-          {/* Confirm Password Input */}
           <div>
             <label htmlFor="confirmPassword" className="text-secondary-70">
               Confirm Password
@@ -263,10 +250,7 @@ const ChangePasswordPage = () => {
           </div>
         </form>
       </div>
-
-      {/* Add a gap here */}
       <div className="h-6"></div>
-
       <div className="flex items-center gap-x-[24px] px-[24px] pb-[24px]">
         <button
           onClick={handleDiscard}
@@ -290,7 +274,7 @@ const ChangePasswordPage = () => {
           Save Changes
         </button>
       </div>
-    </div>
+    </SettingsCard>
   );
 };
 
