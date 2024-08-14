@@ -1,8 +1,10 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+
 import "@testing-library/jest-dom";
+
 import FAQs from "./page";
 
-describe("FAQs Page", () => {
+describe("fAQs Page", () => {
   it("renders the FAQ page with header, date, and introduction", async () => {
     // Render the component
     render(<FAQs />);
@@ -21,16 +23,14 @@ describe("FAQs Page", () => {
     });
 
     // Wait for the date to appear with the dynamically generated date
-    await waitFor(() =>
-      expect(screen.getByText(expectedDate)).toBeInTheDocument()
-    );
+    await screen.findByText(expectedDate);
 
     // Check for the introduction section
     expect(screen.getByText("Introduction")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Welcome to our FAQ section! Here, we've compiled answers to some of the most common questions about our AI-powered language learning game. Whether you're just starting or looking for advanced features, we hope this page will help you get the most out of your language learning journey."
-      )
+        "Welcome to our FAQ section! Here, we've compiled answers to some of the most common questions about our AI-powered language learning game. Whether you're just starting or looking for advanced features, we hope this page will help you get the most out of your language learning journey.",
+      ),
     ).toBeInTheDocument();
   });
 });

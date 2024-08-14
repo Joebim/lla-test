@@ -24,7 +24,10 @@ const tabContent: Record<TabKey, TabContent> = {
     number: "01.",
     description: (
       <>
-        <span className="text-transparent-white-65" data-testid="profile-description-part1">
+        <span
+          className="text-transparent-white-65"
+          data-testid="profile-description-part1"
+        >
           Begin Your Learning Journey By{" "}
         </span>
         <span className="text-white">Setting Up Your Profile</span>
