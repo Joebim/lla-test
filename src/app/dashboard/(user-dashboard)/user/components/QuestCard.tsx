@@ -5,18 +5,13 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardTitle } from "~/components/ui/card";
 
 interface QuestCardProperties {
-  id: number;
+  id?: number;
   title: string;
   image: string;
   numberOfWords: number;
 }
 
-const QuestCard = ({
-  id,
-  image,
-  numberOfWords,
-  title,
-}: QuestCardProperties) => {
+const QuestCard = ({ image, numberOfWords, title }: QuestCardProperties) => {
   return (
     <>
       <Card className="group border-0 bg-transparent">
@@ -47,7 +42,7 @@ const QuestCard = ({
             </div>
 
             <Link
-              href={`/quest-preview/${id}`}
+              href={`/quest`}
               className="no-underline opacity-0 outline-none duration-300 ease-in group-hover:opacity-100"
             >
               <Button

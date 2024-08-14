@@ -115,10 +115,5 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.5.4",
     "vitest": "^1.6.0"
-  },
-  "pnpm": {
-      "patchedDependencies": {
-         "recordrtc@5.6.2": "patches/recordrtc@5.6.2.patch"
-      }
-   }
+  }
 }

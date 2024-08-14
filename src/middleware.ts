@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
   const isApiAuthRoute = url.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(url);
   const isAuthRoute = authRoutes.includes(url);
-  const isClientRoute = clientRoutes.includes(url);
+  const isClientRoute = clientRoutes.some((route) => url.startsWith(route));
 
   const adminRoles = new Set(["super_admin", "game_developer", "user_manager"]);
 
