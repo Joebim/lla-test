@@ -5,16 +5,21 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardTitle } from "~/components/ui/card";
 
 interface QuestCardProperties {
-  id?: number;
+  id?: string;
   title: string;
   image: string;
-  numberOfWords: number;
+  numberOfWords?: number;
 }
 
-const QuestCard = ({ image, numberOfWords, title }: QuestCardProperties) => {
+const QuestCard = ({
+  id,
+  image,
+  numberOfWords,
+  title,
+}: QuestCardProperties) => {
   return (
     <>
-      <Card className="group border-0 bg-transparent">
+      <Card className="group cursor-pointer border-0 bg-transparent">
         <div className="h-fit w-full overflow-hidden rounded-md ring-2 ring-transparent duration-300 ease-in group-hover:ring-primary-100 md:rounded-2xl">
           <Image
             src={image}
@@ -42,7 +47,7 @@ const QuestCard = ({ image, numberOfWords, title }: QuestCardProperties) => {
             </div>
 
             <Link
-              href={`/quest`}
+              href={`/dashboard/user/quests/${id}`}
               className="no-underline opacity-0 outline-none duration-300 ease-in group-hover:opacity-100"
             >
               <Button

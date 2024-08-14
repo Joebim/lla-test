@@ -7,7 +7,12 @@ export type User = {
   is_disabled: boolean;
   avatar_url: string;
 };
-
+export type PaginationRequest = {
+  totalPages: number;
+  totalCount: number;
+  page: number;
+  perPage: number;
+};
 export type adminDashboardResponse = {
   current_page: number;
   data: User[];
@@ -21,6 +26,7 @@ export type adminDashboardResponse = {
   to: number;
   total: number;
 };
+// export type Quest = {}
 
 // type UserStatistics = {
 //   current_month: number;

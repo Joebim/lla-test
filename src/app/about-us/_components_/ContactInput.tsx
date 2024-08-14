@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react";
+
 type InputProperties = {
   label: string;
   type: string;

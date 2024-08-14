@@ -7,7 +7,11 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import { deactivateUser, GetSingleUser } from "~/app/api/admindashboard/route";
+import {
+  deactivateUser,
+  GetSingleUser,
+  reactivateUser,
+} from "~/actions/adminDashboard/route";
 import CustomButton from "~/components/common/common-button/common-button";
 import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
 import { Skeleton } from "~/components/ui/skeleton";
@@ -94,10 +98,22 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     console.log({ error });
   }, [error]);
-  const handleReactivated = () => {
-    setIsReactivateModalOpen(false);
-    setIsReactivateSuccessModalOpen(true);
-    setIsDeactivated(false);
+  const [isLoadingReactivate, setIsLoadingReactivateUser] = useState(false);
+  const handleReactivated = async () => {
+    setIsLoadingReactivateUser(true);
+    try {
+      if (params?.id !== undefined) {
+        await reactivateUser(params?.id, session?.access_token);
+
+        setIsLoadingReactivateUser(false);
+      }
+      setIsReactivateModalOpen(false);
+      setIsReactivateSuccessModalOpen(true);
+      setIsDeactivated(false);
+    } catch (error) {
+      setError("Failed to reactivate user");
+      throw error;
+    }
   };
 
   const handleCloseModal = () => {
@@ -175,7 +191,11 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
               onClick={handleReactivated}
               className="w-full bg-primary-90 px-[30px] text-white"
             >
-              Confirm
+              {isLoadingReactivate ? (
+                <span className="">processing</span>
+              ) : (
+                "Confirm"
+              )}
             </CustomButton>
           </div>
         </DashboardModal>

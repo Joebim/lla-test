@@ -14,8 +14,7 @@ import {
   getUserByStatus,
   getUsersByDate,
   getUsersStats,
-  PaginationRequest,
-} from "~/app/api/admindashboard/route";
+} from "~/actions/adminDashboard/route";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -25,7 +24,12 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Skeleton } from "~/components/ui/skeleton";
-import { OverviewData, StatisticItem, User } from "./adminDashboardTypes";
+import {
+  OverviewData,
+  PaginationRequest,
+  StatisticItem,
+  User,
+} from "./adminDashboardTypes";
 import {
   ChevronLeft,
   ChevronRight,
@@ -59,7 +63,7 @@ const formatDate3 = (date: Date | string) => {
   return `${year}-${month}-${day}`;
 };
 
-export default function Overview() {
+const Overview = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [pagination, setPagination] = useState<PaginationRequest>({
@@ -79,7 +83,7 @@ export default function Overview() {
       try {
         const response = await getAllUsers(pagination, session?.access_token);
         setUsers(response?.data?.data || []);
-        setPagination((previous) => ({
+        setPagination((previous: PaginationRequest) => ({
           ...previous,
           totalPages: response?.data?.last_page || 0,
           totalCount: response?.data?.total || 0,
@@ -502,4 +506,6 @@ export default function Overview() {
       )}
     </div>
   );
-}
+};
+
+export default Overview;

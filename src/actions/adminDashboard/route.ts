@@ -1,23 +1,10 @@
 /* eslint-disable no-console */
 import axios, { AxiosError } from "axios";
 
-export type PaginationRequest = {
-  totalPages: number;
-  totalCount: number;
-  page: number;
-  perPage: number;
-};
+import { PaginationRequest } from "~/app/dashboard/(admin)/admin/(overview)/adminDashboardTypes";
+
 const admin_base_url: string =
   process.env.API_URL || "https://api.staging.delve.fun";
-
-export const getAuthToken = async () => {
-  try {
-    // return session?.access_token;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
 
 export const getAllUsers = async (
   PaginationRequest: PaginationRequest,
@@ -151,6 +138,28 @@ export const deactivateUser = async (
   try {
     const response = await axios.patch(
       `${admin_base_url}/api/v1/admin/users/${userId}/deactivate`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error deactivating user:");
+    throw error;
+  }
+};
+// reactivate User
+export const reactivateUser = async (
+  userId: string,
+  token: string | undefined,
+) => {
+  try {
+    const response = await axios.patch(
+      `${admin_base_url}/api/v1/admin/users/${userId}/reactivate`,
       {},
       {
         headers: {
