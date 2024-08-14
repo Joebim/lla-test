@@ -12,7 +12,7 @@ export default function NavTabs() {
         <button
           onClick={() => setSelectedTab("profile")}
           className={clsx(
-            "flex-1 rounded-l-[10px] px-4 py-2 text-sm font-normal text-secondary-110 transition-colors",
+            "transition-colors flex-1 rounded-l-[10px] px-4 py-2 text-sm font-normal text-secondary-110",
             "focus:outline-none",
             {
               "border-l-4 border-black bg-secondary-110 text-white":
@@ -25,7 +25,7 @@ export default function NavTabs() {
         <button
           onClick={() => setSelectedTab("language")}
           className={clsx(
-            "flex-1 border-r-2 px-4 py-2 text-sm font-normal text-secondary-110 transition-colors",
+            "transition-colors flex-1 border-r-2 px-4 py-2 text-sm font-normal text-secondary-110",
             "focus:outline-none",
             {
               "border-l-4 border-black bg-secondary-110 text-white":
@@ -38,7 +38,7 @@ export default function NavTabs() {
         <button
           onClick={() => setSelectedTab("notifications")}
           className={clsx(
-            "flex-1 border-r-2 px-4 py-2 text-sm font-normal text-secondary-110 transition-colors",
+            "transition-colors flex-1 border-r-2 px-4 py-2 text-sm font-normal text-secondary-110",
             "focus:outline-none",
             {
               "border-l-4 border-black bg-secondary-110 text-white":
@@ -51,7 +51,7 @@ export default function NavTabs() {
         <button
           onClick={() => setSelectedTab("invitelink")}
           className={clsx(
-            "flex-1 border-r-2 px-4 py-2 text-sm font-normal text-secondary-110 transition-colors",
+            "transition-colors flex-1 border-r-2 px-4 py-2 text-sm font-normal text-secondary-110",
             "text-nowrap focus:outline-none",
             {
               "text-nowrap border-l-4 border-black bg-secondary-110 text-white":
@@ -64,7 +64,7 @@ export default function NavTabs() {
         <button
           onClick={() => setSelectedTab("security")}
           className={clsx(
-            "flex-1 rounded-r-[10px] px-4 py-2 text-sm font-normal text-secondary-110 transition-colors",
+            "transition-colors flex-1 rounded-r-[10px] px-4 py-2 text-sm font-normal text-secondary-110",
             "focus:outline-none",
             { "bg-secondary-110 text-white": selectedTab === "security" },
           )}

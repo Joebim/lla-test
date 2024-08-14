@@ -253,6 +253,10 @@ const config = {
       "inner-button": "0px -1px 4px 0px #00000012 inset",
       "dropdown": "0px 4px 4px 0px #D3D3D354",
     },
+    transitionProperty: {
+      "bg-color": "background-color",
+      "text-color": "color",
+    },
   },
 
   plugins: [

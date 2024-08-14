@@ -65,7 +65,7 @@ const AdminSettingsTab = () => {
         {tabs.map((tab, index: number) => (
           <button
             key={index}
-            className={`flex items-center justify-center gap-2 px-2 py-[4px] transition-colors duration-200 ${
+            className={`transition-colors flex items-center justify-center gap-2 px-2 py-[4px] duration-200 ${
               activeTab === index
                 ? "border-b-2 border-b-primary-60 text-primary-60"
                 : "text-secondary-60 hover:bg-gray-100"

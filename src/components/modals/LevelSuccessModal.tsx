@@ -24,7 +24,7 @@ const Modal: FC<ModalProperties> = ({ onClose }) => {
         <CustomButton variant="primary-two">Level Success</CustomButton>
       </DialogTrigger>
       <DialogOverlay className="fixed inset-0 w-fit bg-black bg-opacity-15" />
-      <DialogContent className="max-w-sm gap-2 bg-neutral-10 p-0 outline-none transition-all sm:max-w-[702px] sm:rounded-3xl">
+      <DialogContent className="transition-all max-w-sm gap-2 bg-neutral-10 p-0 outline-none sm:max-w-[702px] sm:rounded-3xl">
         <DialogTitle>Level Success</DialogTitle>
         <div className="relative w-full max-w-[600px] rounded-[4px] bg-[#E9EEF3] p-6 sm:p-8 md:p-[41px_75px_27px_75px]">
           <button

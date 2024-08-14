@@ -50,13 +50,13 @@ const DeleteInvitation = ({
             <div className="flex w-full items-center gap-6 sm:mt-[1.5rem]">
               <button
                 onClick={() => setShowDeletingInvitationModal(false)}
-                className={`shadowBtn duration-[0.5s] flex w-full items-center justify-center rounded-[3.6875rem] border border-b border-solid border-[#D6D6D6] bg-[#E3E3E3] bg-[transparent] px-4 py-[0.8rem] font-inter text-sm font-medium leading-[1.1rem] tracking-wider text-[#454545] transition hover:bg-[#E3E3E3] sm:text-[1rem]`}
+                className={`shadowBtn duration-[0.5s] transition flex w-full items-center justify-center rounded-[3.6875rem] border border-b border-solid border-[#D6D6D6] bg-[#E3E3E3] bg-[transparent] px-4 py-[0.8rem] font-inter text-sm font-medium leading-[1.1rem] tracking-wider text-[#454545] hover:bg-[#E3E3E3] sm:text-[1rem]`}
               >
                 Cancel
               </button>
               <button
                 onClick={deleteButton}
-                className={`shadowBtn duration-[0.5s] flex w-full items-center justify-center rounded-[3.6875rem] border border-b border-solid border-[#ff0000] bg-[#ff0000] px-4 py-[0.8rem] font-inter text-sm font-medium leading-[1.1rem] tracking-wider text-[#FFFFFF] transition hover:bg-[#ff0000] sm:text-[1rem]`}
+                className={`shadowBtn duration-[0.5s] transition flex w-full items-center justify-center rounded-[3.6875rem] border border-b border-solid border-[#ff0000] bg-[#ff0000] px-4 py-[0.8rem] font-inter text-sm font-medium leading-[1.1rem] tracking-wider text-[#FFFFFF] hover:bg-[#ff0000] sm:text-[1rem]`}
               >
                 Delete
               </button>

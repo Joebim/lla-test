@@ -26,7 +26,7 @@ const RolesTabs = () => {
         <Link href={item.path} key={item.title}>
           <p
             className={clsx(
-              "flex items-center gap-3 border-r border-solid border-[#E9EEF3] px-2 py-2 font-axiforma text-[#1B1B1B] transition-all hover:bg-[#FFDECC] hover:text-[#FE5900] sm:px-4 sm:py-4",
+              "transition-all flex items-center gap-3 border-r border-solid border-[#E9EEF3] px-2 py-2 font-axiforma text-[#1B1B1B] hover:bg-[#FFDECC] hover:text-[#FE5900] sm:px-4 sm:py-4",
             )}
           >
             <item.icon className="h-5 w-5" />

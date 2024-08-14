@@ -46,7 +46,7 @@ const ToggleSwitch = ({
       onClick={toggleSwitch}
     >
       <div
-        className={`shadow-md h-[16px] w-[16px] transform rounded-full bg-white transition-transform duration-300 ease-in-out ${
+        className={`shadow-md transition-transform h-[16px] w-[16px] transform rounded-full bg-white duration-300 ease-in-out ${
           isOn ? "translate-x-4" : "translate-x-0"
         }`}
       ></div>

@@ -37,7 +37,7 @@ const NotFoundPage = () => {
           <TransitionLink
             href="#"
             onClick={() => router.back()}
-            className="pointer-events-auto flex items-center gap-x-2 rounded-xl border border-[#f97415] bg-black px-4 py-2 transition-colors duration-300 hover:text-white"
+            className="transition-colors pointer-events-auto flex items-center gap-x-2 rounded-xl border border-[#f97415] bg-black px-4 py-2 duration-300 hover:text-white"
           >
             <ArrowLeft className="size-5 xl:size-6" />
             Back
@@ -45,7 +45,7 @@ const NotFoundPage = () => {
           <Link
             href="/"
             onClick={() => animatePageOut("/", router)}
-            className="pointer-events-auto flex items-center gap-x-2 rounded-xl border border-[#f97415] bg-black px-4 py-2 transition-colors duration-300 hover:text-white"
+            className="transition-colors pointer-events-auto flex items-center gap-x-2 rounded-xl border border-[#f97415] bg-black px-4 py-2 duration-300 hover:text-white"
           >
             <Home className="size-5 xl:size-6" />
             Home

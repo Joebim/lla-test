@@ -103,7 +103,7 @@ const AdminFAQTable = ({ className }: { className?: string }) => {
               >
                 <div className="flex flex-col space-y-1 p-[2px]">
                   <button
-                    className="w-full rounded-sm border-b-[1px] text-left text-sm transition-colors duration-150 hover:bg-[#F3F4F6]"
+                    className="transition-colors w-full rounded-sm border-b-[1px] text-left text-sm duration-150 hover:bg-[#F3F4F6]"
                     style={{
                       padding: "6px 8px",
                     }}
@@ -112,7 +112,7 @@ const AdminFAQTable = ({ className }: { className?: string }) => {
                     Delete
                   </button>
                   <button
-                    className="w-full whitespace-nowrap rounded-sm text-left text-sm transition-colors duration-150 hover:bg-[#F3F4F6]"
+                    className="transition-colors w-full whitespace-nowrap rounded-sm text-left text-sm duration-150 hover:bg-[#F3F4F6]"
                     style={{
                       padding: "6px 8px",
                     }}
