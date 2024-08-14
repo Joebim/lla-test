@@ -468,13 +468,12 @@ export default function Overview() {
               variant="outline"
               onClick={() => handlePageChange(pagination.page - 1)}
               disabled={pagination.page === 1}
-              className="mr-2"
+              className="mr-2 flex items-center gap-2"
             >
-              Previous <ChevronLeft />
+              <ChevronLeft />
+              Previous
             </Button>
-            <span className="flex items-center px-4">
-              {pagination.page} of {pageCount}
-            </span>
+
             {Array.from({ length: pagination?.totalPages }).map((_, index) => (
               <button
                 key={index + 1}
@@ -493,6 +492,7 @@ export default function Overview() {
               variant="outline"
               onClick={() => handlePageChange(pagination.page)}
               disabled={pagination.page === pageCount}
+              className="flex items-center gap-3"
             >
               Next
               <ChevronRight />

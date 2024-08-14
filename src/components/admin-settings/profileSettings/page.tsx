@@ -49,7 +49,26 @@ const AdminProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
   const [isLoadingAdminDetails, setIsLoadingAdminDetails] = useState(true);
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorName, setErrorName] = useState("");
+  const [errorGender, setErrorGender] = useState("");
+  function ValidateForm() {
+    if (!email && !temporaryEmail) {
+      setErrorEmail("enter a valid email");
+      return false;
+    }
+    if (!name && !temporaryName) {
+      setErrorName("enter name");
 
+      return false;
+    }
+    if (!gender && !temporaryGender) {
+      setErrorGender("pick a gender");
+
+      return false;
+    }
+    return true;
+  }
   useEffect(() => {
     async function fetchAdminProfile() {
       setIsLoadingAdminDetails(true);
@@ -74,13 +93,21 @@ const AdminProfile = () => {
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      if (!validateImageFile(file)) {
+        setError("Only JPG, JPEG, and PNG formats are allowed.");
+        return;
+      }
+
       const reader = new FileReader();
       reader.addEventListener("load", (event: ProgressEvent<FileReader>) => {
         if (event.target && event.target.result) {
+          // Update the image state directly to reflect the change immediately
           setImage(event.target.result as string);
+          setTemporaryImage(event.target.result as string); // If you're using a temporary image state for preview
         }
       });
-      reader.readAsDataURL(event.target.files[0]);
+      reader.readAsDataURL(file);
     }
   };
 
@@ -96,7 +123,9 @@ const AdminProfile = () => {
       const reader = new FileReader();
       reader.addEventListener("load", (event: ProgressEvent<FileReader>) => {
         if (event.target && event.target.result) {
+          // Update the image state directly to reflect the change immediately
           setImage(event.target.result as string);
+          setTemporaryImage(event.target.result as string); // If you're using a temporary image state for preview
         }
       });
       reader.readAsDataURL(file);
@@ -108,26 +137,29 @@ const AdminProfile = () => {
       setError("Please enter a valid email address");
       return;
     }
+    if (ValidateForm()) {
+      try {
+        const profileData = {} as Partial<ProfileData>;
 
-    try {
-      const profileData = {} as Partial<ProfileData>;
+        if (image ?? temporaryImage)
+          profileData.image = image ?? temporaryImage;
+        if (name ?? temporaryName) profileData.username = name ?? temporaryName;
+        if (email ?? temporaryEmail)
+          profileData.email = email ?? temporaryEmail;
+        if (gender ?? temporaryGender)
+          profileData.gender = gender ?? temporaryGender;
 
-      if (image ?? temporaryImage) profileData.image = image ?? temporaryImage;
-      if (name ?? temporaryName) profileData.username = name ?? temporaryName;
-      if (email ?? temporaryEmail) profileData.email = email ?? temporaryEmail;
-      if (gender ?? temporaryGender)
-        profileData.gender = gender ?? temporaryGender;
+        await updateAdminProfile(
+          profileData as ProfileData,
+          session?.access_token,
+        );
 
-      await updateAdminProfile(
-        profileData as ProfileData,
-        session?.access_token,
-      );
-
-      setError("");
-      setIsEditing(false);
-      setIsSuccessModalOpen(true);
-    } catch (error) {
-      console.error("Failed to update profile", error);
+        setError("");
+        setIsEditing(false);
+        setIsSuccessModalOpen(true);
+      } catch (error) {
+        console.error("Failed to update profile", error);
+      }
     }
   };
 
@@ -137,7 +169,28 @@ const AdminProfile = () => {
       setError("");
     }
   };
-
+  async function fetchAdminProfile() {
+    setIsLoadingAdminDetails(true);
+    try {
+      const response = await getAdminProfile(session?.access_token);
+      if (response?.data) {
+        setTemporaryImage(
+          response.data.data.avatar_url || "/images/profile_avatar.svg",
+        );
+        setTemporaryName(response.data.data.username);
+        setTemporaryEmail(response.data.data.email);
+        setTemporaryGender(response.data.data.gender);
+        setIsLoadingAdminDetails(false);
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+  const viewProfile = () => {
+    setIsSuccessModalOpen(false);
+    fetchAdminProfile();
+  };
   return (
     <main data-testid="profile-settings" className="font-inter">
       {/* upload image modal */}
@@ -203,7 +256,7 @@ const AdminProfile = () => {
           <CustomButton
             variant="primary"
             className="w-full"
-            onClick={() => setIsSuccessModalOpen(false)}
+            onClick={viewProfile}
           >
             View Profile
           </CustomButton>
@@ -211,7 +264,7 @@ const AdminProfile = () => {
       )}
 
       <section className="mt-[30px] w-full rounded-[15px] border-2 border-neutral-30 bg-white p-[20px] sm:p-[30px] md:p-[40px]">
-        <div className="block w-full items-center space-x-0 lg:flex lg:space-x-[70px]">
+        <div className="block w-full items-center space-x-0 lg:space-x-[70px] xl:flex">
           {/* profile image section */}
           {}
           <section className="profile-image">
@@ -222,7 +275,7 @@ const AdminProfile = () => {
                 className="relative h-[180px] w-[180px] cursor-pointer sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]"
               >
                 <Image
-                  src={temporaryImage || "/images/profile_avatar.svg"}
+                  src={image || temporaryImage || "/images/profile_avatar.svg"} // Use the image state for rendering
                   alt="Profile Image"
                   width={100}
                   height={100}
@@ -232,13 +285,12 @@ const AdminProfile = () => {
               </div>
             ) : (
               <>
-                {" "}
                 {isLoadingAdminDetails ? (
                   <Skeleton className="h-[180px] w-[180px] bg-neutral-40 sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]" />
                 ) : (
                   <div className="h-[180px] w-[180px] sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]">
                     <Image
-                      src={image || "/images/profile_avatar.svg"}
+                      src={image || "/images/profile_avatar.svg"} // Use the image state for rendering
                       alt="Profile Image"
                       width={100}
                       height={100}
@@ -268,6 +320,9 @@ const AdminProfile = () => {
                         value={temporaryName ?? name}
                         onChange={(event) => setName(event.target.value)}
                       />
+                      <small className="text-[0.75rem] text-red-600">
+                        {errorName}
+                      </small>
                     </div>
                   </div>
                   <div className="block items-center justify-between sm:flex">
@@ -283,26 +338,32 @@ const AdminProfile = () => {
                         value={temporaryEmail ?? email}
                         onChange={(event) => setEmail(event.target.value)}
                       />{" "}
-                      <br />
-                      <small className="text-red-600">{error}</small>
+                      <small className="text-[0.75rem] text-red-600">
+                        {errorEmail}
+                      </small>
                     </div>
                   </div>
                   <div className="block items-center justify-between sm:flex">
                     <label htmlFor="gender" className="font-semibold">
                       Gender
                     </label>
-                    <select
-                      id="gender"
-                      name="gender"
-                      value={temporaryGender ?? gender}
-                      onChange={(event) => setGender(event.target.value)}
-                      className="w-[100%] rounded border border-gray-300 p-2"
-                    >
-                      <option value="">Select Gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                    </select>
+                    <div>
+                      <select
+                        id="gender"
+                        name="gender"
+                        value={temporaryGender ?? gender}
+                        onChange={(event) => setGender(event.target.value)}
+                        className="w-[100%] rounded border border-gray-300 p-2"
+                      >
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                      </select>
+                      <small className="text-[0.75rem] text-red-600">
+                        {errorGender}
+                      </small>
+                    </div>
                   </div>
                 </section>
                 <section className="mt-[40px] flex w-full items-center justify-center space-x-5">
