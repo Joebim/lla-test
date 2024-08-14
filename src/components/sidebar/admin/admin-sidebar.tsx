@@ -39,7 +39,7 @@ const AdminSidebar = () => {
   return (
     <aside
       className={clsx(
-        `transition-all relative hidden flex-col border-r py-8 sm:flex`,
+        `relative hidden flex-col border-r py-8 transition-all sm:flex`,
         isCollapsed ? "w-20 px-2" : "w-72 px-6",
       )}
     >
@@ -58,7 +58,7 @@ const AdminSidebar = () => {
                 <Link
                   href={item.path}
                   className={clsx(
-                    `transition-all flex items-center justify-start gap-[12px] self-stretch whitespace-nowrap rounded-[14px] py-[12px] hover:bg-[#1B1B1B] hover:text-white`,
+                    `flex items-center justify-start gap-[12px] self-stretch whitespace-nowrap rounded-[14px] py-[12px] transition-all hover:bg-[#1B1B1B] hover:text-white`,
                     isCollapsed ? "px-1" : "px-[20px]",
                     isCollapsed ? "justify-center" : "",
                     getLinkClassName(item.path),

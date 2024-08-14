@@ -71,7 +71,7 @@ const LanguageSelectionDiv: React.FC = () => {
         ref={containerReference}
         className={`relative mb-8 w-full rounded-xl ${
           isOpen ? "rounded-b-none" : "rounded-b-xl"
-        } transition-shadow bg-[#F8FAFB] p-5 duration-300 ${
+        } bg-[#F8FAFB] p-5 transition-shadow duration-300 ${
           isOpen ? "shadow-[0_4px_12px_rgba(0,0,0,0.1)]" : ""
         }`}
       >
@@ -83,7 +83,7 @@ const LanguageSelectionDiv: React.FC = () => {
             <button onClick={toggleDropdown}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`transition-transform h-5 w-5 transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                className={`h-5 w-5 transform transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -104,7 +104,7 @@ const LanguageSelectionDiv: React.FC = () => {
       {isOpen && (
         <>
           <div
-            className="transition-opacity fixed inset-0 bg-black/50 backdrop-blur-sm duration-300"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
             onClick={closeDropdown}
           />
           <div
@@ -120,7 +120,7 @@ const LanguageSelectionDiv: React.FC = () => {
               {languages.map((language, index) => (
                 <div
                   key={index}
-                  className="transition-all cursor-pointer p-2 duration-200 hover:border-b-2 hover:border-[#FF7B31] hover:bg-gray-100 hover:text-[#FF7B31]"
+                  className="cursor-pointer p-2 transition-all duration-200 hover:border-b-2 hover:border-[#FF7B31] hover:bg-gray-100 hover:text-[#FF7B31]"
                   onClick={closeDropdown}
                 >
                   {language}
@@ -215,7 +215,7 @@ const SocialsDiv: React.FC = () => {
                 >
                   <div className="flex flex-col space-y-1 p-1">
                     <button
-                      className="transition-colors w-full rounded-sm text-left text-sm duration-150 hover:bg-[#F3F4F6]"
+                      className="w-full rounded-sm text-left text-sm transition-colors duration-150 hover:bg-[#F3F4F6]"
                       style={{
                         padding: "6px 8px",
                       }}
@@ -224,7 +224,7 @@ const SocialsDiv: React.FC = () => {
                       Remove
                     </button>
                     <button
-                      className="transition-colors w-full rounded-sm text-left text-sm duration-150 hover:bg-[#F3F4F6]"
+                      className="w-full rounded-sm text-left text-sm transition-colors duration-150 hover:bg-[#F3F4F6]"
                       style={{
                         padding: "6px 8px",
                       }}

@@ -19,7 +19,7 @@ const MissionBriefModal = () => {
         <CustomButton variant="primary-two">Mission Brief</CustomButton>
       </DialogTrigger>
       <DialogOverlay className="fixed inset-0" />
-      <DialogContent className="transition-all max-w-sm gap-2 bg-neutral-10 p-0 outline-none sm:max-w-[702px] sm:rounded-3xl">
+      <DialogContent className="max-w-sm gap-2 bg-neutral-10 p-0 outline-none transition-all sm:max-w-[702px] sm:rounded-3xl">
         <DialogTitle className="sr-only">Mission Brief</DialogTitle>
         <DialogDescription className="sr-only">
           Detailed mission briefing and instructions.

@@ -29,7 +29,7 @@ const QuestLevelTimer: React.FC<QuestLevelTimerProperties> = ({
 
   return (
     <div
-      className="transition-colors flex aspect-[220/77] max-h-10 w-full max-w-[220px] items-center justify-center rounded-[50.36px_23.42px_23.42px_50.36px] border-[5.86px] bg-[#FEAC80] p-2 py-4 duration-300"
+      className="flex aspect-[220/77] max-h-10 w-full max-w-[220px] items-center justify-center rounded-[50.36px_23.42px_23.42px_50.36px] border-[5.86px] bg-[#FEAC80] p-2 py-4 transition-colors duration-300"
       style={{ borderColor: borderColor }}
     >
       <div className="flex h-full w-full items-center justify-center rounded-[40px_15px_15px_40px] p-2">
@@ -44,7 +44,7 @@ const QuestLevelTimer: React.FC<QuestLevelTimerProperties> = ({
             />
           </div>
           <div
-            className="transition-colors flex-shrink-0 duration-300"
+            className="flex-shrink-0 transition-colors duration-300"
             style={{
               fontFamily: "Lilita One, cursive",
               fontSize: "clamp(22px, 4.5vw, 34px)",
