@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import FAQs from "./page";
 
-describe("FAQs Page", () => {
+describe("fAQs Page", () => {
   it("renders the FAQ page with header, date, and introduction", async () => {
     // Render the component
     render(<FAQs />);
