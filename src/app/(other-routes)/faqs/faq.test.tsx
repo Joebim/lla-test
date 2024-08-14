@@ -22,7 +22,7 @@ describe("FAQs Page", () => {
 
     // Wait for the date to appear with the dynamically generated date
     await waitFor(() =>
-      expect(screen.getByText(expectedDate)).toBeInTheDocument()
+      expect(screen.getByText(expectedDate)).toBeInTheDocument(),
     );
 
     // Check for the introduction section
