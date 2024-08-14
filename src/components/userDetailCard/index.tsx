@@ -32,8 +32,11 @@ const UserDetailsCard = ({
         <h3 className="text-[19px] font-bold text-secondary-100 sm:text-[23px]">
           {username ?? "N/A"}
         </h3>
-        <p className="font-semibold text-secondary-120">{gender ?? "N/A"}</p>
         <div className="space-y-[10px]">
+          <div className="flex items-center gap-2 text-[13px] sm:text-base">
+            <p className="font-semibold">Gender:</p>
+            <p className="text-secondary-120">{gender ?? "N/A"}</p>
+          </div>
           <div className="flex items-center gap-2 text-[13px] sm:text-base">
             <p className="font-semibold">DOB:</p>
             <p className="text-secondary-70">{dob ?? "N/A"}</p>

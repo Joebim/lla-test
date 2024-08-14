@@ -10,17 +10,19 @@ export type PaginationRequest = {
 const admin_base_url: string =
   process.env.API_URL || "https://api.staging.delve.fun";
 
-export const getAuthToken = () => {
-  const token = sessionStorage.getItem("accessToken");
-  console.log({ token });
-  if (!token) {
-    throw new Error("No access token found. Please log in.");
+export const getAuthToken = async () => {
+  try {
+    // return session?.access_token;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
-
-  return token;
 };
 
-export const getAllUsers = async (PaginationRequest: PaginationRequest) => {
+export const getAllUsers = async (
+  PaginationRequest: PaginationRequest,
+  token: string | undefined,
+) => {
   try {
     const response = await axios.get(`${admin_base_url}/api/v1/admin/users`, {
       params: {
@@ -28,7 +30,7 @@ export const getAllUsers = async (PaginationRequest: PaginationRequest) => {
         perPage: PaginationRequest.perPage,
       },
       headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -40,11 +42,11 @@ export const getAllUsers = async (PaginationRequest: PaginationRequest) => {
 };
 
 //  Get all userStats
-export const getUsersStats = async () => {
+export const getUsersStats = async (token: string | undefined) => {
   try {
     const response = await axios.get(`${admin_base_url}/api/v1/statistics`, {
       headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     return response;
@@ -56,13 +58,16 @@ export const getUsersStats = async () => {
 };
 
 // get user by status
-export const getUserByStatus = async (booleanValue: boolean | undefined) => {
+export const getUserByStatus = async (
+  booleanValue: boolean | undefined,
+  token: string | undefined,
+) => {
   try {
     const response = await axios.get(
       `${admin_base_url}/api/v1/admin/users?status=${booleanValue}`,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -78,13 +83,14 @@ export const getUserByStatus = async (booleanValue: boolean | undefined) => {
 export const getUsersByDate = async (
   created_at_from: Date | string,
   created_at_to: Date | string,
+  token: string | undefined,
 ) => {
   try {
     const response = await axios.get(
       `${admin_base_url}/api/v1/admin/users?created_at_from=${created_at_from}&created_at_to=${created_at_to}`,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -97,13 +103,13 @@ export const getUsersByDate = async (
 
 // export users to csv
 
-export const ExportUsers = async () => {
+export const ExportUsers = async (token: string | undefined) => {
   try {
     const response = await axios.get(
       `${admin_base_url}/api/v1/admin/users/export`,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
+          Authorization: `Bearer ${token}`,
         },
         responseType: "blob",
       },
@@ -116,13 +122,16 @@ export const ExportUsers = async () => {
   }
 };
 // Retrieve A specific user
-export const GetSingleUser = async (userId: string | string[] | undefined) => {
+export const GetSingleUser = async (
+  userId: string | string[] | undefined,
+  token: string | undefined,
+) => {
   try {
     const response = await axios.get(
       `${admin_base_url}/api/v1/admin/users/${userId}`,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1ODg1MywiZXhwIjoxNzIzNTYyNDUzLCJuYmYiOjE3MjM1NTg4NTMsImp0aSI6InlWZHRQWlZnN2E3dXVWRUsiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.IQZx5jIx6IJG0fD8IT-dY2ywDLhR-y_2UxhLGkB1X8o`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -135,29 +144,34 @@ export const GetSingleUser = async (userId: string | string[] | undefined) => {
 };
 
 // deactivate User
-export const deactivateUser = async (userId: string) => {
+export const deactivateUser = async (
+  userId: string,
+  token: string | undefined,
+) => {
   try {
     const response = await axios.patch(
       `${admin_base_url}/api/v1/admin/users/${userId}/deactivate`,
+      {},
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
 
     return response;
   } catch (error) {
-    console.error(error);
+    console.error("Error deactivating user:");
     throw error;
   }
 };
+
 // get admin profile
-export const getAdminProfile = async () => {
+export const getAdminProfile = async (token: string | undefined) => {
   try {
     const response = await axios.get(`${admin_base_url}/api/v1/admin-profile`, {
       headers: {
-        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -174,20 +188,21 @@ interface ProfileData {
   gender: string;
 }
 
-export const updateAdminProfile = async (profileData: ProfileData) => {
+export const updateAdminProfile = async (
+  profileData: ProfileData,
+  token: string | undefined,
+) => {
   try {
-    console.log("Sending profile data:", profileData);
-    const response = await axios.patch(
+    const response = await axios.post(
       `${admin_base_url}/api/v1/admin-profile`,
       profileData,
       {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5zdGFnaW5nLmRlbHZlLmZ1bi9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTcyMzU1NTE1MiwiZXhwIjoxNzIzNTU4NzUyLCJuYmYiOjE3MjM1NTUxNTIsImp0aSI6IjFadkNZNDJlNlAxY2JIcUwiLCJzdWIiOiJkZjlhOTFjMi1iNGI4LTQ1NjgtOTdhYi02ODc1YWRlZTVmNGYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zVBwdLveQzZKM3U6SxF81F0ZOkEx170SE6wEeXjkuow`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       },
     );
-    console.log("Profile updated successfully:", response.data);
     return response.data?.data;
   } catch (error) {
     console.error(

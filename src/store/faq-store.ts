@@ -1,7 +1,9 @@
 import axios from "axios";
 
-import { ADMIN_BASE_URL } from "~/app/api/adminDashboard/route";
 import { auth } from "~/lib/auth";
+
+const admin_base_url: string =
+  process.env.API_URL || "https://api.staging.delve.fun";
 
 interface createProperties {
   question: string;
@@ -18,7 +20,7 @@ interface UpdateProperties {
 //fetch faqs
 const getFAQs = async () => {
   try {
-    const response = await axios.get(`${ADMIN_BASE_URL}/api/v1/faqs`);
+    const response = await axios.get(`${admin_base_url}/api/v1/faqs`);
 
     return {
       data: response.data,
@@ -42,7 +44,7 @@ const CreateFaqs = async (payload: createProperties) => {
     const session = await auth();
 
     const response = await axios.post(
-      `${ADMIN_BASE_URL}/api/v1/faqs`,
+      `${admin_base_url}/api/v1/faqs`,
       payload,
       {
         headers: {
@@ -73,7 +75,7 @@ const DeleteFaqs = async (id: string) => {
   try {
     const session = await auth();
 
-    const response = await axios.delete(`${ADMIN_BASE_URL}/api/v1/faqs/${id}`, {
+    const response = await axios.delete(`${admin_base_url}/api/v1/faqs/${id}`, {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
@@ -99,7 +101,7 @@ const UpdateFaqs = async (payload: UpdateProperties, id: string) => {
     const session = await auth();
 
     const response = await axios.put(
-      `${ADMIN_BASE_URL}/api/v1/faqs/${id}`,
+      `${admin_base_url}/api/v1/faqs/${id}`,
       payload,
       {
         headers: {

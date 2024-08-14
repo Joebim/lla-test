@@ -2,6 +2,7 @@
 "use client";
 
 import { Camera } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -14,15 +15,11 @@ import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
 import CustomInput from "~/components/input/CustomInput";
 import { Skeleton } from "~/components/ui/skeleton";
 
-const handleFileInputClick = () => {
-  const fileInput = document.querySelector(
-    "#fileInput",
-  ) as HTMLInputElement | null;
-  fileInput?.click();
-};
-
-const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-  event.preventDefault();
+type ProfileData = {
+  image: string;
+  username: string;
+  email: string;
+  gender: string;
 };
 
 const validateEmail = (email: string): boolean => {
@@ -30,7 +27,13 @@ const validateEmail = (email: string): boolean => {
   return emailRegex.test(email);
 };
 
+const validateImageFile = (file: File): boolean => {
+  const allowedFormats = ["image/jpeg", "image/png"];
+  return allowedFormats.includes(file.type);
+};
+
 const AdminProfile = () => {
+  const { data: session } = useSession();
   //states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -46,22 +49,19 @@ const AdminProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
   const [isLoadingAdminDetails, setIsLoadingAdminDetails] = useState(true);
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   useEffect(() => {
     async function fetchAdminProfile() {
       setIsLoadingAdminDetails(true);
       try {
-        const response = await getAdminProfile();
+        const response = await getAdminProfile(session?.access_token);
         if (response?.data) {
           setTemporaryImage(
-            response.data.image || "/images/profile_avatar.svg",
+            response.data.data.avatar_url || "/images/profile_avatar.svg",
           );
-          setTemporaryName(response.data.name);
-          setTemporaryEmail(response.data.email);
-          setTemporaryGender(response.data.gender);
+          setTemporaryName(response.data.data.username);
+          setTemporaryEmail(response.data.data.email);
+          setTemporaryGender(response.data.data.gender);
           setIsLoadingAdminDetails(false);
         }
       } catch (error) {
@@ -70,7 +70,7 @@ const AdminProfile = () => {
       }
     }
     fetchAdminProfile();
-  }, []);
+  }, [session?.access_token]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -87,13 +87,19 @@ const AdminProfile = () => {
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      const file = event.dataTransfer.files[0];
+      if (!validateImageFile(file)) {
+        setError("Only JPG, JPEG, and PNG formats are allowed.");
+        return;
+      }
+
       const reader = new FileReader();
       reader.addEventListener("load", (event: ProgressEvent<FileReader>) => {
         if (event.target && event.target.result) {
           setImage(event.target.result as string);
         }
       });
-      reader.readAsDataURL(event.dataTransfer.files[0]);
+      reader.readAsDataURL(file);
     }
   };
 
@@ -102,13 +108,21 @@ const AdminProfile = () => {
       setError("Please enter a valid email address");
       return;
     }
+
     try {
-      await updateAdminProfile({
-        image: image ?? temporaryImage,
-        username: name ?? temporaryName,
-        email: email ?? temporaryEmail,
-        gender: gender ?? temporaryGender,
-      });
+      const profileData = {} as Partial<ProfileData>;
+
+      if (image ?? temporaryImage) profileData.image = image ?? temporaryImage;
+      if (name ?? temporaryName) profileData.username = name ?? temporaryName;
+      if (email ?? temporaryEmail) profileData.email = email ?? temporaryEmail;
+      if (gender ?? temporaryGender)
+        profileData.gender = gender ?? temporaryGender;
+
+      await updateAdminProfile(
+        profileData as ProfileData,
+        session?.access_token,
+      );
+
       setError("");
       setIsEditing(false);
       setIsSuccessModalOpen(true);
@@ -117,20 +131,12 @@ const AdminProfile = () => {
     }
   };
 
-  const handleGenderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTemporaryGender(event.target.value);
-  };
-
   const handleUpdateProfileClick = () => {
     setIsEditing(!isEditing);
     if (error) {
       setError("");
     }
   };
-
-  if (!isClient) {
-    return;
-  }
 
   return (
     <main data-testid="profile-settings" className="font-inter">
@@ -228,7 +234,7 @@ const AdminProfile = () => {
               <>
                 {" "}
                 {isLoadingAdminDetails ? (
-                  <Skeleton className="h-[180px] w-[180px] sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]" />
+                  <Skeleton className="h-[180px] w-[180px] bg-neutral-40 sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]" />
                 ) : (
                   <div className="h-[180px] w-[180px] sm:h-[300px] sm:w-[300px] lg:h-[400px] lg:w-[400px]">
                     <Image
@@ -315,9 +321,9 @@ const AdminProfile = () => {
               <>
                 {isLoadingAdminDetails ? (
                   <>
-                    <Skeleton className="h-[40px] w-[180px] sm:h-[40px] sm:w-[300px] lg:h-[40px] lg:w-[400px]" />
-                    <Skeleton className="mt-8 h-[40px] w-[180px] sm:h-[40px] sm:w-[300px] lg:h-[40px] lg:w-[400px]" />
-                    <Skeleton className="mt-8 h-[40px] w-[180px] sm:h-[40px] sm:w-[300px] lg:h-[40px] lg:w-[400px]" />
+                    <Skeleton className="h-[40px] w-[180px] bg-neutral-40 sm:h-[40px] sm:w-[300px] lg:h-[40px] lg:w-[400px]" />
+                    <Skeleton className="mt-8 h-[40px] w-[180px] bg-neutral-40 sm:h-[40px] sm:w-[300px] lg:h-[40px] lg:w-[400px]" />
+                    <Skeleton className="mt-8 h-[40px] w-[180px] bg-neutral-40 sm:h-[40px] sm:w-[300px] lg:h-[40px] lg:w-[400px]" />
                   </>
                 ) : (
                   <>
@@ -342,7 +348,9 @@ const AdminProfile = () => {
                       <label htmlFor="gender" className="font-semibold">
                         Gender
                       </label>
-                      <p className="text-neutral-130">{gender ?? "N/A"}</p>
+                      <p className="text-neutral-130">
+                        {temporaryGender ?? "N/A"}
+                      </p>
                     </div>
                     <section className="mt-[40px] flex w-full items-center justify-center">
                       <CustomButton
