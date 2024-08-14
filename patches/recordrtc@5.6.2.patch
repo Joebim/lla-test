@@ -1,0 +1,38 @@
+diff --git a/RecordRTC.js b/RecordRTC.js
+index c0c07c85d8dcc26d518165473bfaa773558d89ae..547fcaa94f53e3e841f43b827a48fec2f6976022 100644
+--- a/RecordRTC.js
++++ b/RecordRTC.js
+@@ -1730,11 +1730,13 @@ if (typeof AudioContext === 'undefined') {
+ }
+ 
+ /*jshint -W079 */
+-var URL = window.URL;
++if (typeof window !== 'undefined') {
++    var wurl = window.URL;
++}
+ 
+-if (typeof URL === 'undefined' && typeof webkitURL !== 'undefined') {
++if (typeof wurl === 'undefined' && typeof webkitURL !== 'undefined') {
+     /*global URL:true */
+-    URL = webkitURL;
++    wurl = webkitURL;
+ }
+ 
+ if (typeof navigator !== 'undefined' && typeof navigator.getUserMedia === 'undefined') { // maybe window.navigator?
+@@ -4992,11 +4994,13 @@ function MultiStreamsMixer(arrayOfMediaStreams, elementClass) {
+     }
+ 
+     /*jshint -W079 */
+-    var URL = window.URL;
++    if (typeof window !== 'undefined') {
++        var wurl = window.URL;
++    }
+ 
+-    if (typeof URL === 'undefined' && typeof webkitURL !== 'undefined') {
++    if (typeof wurl === 'undefined' && typeof webkitURL !== 'undefined') {
+         /*global URL:true */
+-        URL = webkitURL;
++        wurl = webkitURL;
+     }
+ 
+     if (typeof navigator !== 'undefined' && typeof navigator.getUserMedia === 'undefined') { // maybe window.navigator?

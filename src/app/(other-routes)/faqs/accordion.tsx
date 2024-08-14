@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
+import { getFAQs } from "~/store/faq-store";
 import {
   Accordion,
   AccordionContent,
@@ -9,61 +10,27 @@ import {
   AccordionTrigger,
 } from "../../../components/ui/accordion";
 
-interface Faq {
+interface Properties {
   id: string;
   question: string;
   answer: string;
-  updated_at: string;
+  category: string;
 }
 
-export function FaqAccordions({ setUpdatedAt }) {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [datas, setDatas] = useState<Faq[]>([]);
-
-  const fetchListofUsers = useCallback(async () => {
-    try {
-      setLoading(true);
-      const apiResponse = await fetch(
-        "https://api.staging.delve.fun/api/v1/faqs",
-      );
-      const result = await apiResponse.json();
-
-      if (result?.data) {
-        setDatas(result.data);
-
-        // Find the most recent updated_at using forEach
-        let mostRecentUpdate = result.data[0];
-        for (const item of result.data) {
-          if (
-            new Date(item.updated_at) > new Date(mostRecentUpdate.updated_at)
-          ) {
-            mostRecentUpdate = item;
-          }
-        }
-
-        // Pass the last updated_at back to the FAQs component
-        setUpdatedAt(mostRecentUpdate.updated_at);
-      } else {
-        setDatas([]);
-        setUpdatedAt("");
-      }
-    } catch {
-      setDatas([]);
-      setUpdatedAt("");
-    } finally {
-      setLoading(false);
-    }
-  }, [setUpdatedAt]);
+export function FaqAccordions() {
+  const [faqs, setFaqs] = useState<Properties[]>([]);
 
   useEffect(() => {
-    fetchListofUsers();
-  }, [fetchListofUsers]);
-
-  if (loading)
-    return <h1 className="font-bold">Loading FAQs! Please wait ...</h1>;
-
-  if (datas.length === 0)
-    return <h1 className="font-bold">No FAQs available at the moment.</h1>;
+    const fetchFaqs = async () => {
+      const result = await getFAQs();
+      if (result && (result.status === 200 || result.status === 201)) {
+        setFaqs(result.data.data);
+      } else {
+        setFaqs([]);
+      }
+    };
+    fetchFaqs();
+  }, []);
 
   return (
     <Accordion
@@ -71,7 +38,7 @@ export function FaqAccordions({ setUpdatedAt }) {
       collapsible
       className="grid w-full gap-6 py-8 sm:gap-8"
     >
-      {datas.map((faq, index) => (
+      {faqs.map((faq, index) => (
         <AccordionItem
           className="rounded-[8px] border px-4 outline-none"
           key={faq.id}

@@ -3,3 +3,6 @@ services:
     image: delve-fe:dev
     ports:
       - "5103:3000"  
+    env_file:
+        - .env
+
