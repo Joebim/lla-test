@@ -16,9 +16,9 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
   return (
     <main>
       <header className="flex w-full flex-col items-center gap-[10px] bg-secondary-120 p-[12px] lg:p-[40px]">
-        <div className="flex w-full flex-col gap-[48px] border-transparent-white-15 bg-white p-[12px] md:pb-[48px] lg:gap-[64px] lg:border-[8px] lg:border-solid">
+        <div className="flex w-full flex-col gap-[48px] border-transparent-white-15 bg-white p-[12px] md:pb-[48px] lg:gap-[64px] lg:border-[8px] lg:border-solid lg:pt-[64px]">
           <section className="px-0 text-left sm:px-[8%] md:px-[13%]">
-            <h1 className="text-[20px] font-bold tracking-[0.06em] sm:text-2xl">
+            <h1 className="text-[20px] font-bold tracking-[0.06em] sm:text-2xl lg:text-[36px]">
               {article?.name}
             </h1>
             <div className="mt-[12px] flex items-center gap-4">
@@ -28,6 +28,8 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
                   <div className="h-2 w-2 rounded-full bg-primary-100"></div>
                 </>
               )}
+              <h6 className="text-sm">{article?.properties.author}</h6>
+              <div className="h-2 w-2 rounded-full bg-primary-100"></div>
               <h6 className="text-sm">{article?.properties.date}</h6>
               <div className="h-2 w-2 rounded-full bg-primary-100"></div>
               <h6 className="text-sm">
@@ -347,9 +349,6 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
         <FourthHero />
       </section>
       <section className="lg:px-[80px] lg:py-[80px]">
-        <div className="mb-[10]">
-          <h2 className="text-[25px] font-bold">More Blog Posts</h2>
-        </div>
         <div className="grid gap-[40px] px-[15px] py-[40px] sm:grid-cols-2 lg:grid-cols-3">
           {otherBlogs.map((data, index) => (
             <Link

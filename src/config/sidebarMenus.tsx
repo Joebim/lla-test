@@ -1,7 +1,7 @@
 import {
   ChartNoAxesColumnIncreasing,
   Crown,
-  FileCheck,
+  FileQuestion,
   Files,
   LucideIcon,
   Users,
@@ -38,7 +38,7 @@ export const sidebarMenu: SidebarMenuItem[] = [
   },
   {
     title: "Manage FAQ",
-    path: `${baseRoute}/faq`,
-    icon: FileCheck,
+    path: `${baseRoute}/manage-faq`,
+    icon: FileQuestion,
   },
 ];

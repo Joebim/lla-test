@@ -1,3 +1,7 @@
+import Link from "next/link";
+
+import CustomButton from "~/components/common/common-button/common-button";
+
 const FourthHero = () => {
   return (
     <article className="bg-secondary-120 px-[20px] py-[24px] lg:p-[40px]">
@@ -7,12 +11,15 @@ const FourthHero = () => {
             <span className="text-secondary-60">Ready To </span>Start Your
             Language Adventure?
           </h2>
-          <button
-            type="button"
-            className="mt-[40px] hidden w-[213px] rounded-[59px] border-b border-solid border-primary-120 bg-primary-100 px-[32px] py-[10px] text-[18px] leading-[28px] text-white lg:block"
-          >
-            Get Started Now
-          </button>
+          <Link href="/signup">
+            <CustomButton
+              variant="primary"
+              type="button"
+              className="mt-[40px] hidden w-[213px] rounded-[59px] border-b border-solid border-primary-120 bg-primary-100 px-[32px] py-2 text-[18px] leading-[28px] text-white lg:flex lg:p-8"
+            >
+              Get Started Now
+            </CustomButton>
+          </Link>
         </div>
         <div className="w-full max-w-[746px]">
           <p className="text-center text-[14px] leading-[20px] lg:text-start lg:text-[20px] lg:leading-[30px]">

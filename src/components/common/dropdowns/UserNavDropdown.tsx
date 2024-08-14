@@ -1,8 +1,9 @@
 import { ChevronDown, CircleHelp, LogOut, Settings } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next-nprogress-bar";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   DropdownMenu,
@@ -21,8 +22,14 @@ const handleLogout = async () => {
 
 const UserNavDropdown = () => {
   const [imageError, setImageError] = useState(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { user } = session ?? {};
+  const router = useRouter();
+  useEffect(() => {
+    if (status === "authenticated" && user) {
+      return; // if (!user.username) return; //router.push("/signup/profile");
+    }
+  }, [status, router, user]);
 
   return (
     <>
@@ -43,7 +50,9 @@ const UserNavDropdown = () => {
                   <div
                     className={`absolute left-0 top-0 flex h-9 w-9 items-center justify-center rounded-full bg-primary-30 text-xl font-semibold text-white ${imageError ? "z-10" : "-z-10"}`}
                   >
-                    {user?.username?.charAt(0).toUpperCase() ?? "D"}
+                    {user?.username
+                      ? user.username.charAt(0).toUpperCase()
+                      : "D"}
                   </div>
                 </>
               ) : (
