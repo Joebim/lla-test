@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Typewriter from "typewriter-effect";
 
 interface PlayerThoughtProperties {
   thought: string;
@@ -22,7 +23,14 @@ export const PlayerThought: React.FC<PlayerThoughtProperties> = ({
         />
       </div>
       <p className="overflow-hidden text-center text-sm leading-tight text-white">
-        {thought}
+        <Typewriter
+          options={{
+            strings: `${thought}`,
+            autoStart: true,
+            delay: 30,
+            cursor: "",
+          }}
+        />
       </p>
     </div>
   );

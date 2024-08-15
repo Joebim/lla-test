@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+import { useQuestHook } from "~/hooks/quest/use-quest-hook";
+
 interface QuestLevelTimerProperties {
   initialTime: number; // Time in seconds
 }
@@ -15,14 +17,16 @@ const QuestLevelTimer: React.FC<QuestLevelTimerProperties> = ({
   initialTime,
 }) => {
   const [time, setTime] = useState(initialTime);
+  const { start_countdown } = useQuestHook();
 
   useEffect(() => {
+    if (!start_countdown) return;
     const timer = setInterval(() => {
       setTime((previousTime) => (previousTime > 0 ? previousTime - 1 : 0));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [start_countdown]);
 
   const timerColor = time <= 60 ? "#FF0000" : "#B22F00";
   const borderColor = time <= 60 ? "#FE6A19" : "#B22F00";
