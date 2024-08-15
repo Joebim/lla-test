@@ -25,6 +25,7 @@ jobs:
     - name: Transfer Build Artifacts to Server
       run: |
         sshpass -p "${{ secrets.SSH_PASSWORD }}" scp /home/bulldozer/next.tar.gz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/delve_fe
+        rm next.tar.gz
         
         
     
@@ -35,7 +36,7 @@ jobs:
       with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
           script: |
             echo "About to Deploy"
             cd /var/www/html/delve_fe/dev
