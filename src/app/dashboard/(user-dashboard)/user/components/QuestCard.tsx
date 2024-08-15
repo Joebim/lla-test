@@ -25,7 +25,7 @@ const QuestCard = ({
             src={image}
             className="w-full object-cover"
             width={356}
-            height={467}
+            height={667}
             alt={title}
           />
         </div>

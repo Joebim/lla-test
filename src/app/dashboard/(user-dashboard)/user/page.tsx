@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 "use client";
 
 import { Gamepad } from "lucide-react";
@@ -70,7 +69,6 @@ const UserDashboard = () => {
         const response = await getAllQuests();
 
         setQuests(response?.data?.data?.data || []);
-        console.log({ response });
         // console.log(response?.data?.data?.data[0].vocabularies.length)
         setIsLoading(false);
       } catch {

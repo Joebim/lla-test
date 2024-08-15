@@ -80,7 +80,6 @@ const Overview = () => {
     async function fetchData() {
       try {
         const response = await getAllUsers(pagination);
-        console.log({ response });
         setUsers(response?.data?.data || []);
         setPagination((previous: PaginationRequest) => ({
           ...previous,

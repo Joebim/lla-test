@@ -140,7 +140,6 @@ const AdminProfile = () => {
   };
   const [updateLoading, setUpdateLoading] = useState(false);
   const handleSave = async () => {
-    console.log("clicked");
     if (!validateEmail(email || temporaryEmail)) {
       setErrorEmail("Please enter a valid email address");
       return;
@@ -148,7 +147,6 @@ const AdminProfile = () => {
     if (!ValidateForm()) {
       return;
     }
-    console.log("reach");
 
     setUpdateLoading(true);
     try {
@@ -160,8 +158,7 @@ const AdminProfile = () => {
       if (gender ?? temporaryGender)
         profileData.gender = gender ?? temporaryGender;
 
-      const response = await updateAdminProfile(profileData as ProfileData);
-      console.log({ response });
+      await updateAdminProfile(profileData as ProfileData);
       setError("");
       setIsEditing(false);
       setIsSuccessModalOpen(true);
