@@ -18,14 +18,14 @@ jobs:
        pnpm install
        rm -rf .next
        pnpm build
-       cd /home/bulldozer
+       cd /home/bulldozer/
        tar -czvf next.tar.gz language_learning_fe/.next
 
        
     - name: Transfer Build Artifacts to Server
       run: |
         sshpass -p "${{ secrets.SSH_PASSWORD }}" scp /home/bulldozer/next.tar.gz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/delve_fe
-        rm next.tar.gz
+        rm /home/bulldozer/next.tar.gz
         
         
     
@@ -39,9 +39,11 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             echo "About to Deploy"
+            cd /var/www/html/delve_fe/
+            tar -xzvf next.tar.gz -C .
+            rm next.tar.gz
+            mv language_learning_fe/.next dev
             cd /var/www/html/delve_fe/dev
             git reset --hard origin/dev
             git pull
-            tar -xzvf ../next.tar.gz -C .
-            rm ../next.tar.gz
             pm2 restart staging.delve.fun
