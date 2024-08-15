@@ -1,7 +1,17 @@
 import clsx from "clsx";
 import Image from "next/image";
 
-const UserDetailsCard = ({ className }: { className?: string }) => {
+import { userDetailsCardProperties } from "~/app/dashboard/(admin)/admin/(overview)/adminDashboardTypes";
+
+const UserDetailsCard = ({
+  username,
+  dob,
+  gender,
+  className,
+  email,
+  id,
+  status,
+}: userDetailsCardProperties) => {
   return (
     <section
       className={clsx(
@@ -20,25 +30,30 @@ const UserDetailsCard = ({ className }: { className?: string }) => {
       </div>
       <section className="mt-[10px]">
         <h3 className="text-[19px] font-bold text-secondary-100 sm:text-[23px]">
-          Afolabi Olanipekun
+          {username ?? "N/A"}
         </h3>
-        <p className="font-semibold text-secondary-120">Male</p>
         <div className="space-y-[10px]">
           <div className="flex items-center gap-2 text-[13px] sm:text-base">
+            <p className="font-semibold">Gender:</p>
+            <p className="text-secondary-120">{gender ?? "N/A"}</p>
+          </div>
+          <div className="flex items-center gap-2 text-[13px] sm:text-base">
             <p className="font-semibold">DOB:</p>
-            <p className="text-secondary-70">31/8/1998</p>
+            <p className="text-secondary-70">{dob ?? "N/A"}</p>
           </div>
           <div className="flex items-center gap-2 text-[13px] sm:text-base">
             <p className="font-semibold">User ID:</p>
-            <p className="text-secondary-70">128403</p>
+            <p className="text-secondary-70">{id ?? "N/A"}</p>
           </div>
           <div className="flex items-center gap-2 text-[13px] sm:text-base">
             <p className="font-semibold">Email:</p>
-            <p className="text-secondary-70">afolabinapekun@gmail.com</p>
+            <p className="text-secondary-70">{email}</p>
           </div>
           <div className="flex items-center gap-2 text-[13px] sm:text-base">
             <p className="font-semibold">Account Status:</p>
-            <p className="text-secondary-70">Active</p>
+            <p className="text-secondary-70">
+              {status ? "Active" : "Deactivated"}
+            </p>
           </div>
         </div>
       </section>

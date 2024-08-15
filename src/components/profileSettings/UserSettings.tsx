@@ -5,6 +5,7 @@ import React, { useState } from "react";
 
 import AvatarModal from "./AvatarModal";
 import CustomDropdown from "./custom-drop-down";
+import SettingsCard from "./settings-card";
 import { SuccessModal } from "./SuccessModal";
 
 interface UserSettingsProperties {
@@ -74,22 +75,22 @@ const UserSettings: React.FC<UserSettingsProperties> = ({
   };
 
   return (
-    <div className="w-full rounded-2xl bg-white font-axiformaSemiBold">
-      <div
-        className="title flex h-16 w-full items-center justify-between rounded-t-2xl px-4 py-8 text-black"
-        style={{ background: "#F7F2EC" }}
+    <>
+      <SettingsCard
+        title="User Information"
+        btn={
+          <>
+            {!isEditing && (
+              <button
+                onClick={handleEditProfile}
+                className="text-sm text-orange-400"
+              >
+                Edit Profile
+              </button>
+            )}
+          </>
+        }
       >
-        <h2 className="text-xl font-semibold">User Information</h2>
-        {!isEditing && (
-          <button
-            onClick={handleEditProfile}
-            className="text-sm text-orange-400"
-          >
-            Edit Profile
-          </button>
-        )}
-      </div>
-      <div className="p-4">
         <div className="relative mb-4 flex items-center">
           <Image
             src={profileImage}
@@ -182,7 +183,7 @@ const UserSettings: React.FC<UserSettingsProperties> = ({
             </button>
           </div>
         )}
-      </div>
+      </SettingsCard>
       <AvatarModal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -198,7 +199,7 @@ const UserSettings: React.FC<UserSettingsProperties> = ({
           <SuccessModal />
         </div>
       )}
-    </div>
+    </>
   );
 };
 

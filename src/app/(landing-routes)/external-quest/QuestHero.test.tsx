@@ -15,12 +15,18 @@ describe("questhero component", () => {
   });
 
   it("should render the heading with correct text and styling", () => {
-    expect.assertions(2);
+    expect.assertions(4); // Update this to reflect all assertions
     render(<QuestHero />);
-    const heading = screen.getByTestId("quest-hero-heading");
-    expect(heading).toHaveTextContent("Explore Language Quests");
-    expect(heading).toHaveClass(
-      "text-secondary-200 mb-8 pt-12 text-center text-3xl font-bold md:text-4xl lg:text-5xl",
+    const headingDesktop = screen.getByTestId("quest-hero-heading-desktop");
+    expect(headingDesktop).toHaveTextContent("Explore Language Quests");
+    expect(headingDesktop).toHaveClass(
+      "text-secondary-200 mb-8 hidden pt-12 text-center text-3xl font-bold md:block md:text-4xl lg:text-5xl",
+    );
+
+    const headingMobile = screen.getByTestId("quest-hero-heading-mobile");
+    expect(headingMobile).toHaveTextContent("Explore Quests");
+    expect(headingMobile).toHaveClass(
+      "text-secondary-200 mb-8 block pt-12 text-center text-3xl font-bold md:hidden md:text-4xl lg:text-5xl",
     );
   });
 

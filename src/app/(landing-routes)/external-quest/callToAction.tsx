@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import CustomButton from "~/components/common/common-button/common-button";
 
 const CallToAction = () => {
@@ -10,18 +12,21 @@ const CallToAction = () => {
               Ready To{" "}
               <b className="text-white">Start Your Language Adventure?</b>
             </h1>
-            <CustomButton
-              variant="primary"
-              size="lg"
-              className="hidden sm:flex"
-            >
-              Delve In
-            </CustomButton>
+            <Link href="/signup">
+              <CustomButton
+                variant="primary"
+                size="lg"
+                className="hidden sm:flex"
+              >
+                Delve In
+              </CustomButton>
+            </Link>
           </div>
           <p className="max-w-[312px] text-center font-axiformaMedium text-sm font-normal leading-relaxed text-white sm:text-base md:max-w-[700px] lg:w-1/2 lg:text-left">
             Dive in now and play the game to explore different quests, beat the
             clock, and master new languages with ease. Start your journey today!
           </p>
+
           <CustomButton
             variant="primary"
             size="default"

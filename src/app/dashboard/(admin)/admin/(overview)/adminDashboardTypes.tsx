@@ -46,3 +46,21 @@ export type StatisticItem = {
   percentage: number;
   icon: JSX.Element;
 };
+
+export type userDetailsCardProperties = {
+  className?: string;
+  avatar_url?: string;
+  created_at?: string;
+  dob?: string;
+  email?: string;
+  email_verified_at?: string;
+  gender?: string;
+  id?: string;
+  invite_link?: string;
+  is_disabled?: boolean;
+  role?: string;
+  status?: boolean;
+  updated_at?: string;
+  username?: string;
+};
+// export type AdminUsersData = {};

@@ -1,4 +1,11 @@
+"use client";
+
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const features = [
   {
@@ -28,15 +35,50 @@ const features = [
 ];
 
 const HomeKeyFeaturesSection = () => {
+  const sectionReferences = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    for (const section of sectionReferences.current) {
+      if (!section) continue;
+
+      gsap.fromTo(
+        section,
+        {
+          scale: 0.9,
+          opacity: 0.5,
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          scrollTrigger: {
+            trigger: section,
+            start: "top 70%",
+            end: "top 30%",
+            scrub: true,
+            onEnter: () => {
+              gsap.to(section, { scale: 1, opacity: 1, duration: 0.5 });
+            },
+            onLeaveBack: () => {
+              gsap.to(section, { scale: 0.9, opacity: 0.7, duration: 0.5 });
+            },
+            onLeave: () => {
+              gsap.to(section, { scale: 0.9, opacity: 0.7, duration: 0.5 });
+            },
+          },
+        },
+      );
+    }
+  }, []);
+
   return (
     <div className="flex w-full flex-col items-center justify-center gap-2 bg-white p-5 pt-14 md:p-10">
-      <h4 className="py-3 font-axiformaMedium text-[16px] font-medium leading-[30px] text-primary-110 md:text-2xl">
-        Discover Our Key Features
-      </h4>
       <div className="grid w-full grid-cols-1 place-content-center place-items-center items-center justify-center gap-3 gap-y-10 place-self-center border-[4px] border-secondary-20 bg-secondary-120 p-5 pt-5 md:grid-cols-2 md:p-10">
-        {features.map((feature, index) => (
+        {features.map((feature, _) => (
           <div
-            key={index}
+            key={feature.title}
+            ref={(element) => {
+              sectionReferences.current.push(element);
+            }}
             className="flex h-[400px] w-[100%] flex-col items-center justify-center border-[6px] border-[#FFFFFFCC] sm:h-[500px] md:w-full"
           >
             <div className="flex h-full w-full flex-col items-center justify-center border-[8px] border-secondary-90">
@@ -80,9 +122,9 @@ const HomeKeyFeaturesSection = () => {
                   <Image
                     src={feature.imgSrc}
                     alt="feature image"
-                    width={index === 2 ? 160 : 100}
-                    height={index === 2 ? 150 : 90}
-                    className={`w-[60px] md:w-[100px] ${index == 2 ? "w-[100px] md:w-[200px]" : ""}`}
+                    width={_ === 2 ? 160 : 100}
+                    height={_ === 2 ? 150 : 90}
+                    className={`w-[60px] md:w-[100px] ${_ == 2 ? "w-[100px] md:w-[200px]" : ""}`}
                   />
                   <h1 className="text-center font-axiformaBold text-[20px] font-bold leading-[30px] tracking-[1.25px] text-white md:text-[24px] xl:leading-[56px]">
                     {feature.title}

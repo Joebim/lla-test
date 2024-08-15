@@ -8,7 +8,7 @@ const SecondHero = () => {
       <div className="mx-auto flex w-full max-w-[1654px] flex-col gap-[56px]">
         <div className="text-center">
           <h2 className="font-axiformaBold text-[28px] font-bold leading-[42px] tracking-[0.06em] md:text-[48px] md:leading-[72px]">
-            Meet the <span className="text-primary-110">Team</span>
+            Meet the <span className="text-primary-100">Team</span>
           </h2>
         </div>
         <div className="flex w-full flex-wrap justify-center gap-[16px] bg-secondary-120 py-[20px] lg:gap-[32px] lg:px-[32px] lg:py-[60px]">
