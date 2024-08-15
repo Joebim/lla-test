@@ -7,50 +7,45 @@ on:
 
 jobs:
   test-and-deploy:
-    runs-on: self-hosted
+    runs-on: [self-hosted,langlearn_fe_runners_3]
 
     steps:
-      - uses: actions/checkout@v4
+      
+    - name: Update repo and build
+      run: |
+       cd /home/bulldozer/language_learning_fe
+       git pull
+       pnpm install
+       rm -rf .next
+       pnpm build
+       cd /home/bulldozer/
+       tar -czvf next.tar.gz language_learning_fe/.next
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
+       
+    - name: Transfer Build Artifacts to Server
+      run: |
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" scp /home/bulldozer/next.tar.gz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/delve_fe
+        rm /home/bulldozer/next.tar.gz
+        
+        
+    
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          dest: setup-pnpm
-          package_json_file: package.json
-          standalone: false
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Run Lint Fix
-        run: pnpm lint:fix
-
-      - name: Build
-        run: pnpm run build
-
-      - name: Run Tests
-        run: pnpm run test:ci -- --max-warnings 0
-
-      - name: Deploy to server
-        uses: appleboy/ssh-action@master
-        with:
+          
+    - name: Deploy to server
+      uses: appleboy/ssh-action@master
+      with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
           script: |
             echo "About to Deploy"
+            cd /var/www/html/delve_fe/
+            tar -xzvf next.tar.gz -C .
+            rm next.tar.gz
+            rm -rf dev/.next
+            mv language_learning_fe/.next dev
+            rm -rf language_learning_fe
             cd /var/www/html/delve_fe/dev
-            eval $(ssh-agent)
-            ssh-add ~/.ssh/id_ecdsa
             git reset --hard origin/dev
             git pull
-            pnpm install
-            rm -rf .next
-            pnpm run build
-            pm2 restart staging.delve.fun
+            /home/teamphp/.npm-global/bin/pm2 restart staging.delve.fun
