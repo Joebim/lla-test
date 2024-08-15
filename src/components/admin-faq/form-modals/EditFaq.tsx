@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import CustomInput from "~/components/input/CustomInput";
+import LoadingSpinner from "~/components/miscellaneous/loading-spinner";
 import {
   Select,
   SelectContent,
@@ -28,20 +29,26 @@ const EditFAQ = (properties: Properties) => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [category, setCategory] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setQuestion(properties?.faqs?.question || "");
     setAnswer(properties?.faqs?.answer || "");
     setCategory(properties?.faqs?.category || "");
   }, [properties?.faqs]);
+
   const { toast } = useToast();
+
   const handleUpdateFaq = async () => {
+    setLoading(true);
+
     if (answer === "" || question === "") {
       toast({
         title: "Error",
         description: "Inputs cannot be empty",
         variant: "critical",
       });
+      setLoading(false);
       return;
     }
 
@@ -60,12 +67,14 @@ const EditFAQ = (properties: Properties) => {
         variant: "default",
       });
       properties?.onClose();
+      setLoading(false);
     } else {
       toast({
         title: "Error",
         description: result?.error,
         variant: "critical",
       });
+      setLoading(false);
     }
   };
 
@@ -131,7 +140,14 @@ const EditFAQ = (properties: Properties) => {
           className="w-full"
           onClick={handleUpdateFaq}
         >
-          Save
+          {loading ? (
+            <span className="flex items-center justify-center">
+              Saving...
+              <LoadingSpinner />
+            </span>
+          ) : (
+            "Save"
+          )}
         </CustomButton>
       </div>
     </>

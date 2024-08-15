@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import CustomInput from "~/components/input/CustomInput";
+import LoadingSpinner from "~/components/miscellaneous/loading-spinner";
 import {
   Select,
   SelectContent,
@@ -22,18 +23,21 @@ interface properties {
 
 const CreateFAQ = ({ callback, setCallback, onClose }: properties) => {
   const [question, setQuestion] = useState("");
+  const [loading, setLoading] = useState(false);
   const [answer, setAnswer] = useState("");
   const [category, setCategory] = useState("");
   const { toast } = useToast();
 
   const handleAddFAQ = async () => {
-    // validate input
+    setLoading(true);
+
     if (answer === "" || question === "") {
       toast({
         title: "Error",
         description: "Inputs cannot be empty",
         variant: "critical",
       });
+      setLoading(false);
       return;
     }
 
@@ -54,12 +58,14 @@ const CreateFAQ = ({ callback, setCallback, onClose }: properties) => {
       });
 
       onClose();
+      setLoading(false);
     } else {
       toast({
         title: "Error",
         description: result?.error,
         variant: "critical",
       });
+      setLoading(false);
       setCallback(!callback);
     }
   };
@@ -126,7 +132,14 @@ const CreateFAQ = ({ callback, setCallback, onClose }: properties) => {
           className="w-full"
           onClick={handleAddFAQ}
         >
-          Add Question
+          {loading ? (
+            <span className="flex items-center justify-center">
+              Adding...
+              <LoadingSpinner />
+            </span>
+          ) : (
+            "Add Question"
+          )}
         </CustomButton>
       </div>
     </>
