@@ -3,11 +3,11 @@ name: DEV CICD
 on:
   push:
     branches:
-      - devops
+      - dev
 
 jobs:
   test-and-deploy:
-    runs-on: self-hosted
+    runs-on: [self-hosted,langlearn_fe_runners_3]
 
     steps:
       
