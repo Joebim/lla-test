@@ -24,7 +24,7 @@ jobs:
        
     - name: Transfer Build Artifacts to Server
       run: |
-        scp -i ${{ secrets.SSH_KEY }} /home/bulldozer/next.tar.gz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/delve_fe
+        scp -i "${{ secrets.SSH_KEY }}" /home/bulldozer/next.tar.gz "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/delve_fe"
     
 
           
