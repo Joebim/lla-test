@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 "use client";
 
 import { Gamepad } from "lucide-react";
@@ -154,23 +155,26 @@ const UserDashboard = () => {
                   return (
                     <>
                       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
-                        {quests.map((data: userQuests, index: number) => {
-                          const { id, thumbnail, title } = data;
-                          const vocabulariesObject = JSON.parse(
-                            data?.vocabularies,
-                          );
-                          const vocabulariesLength =
-                            Object.keys(vocabulariesObject).length;
-                          return (
-                            <QuestCard
-                              id={id}
-                              image={thumbnail}
-                              numberOfWords={vocabulariesLength}
-                              title={title}
-                              key={index}
-                            />
-                          );
-                        })}
+                        {quests &&
+                          quests.map((data: userQuests, index: number) => {
+                            const { id, thumbnail, title } = data;
+                            const vocabulariesObject = JSON.parse(
+                              data?.vocabularies,
+                            );
+                            console.log(vocabulariesObject);
+                            const vocabulariesLength = Object.keys(
+                              vocabulariesObject ?? {},
+                            ).length;
+                            return (
+                              <QuestCard
+                                id={id}
+                                image={thumbnail}
+                                numberOfWords={vocabulariesLength}
+                                title={title}
+                                key={index}
+                              />
+                            );
+                          })}
                       </div>
                     </>
                   );

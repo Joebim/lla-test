@@ -12,7 +12,7 @@ export const getAllQuests = async () => {
 
     const response = await axios.get(`${admin_base_url}/api/v1/quests`, {
       headers: {
-        Authorization: `Bearer ${session?.access_token}`,
+        Authorization: `Bearer ${session?.access_token ?? ""}`,
       },
     });
 
@@ -30,7 +30,7 @@ export const getPreviewQuest = async (questId: string) => {
       `${admin_base_url}/api/v1/quests/${questId}`,
       {
         headers: {
-          Authorization: `Bearer ${session?.access_token}`,
+          Authorization: `Bearer ${session?.access_token ?? ""}`,
         },
       },
     );

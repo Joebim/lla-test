@@ -17,7 +17,7 @@ export const getAllUsers = async (PaginationRequest: PaginationRequest) => {
         perPage: PaginationRequest.perPage,
       },
       headers: {
-        Authorization: `Bearer ${session?.access_token}`,
+        Authorization: `Bearer ${session?.access_token ?? ""}`,
       },
     });
 
@@ -35,7 +35,7 @@ export const getUsersStats = async () => {
 
     const response = await axios.get(`${admin_base_url}/api/v1/statistics`, {
       headers: {
-        Authorization: `Bearer ${session?.access_token}`,
+        Authorization: `Bearer ${session?.access_token ?? ""}`,
       },
     });
     return response;
@@ -62,7 +62,7 @@ export const getUserByStatus = async (
           perPage: PaginationRequest.perPage,
         },
         headers: {
-          Authorization: `Bearer ${session?.access_token}`,
+          Authorization: `Bearer ${session?.access_token ?? ""}`,
         },
       },
     );
@@ -91,7 +91,7 @@ export const getUsersByDate = async (
           perPage: PaginationRequest.perPage,
         },
         headers: {
-          Authorization: `Bearer ${session?.access_token}`,
+          Authorization: `Bearer ${session?.access_token ?? ""}`,
         },
       },
     );
@@ -112,7 +112,7 @@ export const ExportUsers = async () => {
       `${admin_base_url}/api/v1/admin/users/export`,
       {
         headers: {
-          Authorization: `Bearer ${session?.access_token}`,
+          Authorization: `Bearer ${session?.access_token ?? ""}`,
         },
         responseType: "blob",
       },
@@ -133,7 +133,7 @@ export const GetSingleUser = async (userId: string | string[] | undefined) => {
       `${admin_base_url}/api/v1/admin/users/${userId}`,
       {
         headers: {
-          Authorization: `Bearer ${session?.access_token}`,
+          Authorization: `Bearer ${session?.access_token ?? ""}`,
         },
       },
     );
@@ -155,7 +155,7 @@ export const deactivateUser = async (userId: string) => {
       {},
       {
         headers: {
-          Authorization: `Bearer ${session?.access_token}`,
+          Authorization: `Bearer ${session?.access_token ?? ""}`,
         },
       },
     );
@@ -176,7 +176,7 @@ export const reactivateUser = async (userId: string) => {
       {},
       {
         headers: {
-          Authorization: `Bearer ${session?.access_token}`,
+          Authorization: `Bearer ${session?.access_token ?? ""}`,
         },
       },
     );
@@ -195,7 +195,7 @@ export const getAdminProfile = async () => {
 
     const response = await axios.get(`${admin_base_url}/api/v1/admin-profile`, {
       headers: {
-        Authorization: `Bearer ${session?.access_token}`,
+        Authorization: `Bearer ${session?.access_token ?? ""}`,
       },
     });
 
@@ -221,7 +221,7 @@ export const updateAdminProfile = async (profileData: ProfileData) => {
       profileData,
       {
         headers: {
-          Authorization: `Bearer ${session?.access_token}`,
+          Authorization: `Bearer ${session?.access_token ?? ""}`,
           "Content-Type": "application/json",
         },
       },
