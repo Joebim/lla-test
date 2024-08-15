@@ -68,5 +68,9 @@ export type userDetailsCardProperties = {
   status?: boolean;
   updated_at?: string;
   username?: string;
+  session?: {
+    last_login_at: string;
+    deviceName: string;
+  };
 };
 // export type AdminUsersData = {};

@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 import axios from "axios";
 
-import { auth } from "~/lib/auth";
+import { clientSession } from "~/lib/session";
 
 const admin_base_url: string =
   process.env.API_URL || "https://api.staging.delve.fun";
 
 export const getAllQuests = async () => {
   try {
-    const session = await auth();
+    const session = await clientSession();
 
     const response = await axios.get(`${admin_base_url}/api/v1/quests`, {
       headers: {
@@ -24,7 +24,7 @@ export const getAllQuests = async () => {
 };
 export const getPreviewQuest = async (questId: string) => {
   try {
-    const session = await auth();
+    const session = await clientSession();
 
     const response = await axios.get(
       `${admin_base_url}/api/v1/quests/${questId}`,

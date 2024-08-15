@@ -4,9 +4,9 @@
 import { Gamepad } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { getAllQuests } from "~/actions/userDashboardQuest.ts/route";
 import { Tabs, TabsContent } from "~/components/ui/tabs";
 import { useToast } from "~/components/ui/use-toast";
+import { getAllQuests } from "~/lib/services/userDashboard";
 import DifficultySelect from "./components/DifficultySelect";
 import LoadingQuestCard from "./components/LoadingQuestCard";
 import QuestCard from "./components/QuestCard";
@@ -68,6 +68,7 @@ const UserDashboard = () => {
     async function fetchData() {
       try {
         const response = await getAllQuests();
+
         setQuests(response?.data?.data?.data || []);
         console.log({ response });
         // console.log(response?.data?.data?.data[0].vocabularies.length)

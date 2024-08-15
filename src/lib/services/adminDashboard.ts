@@ -2,14 +2,14 @@
 import axios, { AxiosError } from "axios";
 
 import { PaginationRequest } from "~/app/dashboard/(admin)/admin/(overview)/adminDashboardTypes";
-import { auth } from "~/lib/auth";
+import { clientSession } from "~/lib/session";
 
 const admin_base_url: string =
   process.env.API_URL || "https://api.staging.delve.fun";
 
 export const getAllUsers = async (PaginationRequest: PaginationRequest) => {
   try {
-    const session = await auth();
+    const session = await clientSession();
 
     const response = await axios.get(`${admin_base_url}/api/v1/admin/users`, {
       params: {
@@ -31,7 +31,7 @@ export const getAllUsers = async (PaginationRequest: PaginationRequest) => {
 //  Get all userStats
 export const getUsersStats = async () => {
   try {
-    const session = await auth();
+    const session = await clientSession();
 
     const response = await axios.get(`${admin_base_url}/api/v1/statistics`, {
       headers: {
@@ -47,13 +47,20 @@ export const getUsersStats = async () => {
 };
 
 // get user by status
-export const getUserByStatus = async (booleanValue: boolean | undefined) => {
+export const getUserByStatus = async (
+  booleanValue: boolean | undefined,
+  PaginationRequest: PaginationRequest,
+) => {
   try {
-    const session = await auth();
+    const session = await clientSession();
 
     const response = await axios.get(
       `${admin_base_url}/api/v1/admin/users?status=${booleanValue}`,
       {
+        params: {
+          page: PaginationRequest.page,
+          perPage: PaginationRequest.perPage,
+        },
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
         },
@@ -71,13 +78,18 @@ export const getUserByStatus = async (booleanValue: boolean | undefined) => {
 export const getUsersByDate = async (
   created_at_from: Date | string,
   created_at_to: Date | string,
+  PaginationRequest: PaginationRequest,
 ) => {
   try {
-    const session = await auth();
+    const session = await clientSession();
 
     const response = await axios.get(
       `${admin_base_url}/api/v1/admin/users?created_at_from=${created_at_from}&created_at_to=${created_at_to}`,
       {
+        params: {
+          page: PaginationRequest.page,
+          perPage: PaginationRequest.perPage,
+        },
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
         },
@@ -94,7 +106,7 @@ export const getUsersByDate = async (
 
 export const ExportUsers = async () => {
   try {
-    const session = await auth();
+    const session = await clientSession();
 
     const response = await axios.get(
       `${admin_base_url}/api/v1/admin/users/export`,
@@ -115,7 +127,7 @@ export const ExportUsers = async () => {
 // Retrieve A specific user
 export const GetSingleUser = async (userId: string | string[] | undefined) => {
   try {
-    const session = await auth();
+    const session = await clientSession();
 
     const response = await axios.get(
       `${admin_base_url}/api/v1/admin/users/${userId}`,
@@ -136,7 +148,7 @@ export const GetSingleUser = async (userId: string | string[] | undefined) => {
 // deactivate User
 export const deactivateUser = async (userId: string) => {
   try {
-    const session = await auth();
+    const session = await clientSession();
 
     const response = await axios.patch(
       `${admin_base_url}/api/v1/admin/users/${userId}/deactivate`,
@@ -157,7 +169,7 @@ export const deactivateUser = async (userId: string) => {
 // reactivate User
 export const reactivateUser = async (userId: string) => {
   try {
-    const session = await auth();
+    const session = await clientSession();
 
     const response = await axios.patch(
       `${admin_base_url}/api/v1/admin/users/${userId}/reactivate`,
@@ -179,7 +191,7 @@ export const reactivateUser = async (userId: string) => {
 // get admin profile
 export const getAdminProfile = async () => {
   try {
-    const session = await auth();
+    const session = await clientSession();
 
     const response = await axios.get(`${admin_base_url}/api/v1/admin-profile`, {
       headers: {
@@ -202,7 +214,7 @@ interface ProfileData {
 
 export const updateAdminProfile = async (profileData: ProfileData) => {
   try {
-    const session = await auth();
+    const session = await clientSession();
 
     const response = await axios.post(
       `${admin_base_url}/api/v1/admin-profile`,

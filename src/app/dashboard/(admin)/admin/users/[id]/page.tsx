@@ -1,15 +1,10 @@
 /* eslint-disable no-console */
 "use client";
 
-import { Award, Gamepad, Languages, Users } from "lucide-react";
+import { Award, Gamepad, Languages, Smartphone, Users } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import {
-  deactivateUser,
-  GetSingleUser,
-  reactivateUser,
-} from "~/actions/adminDashboard/route";
 import CustomButton from "~/components/common/common-button/common-button";
 import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
 import { Skeleton } from "~/components/ui/skeleton";
@@ -17,8 +12,25 @@ import UserDetailsCard from "~/components/userDetailCard";
 import UserMetricsCard from "~/components/userMetricsCard";
 import UserProfileChart from "~/components/userProfileChart";
 import UserProfileTable from "~/components/userProfileTable";
+import {
+  deactivateUser,
+  GetSingleUser,
+  reactivateUser,
+} from "~/lib/services/adminDashboard";
 import { userDetailsCardProperties } from "../../(overview)/adminDashboardTypes";
 
+function getHours(date: string) {
+  const givenDate: Date = new Date(date);
+  const currentDate: Date = new Date();
+  const givenTime: number = givenDate.getTime();
+  const currentTime: number = currentDate.getTime();
+  const differenceInMilliseconds: number = currentTime - givenTime;
+
+  // Convert milliseconds to hours
+  const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
+
+  return differenceInHours;
+}
 const UserDetails = ({ params }: { params: { id: string } }) => {
   const [isModalOpen, setsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -120,6 +132,7 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
       return;
     }
   };
+
   return (
     <>
       {isModalOpen && (
@@ -323,7 +336,16 @@ const UserDetails = ({ params }: { params: { id: string } }) => {
       </section>
       <section className="mt-[20px] block gap-[20px] lg:flex">
         <UserProfileChart className="flex-1" />
-        <UserProfileTable className="lg:flex-1" />
+        {userDetails && userDetails?.session && (
+          <UserProfileTable
+            lastActivity={getHours(
+              userDetails?.session?.last_login_at,
+            ).toString()}
+            devices={userDetails?.session?.deviceName}
+            className="lg:flex-1"
+            icon={<Smartphone className="w-[20px]" />}
+          />
+        )}
       </section>
     </>
   );

@@ -6,9 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { getPreviewQuest } from "~/actions/userDashboardQuest.ts/route";
 import { Button } from "~/components/common/common-button";
 import { Skeleton } from "~/components/ui/skeleton";
+import { getPreviewQuest } from "~/lib/services/userDashboard";
 import { QuestExitModal } from "../_components/quest-exit-modal";
 import { preview, userQuests } from "../../userDashboardTypes";
 
@@ -51,7 +51,7 @@ const QuestPreview = ({ params }: { params: { id: string } }) => {
               {isLoading ? (
                 <Skeleton className="h-[20px] max-w-[70px] rounded-lg bg-neutral-70" />
               ) : (
-                <h2 className="text-[28px] font-semibold leading-[42px] text-secondary-120">
+                <h2 className="text-secondary-70">
                   {questPreview && questPreview.title}
                 </h2>
               )}

@@ -5,15 +5,15 @@ import { Camera } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import {
-  getAdminProfile,
-  updateAdminProfile,
-} from "~/actions/adminDashboard/route";
 import CustomButton from "~/components/common/common-button/common-button";
 import DashboardModal from "~/components/common/dashboardModal/DashboardModal";
 import CustomInput from "~/components/input/CustomInput";
 import { Skeleton } from "~/components/ui/skeleton";
 import { useToast } from "~/components/ui/use-toast";
+import {
+  getAdminProfile,
+  updateAdminProfile,
+} from "~/lib/services/adminDashboard";
 
 type ProfileData = {
   image: string;

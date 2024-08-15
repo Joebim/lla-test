@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Laptop, Smartphone, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 import {
   Table,
@@ -11,30 +11,25 @@ import {
 } from "../ui/table";
 
 interface tableProperties {
-  devices: string;
-  lastActivity: string;
-  icon: React.ReactNode;
+  devices?: string;
+  lastActivity?: string;
+  icon?: React.ReactNode;
+  className?: string;
+  session?: [
+    {
+      lastActivity?: string;
+      devices?: string;
+      icon?: string;
+    },
+  ];
 }
-
-const data = [
-  {
-    devices: "Iphone 15 pro",
-    lastActivity: "1 min ago",
-    icon: <Smartphone className="w-[20px]" />,
-  },
-  {
-    devices: "HP proBook 11",
-    lastActivity: "2 days ago",
-    icon: <Laptop className="w-[20px]" />,
-  },
-  {
-    devices: "iPhone Xsmax",
-    lastActivity: "24 hours ago",
-    icon: <Smartphone className="w-[20px]" />,
-  },
-];
-
-const UserProfileTable = ({ className }: { className?: string }) => {
+const UserProfileTable = ({
+  className,
+  lastActivity,
+  icon,
+  devices,
+  session,
+}: tableProperties) => {
   const renderRow = (data: tableProperties, index: number) => {
     const isEven = index % 2 === 1;
     const rowClass = isEven
@@ -42,14 +37,14 @@ const UserProfileTable = ({ className }: { className?: string }) => {
       : "bg-white border-none";
 
     return (
-      <TableRow key={data.devices} className={rowClass}>
+      <TableRow key={devices} className={rowClass}>
         <TableCell className="flex items-center gap-3 font-medium">
           <div className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-neutral-40">
-            {data.icon}
+            {icon}
           </div>
-          <p>{data.devices}</p>
+          <p>{devices ?? "N/A"}</p>
         </TableCell>
-        <TableCell>{data.lastActivity}</TableCell>
+        <TableCell>{lastActivity ?? "N/A"}</TableCell>
         <TableCell className="text-red-400">
           <Trash2 className="w-[20px]" />
         </TableCell>
@@ -81,7 +76,7 @@ const UserProfileTable = ({ className }: { className?: string }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((slug, index) => renderRow(slug, index))}
+          {session && session.map((slug, index) => renderRow(slug, index))}
         </TableBody>
       </Table>
     </div>

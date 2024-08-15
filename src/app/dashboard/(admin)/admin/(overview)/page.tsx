@@ -7,13 +7,6 @@ import { useRouter } from "next-nprogress-bar";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import {
-  ExportUsers,
-  getAllUsers,
-  getUserByStatus,
-  getUsersByDate,
-  getUsersStats,
-} from "~/actions/adminDashboard/route";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -23,6 +16,13 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Skeleton } from "~/components/ui/skeleton";
+import {
+  ExportUsers,
+  getAllUsers,
+  getUserByStatus,
+  getUsersByDate,
+  getUsersStats,
+} from "~/lib/services/adminDashboard";
 import {
   OverviewData,
   PaginationRequest,
@@ -80,6 +80,7 @@ const Overview = () => {
     async function fetchData() {
       try {
         const response = await getAllUsers(pagination);
+        console.log({ response });
         setUsers(response?.data?.data || []);
         setPagination((previous: PaginationRequest) => ({
           ...previous,
@@ -120,6 +121,12 @@ const Overview = () => {
       page: newPage + 1,
     }));
   };
+  const previousPage = (newPage: number) => {
+    setPagination((previous) => ({
+      ...previous,
+      page: newPage - 1,
+    }));
+  };
 
   const [status, setStatus] = useState<boolean | undefined>();
 
@@ -132,8 +139,13 @@ const Overview = () => {
       setIsLoading(true);
       try {
         if (status !== undefined) {
-          const response = await getUserByStatus(status);
+          const response = await getUserByStatus(status, pagination);
           setUsers(response?.data?.data || []);
+          setPagination((previous: PaginationRequest) => ({
+            ...previous,
+            totalPages: response?.data?.last_page || 0,
+            totalCount: response?.data?.total || 0,
+          }));
           setIsLoading(false);
         }
       } catch (error) {
@@ -164,8 +176,14 @@ const Overview = () => {
             const response = await getUsersByDate(
               formatDate3(fromDate),
               formatDate3(toDate),
+              pagination,
             );
             setUsers(response?.data?.data || []);
+            setPagination((previous: PaginationRequest) => ({
+              ...previous,
+              totalPages: response?.data?.last_page || 0,
+              totalCount: response?.data?.total || 0,
+            }));
             setIsLoading(false);
           }
         }
@@ -177,11 +195,6 @@ const Overview = () => {
     }
     handleDate();
   }, [setIsLoading, setUsers, fromDate, toDate]);
-
-  const total = users.length;
-  const limit = pagination.perPage;
-
-  const pageCount = Math.floor(total / limit) + (total % limit === 0 ? 0 : 1);
 
   const statisticsData: StatisticItem[] =
     overviewData === undefined
@@ -394,13 +407,23 @@ const Overview = () => {
                   <h3 className="text-[#0A0A0A]">{data.id}</h3>
                   <div className="flex gap-[8px]">
                     <figure>
-                      <Image
-                        src={data.avatar_url || "/avatar/avatar-1.png"}
-                        alt="Avatar"
-                        width={45}
-                        height={45}
-                        className="w-[45px] shrink-0"
-                      />
+                      {data?.avatar_url ? (
+                        <Image
+                          src="/avatar/avatar-1.png"
+                          alt="Avatar"
+                          width={45}
+                          height={45}
+                          className="w-[45px] shrink-0"
+                        />
+                      ) : (
+                        <Image
+                          src="/avatar/avatar-1.png"
+                          alt="Avatar"
+                          width={45}
+                          height={45}
+                          className="w-[45px] shrink-0"
+                        />
+                      )}
                     </figure>
                     <div>
                       <h1 className="font-medium text-[#0A0A0A]">
@@ -467,7 +490,7 @@ const Overview = () => {
           <div className="mt-[24px] flex justify-start">
             <Button
               variant="outline"
-              onClick={() => handlePageChange(pagination.page - 1)}
+              onClick={() => previousPage(pagination.page)}
               disabled={pagination.page === 1}
               className="mr-2 flex items-center gap-2"
             >
@@ -477,12 +500,12 @@ const Overview = () => {
 
             {Array.from({ length: pagination?.totalPages }).map((_, index) => (
               <button
-                key={index + 1}
-                onClick={() => handlePageChange(index + 1)}
-                className={`mx-1 px-3 py-3 ${
+                key={index}
+                onClick={() => handlePageChange(index)}
+                className={`mx-1 px-3 py-2 ${
                   pagination?.page === index + 1
-                    ? "border-[##E4E4E7]"
-                    : "bg-gray-200"
+                    ? "border border-solid border-[#E4E4E7]"
+                    : "bg-white"
                 }`}
               >
                 {index + 1}
@@ -492,7 +515,7 @@ const Overview = () => {
             <Button
               variant="outline"
               onClick={() => handlePageChange(pagination.page)}
-              disabled={pagination.page === pageCount}
+              disabled={pagination.page === pagination?.totalPages}
               className="flex items-center gap-3"
             >
               Next
