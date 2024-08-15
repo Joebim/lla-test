@@ -24,10 +24,8 @@ jobs:
        
     - name: Transfer Build Artifacts to Server
       run: |
-        echo "${{ secrets.SSH_KEY }}" > /tmp/delve_temp_ssh_key
-        chmod 600 /tmp/delve_temp_ssh_key
-        scp -i /tmp/delve_temp_ssh_key /home/bulldozer/next.tar.gz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/delve_fe
-        rm /tmp/delve_temp_ssh_key
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" scp /home/bulldozer/next.tar.gz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/delve_fe
+        
         
     
 
