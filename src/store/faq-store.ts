@@ -1,9 +1,8 @@
+"use server";
+
 import axios from "axios";
 
 import { auth } from "~/lib/auth";
-
-const admin_base_url: string =
-  process.env.API_URL || "https://api.staging.delve.fun";
 
 interface createProperties {
   question: string;
@@ -17,11 +16,12 @@ interface UpdateProperties {
   category: string;
 }
 
+const API_BASE_URL = process.env.API_URL;
+
 //fetch faqs
 const getFAQs = async () => {
   try {
-    const response = await axios.get(`${admin_base_url}/api/v1/faqs`);
-
+    const response = await axios.get(`${API_BASE_URL}/api/v1/faqs`);
     return {
       data: response.data,
       status: response.status,
@@ -40,26 +40,18 @@ const getFAQs = async () => {
 
 // create faq
 const CreateFaqs = async (payload: createProperties) => {
+  const session = await auth();
   try {
-    const session = await auth();
-
-    const response = await axios.post(
-      `${admin_base_url}/api/v1/faqs`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.access_token}`,
-        },
+    const response = await axios.post(`${API_BASE_URL}/api/v1/faqs`, payload, {
+      headers: {
+        Authorization: `Bearer ${session?.access_token}`,
       },
-    );
-
+    });
     return {
       data: response.data,
       status: response.status,
     };
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
     return axios.isAxiosError(error) && error.response
       ? {
           error: error.response.data.message || "Unable to Create FAQ",
@@ -75,7 +67,7 @@ const DeleteFaqs = async (id: string) => {
   try {
     const session = await auth();
 
-    const response = await axios.delete(`${admin_base_url}/api/v1/faqs/${id}`, {
+    const response = await axios.delete(`${API_BASE_URL}/api/v1/faqs/${id}`, {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
@@ -101,7 +93,7 @@ const UpdateFaqs = async (payload: UpdateProperties, id: string) => {
     const session = await auth();
 
     const response = await axios.put(
-      `${admin_base_url}/api/v1/faqs/${id}`,
+      `${API_BASE_URL}/api/v1/faqs/${id}`,
       payload,
       {
         headers: {

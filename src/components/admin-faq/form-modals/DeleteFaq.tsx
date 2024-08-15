@@ -1,4 +1,9 @@
+"use client";
+
+import { useState } from "react";
+
 import CustomButton from "~/components/common/common-button/common-button";
+import LoadingSpinner from "~/components/miscellaneous/loading-spinner";
 import { useToast } from "~/components/ui/use-toast";
 import { DeleteFaqs } from "~/store/faq-store";
 
@@ -16,8 +21,11 @@ interface Properties {
 
 const DeleteFaq = (properties: Properties) => {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
   const handleDeleteFaq = async () => {
+    setLoading(true);
+
     const response = await DeleteFaqs(properties?.faqs?.id);
     if (response?.status === 200 || response?.status === 201) {
       properties?.setCallback(!properties?.callback);
@@ -27,12 +35,14 @@ const DeleteFaq = (properties: Properties) => {
         variant: "default",
       });
       properties?.onClose();
+      setLoading(false);
     } else {
       toast({
         title: "Error",
         description: response?.error,
         variant: "critical",
       });
+      setLoading(false);
     }
   };
 
@@ -57,7 +67,14 @@ const DeleteFaq = (properties: Properties) => {
           onClick={handleDeleteFaq}
           className="w-full bg-critical-90 text-white"
         >
-          Delete
+          {loading ? (
+            <span className="flex items-center justify-center">
+              Deleting...
+              <LoadingSpinner />
+            </span>
+          ) : (
+            "Delete"
+          )}
         </CustomButton>
       </div>
     </div>
