@@ -42,9 +42,10 @@ jobs:
             cd /var/www/html/delve_fe/
             tar -xzvf next.tar.gz -C .
             rm next.tar.gz
+            rm -rf dev/.next
             mv language_learning_fe/.next dev
-            rm language_learning_fe
+            rm -rf language_learning_fe
             cd /var/www/html/delve_fe/dev
             git reset --hard origin/dev
             git pull
-            pm2 restart staging.delve.fun
+            /home/teamphp/.npm-global/bin/pm2 restart staging.delve.fun
