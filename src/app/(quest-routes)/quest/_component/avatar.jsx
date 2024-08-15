@@ -1,5 +1,7 @@
+import { Html } from "@react-three/drei";
 import { useAnimations, useFBX, useGLTF } from "@react-three/drei";
 import { useEffect, useRef } from "react";
+import GameChatBubble from "./icons/GameChatBubble";
 
 export function Avatar(properties) {
 	const { nodes, materials } = useGLTF("/models/66b22ea0183d0249c98fbd8b.glb");
@@ -18,6 +20,14 @@ export function Avatar(properties) {
 
 	return (
 		<group {...properties} ref={groupReference} dispose={null} scale={[3,3,3]}>
+      <Html position={[0, 1.5, 0]} distanceFactor={10} style={{ position: 'relative' }}>
+        <div className="flex w-full px-4 py-2">
+          <p className="text-xl text-white w-full ">
+            Hi, there am avatar
+          </p>
+        </div>
+        <GameChatBubble className="absolute inset-0 " />
+      </Html>
       <group rotation-x={-Math.PI / 2}>
         <primitive object={nodes.Hips} />
         <skinnedMesh
