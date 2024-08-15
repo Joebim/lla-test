@@ -11,6 +11,12 @@ const nextConfig = {
       },
       { hostname: "res.cloudinary.com", protocol: "https" },
       { hostname: "res.cloudinary.com", protocol: "http" },
+      {
+        protocol: "https",
+        hostname: "api.staging.delve.fun",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
   transpilePackages: ["lucide-react"],
