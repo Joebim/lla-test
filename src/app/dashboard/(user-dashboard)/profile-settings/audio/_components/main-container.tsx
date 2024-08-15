@@ -211,7 +211,12 @@ const AudioContainer = () => {
             Notification Type
           </p>
           <div className="relative">
-            <Select onValueChange={(value: string) => setNotiType(value)}>
+            <Select
+              onValueChange={(value: string) => {
+                setEdited(true);
+                setNotiType(value);
+              }}
+            >
               <SelectTrigger
                 className="w-full appearance-none rounded-[8px] border border-neutral-40 bg-transparent px-[8px] py-[14px] text-[14px] text-gray-700 focus:outline-none focus:ring-0 md:rounded-[10px] md:px-[12px] md:py-[18px] md:text-sm"
                 aria-label="Notification Type"
@@ -225,7 +230,7 @@ const AudioContainer = () => {
                       <SelectItem
                         key={index}
                         value={item}
-                        className="rounded-[8px] transition-all duration-300 hover:bg-primary-10"
+                        className="rounded-[8px] capitalize transition-all duration-300 hover:bg-primary-10"
                       >
                         {item}
                       </SelectItem>
