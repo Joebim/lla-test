@@ -43,6 +43,7 @@ jobs:
             tar -xzvf next.tar.gz -C .
             rm next.tar.gz
             mv language_learning_fe/.next dev
+            rm language_learning_fe
             cd /var/www/html/delve_fe/dev
             git reset --hard origin/dev
             git pull
