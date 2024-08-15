@@ -4,8 +4,6 @@ import axios from "axios";
 
 import { auth } from "~/lib/auth";
 
-
-
 interface createProperties {
   question: string;
   answer: string;
@@ -47,7 +45,6 @@ const CreateFaqs = async (payload: createProperties) => {
     const response = await axios.post(`${API_BASE_URL}/api/v1/faqs`, payload, {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
-
       },
     });
     return {
@@ -97,7 +94,6 @@ const UpdateFaqs = async (payload: UpdateProperties, id: string) => {
 
     const response = await axios.put(
       `${API_BASE_URL}/api/v1/faqs/${id}`,
-
       payload,
       {
         headers: {
